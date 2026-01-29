@@ -21,7 +21,7 @@ RUN uv sync --frozen --no-install-project
 
 # Copy the dmm_api folder into the image
 COPY dl /app/dl
-COPY statistic /app/static
+COPY statistic /app/statistic
 COPY templates /app/templates
 
 # Sync the project
