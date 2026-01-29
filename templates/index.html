@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<!--suppress HtmlUnknownTarget -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile Similarity</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<iframe id="download-frame" name="download-frame" style="display: none;"></iframe>
+<body>
+    <!-- Alert banner -->
+    <div id="alert-banner" class="alert-banner">
+        <span class="spinner" id="alert-spinner"></span>
+        <span id="alert-text"></span>
+    </div>
+    <header class="page-header">
+        <div class="header-top">
+            <img src="{{ url_for('static', filename='images/logoUnivr.png') }}" alt="University Logo" class="logo">
+            <h1>📊 Profile Similarity Report</h1>
+            <img src="{{ url_for('static', filename='images/logoDataGems.png') }}" alt="Project Logo" class="logo">
+        </div>
+        <div class="header-bottom">
+        <div class="form-row">
+        <form method="get" action="{{ url_for('index') }}" class="folder-form">
+            <label for="folder" class="icon">📁</label>
+            <input id = "folder" type="text" name="folder" value="{{ folder }}" placeholder="Enter folder path" size="50">
+            <label for="kw" class="weight-label">KW</label>
+            <input type="number" step="0.1" min="0" max="1" name="kw" id="kw" value="{{ request.args.get('kw', 0.6) }}" class="weight-input">
+            <label for="desc" class="weight-label">DESC</label>
+            <input type="number" step="0.1" min="0" max="1" name="desc" id="desc" value="{{ request.args.get('desc', 0.3) }}" class="weight-input">
+            <label for="head" class="weight-label">HEAD</label>
+            <input type="number" step="0.1" min="0" max="1" name="head" id="head" value="{{ request.args.get('head', 0.1) }}" class="weight-input">
+            <label for="th" class="weight-label">TH</label>
+            <input type="number" step="1" min="0" max="100" name="th" id="th" value="{{ request.args.get('th', 30) }}" class="weight-input">
+            <button type="submit" class="recalc-btn">🔍 Analyze</button>
+        </form>
+        {% if not error and similarities %}
+        <form method="get" action="{{ url_for('save_results') }}" class="inline-form" target="download-frame">
+            <input type="hidden" name="folder" value="{{ folder }}">
+            <input type="hidden" name="kw" value="{{ request.args.get('kw', 0.6) }}">
+            <input type="hidden" name="desc" value="{{ request.args.get('desc', 0.3) }}">
+            <input type="hidden" name="head" value="{{ request.args.get('head', 0.1) }}">
+            <input type="hidden" name="th" value="{{ request.args.get('th', 30) }}">
+            <button type="submit" class="save-btn">💾 Save Results</button>
+        </form>
+        {% endif %}
+        </div>
+        </div>
+    </header>
+    {% if error %}
+        <div class="error-box">
+            {{ error }}
+        </div>
+    {% elif success %}
+        <div class="success-box">
+            {{ success }}
+        </div>
+    {% endif %}
+    {% if similarities %}
+    <table id="results-table">
+        <thead>
+            <tr>
+                <th>Data Profile 1</th>
+                <th>Data Profile 2</th>
+                <th>Common KW</th>
+                <th>KW Sim. (%)</th>
+                <th>Desc. Sim. (%)</th>
+                <th>Head. Sim. (%)</th>
+                <th>Total Sim. (%)</th>
+                <th>KW in Common</th>
+                <th>Save</th>
+                <th>≥ TH?</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in similarities %}
+            <tr>
+                <td>{{ s.dataprofile1 }}</td>
+                <td>{{ s.dataprofile2 }}</td>
+                <td>
+                    {% if s.common_keywords.strip() %}
+                        {{ s.common_keywords.split(',')|length }}
+                    {% else %}
+                        0
+                    {% endif %}
+                </td>
+                <td>{{ s.keywords_similarity }}</td>
+                <td>{{ s.description_similarity }}</td>
+                <td>{{ s.headline_similarity }}</td>
+                <td>{{ s.combined_similarity }}</td>
+                <td>{{ s.common_keywords }}</td>
+                <td>
+                    <form method="get" action="{{ url_for('save_single') }}" target="download-frame" class="inline-form">
+                        <input type="hidden" name="d1" value="{{ s.dataprofile1 }}">
+                        <input type="hidden" name="d2" value="{{ s.dataprofile2 }}">
+                        <input type="hidden" name="folder" value="{{ (folder or '').replace('\\', '/') }}">
+                        <button type="submit" class="save-btn small" title="Save this pair">💾</button>
+                    </form>
+
+                    {% if s.passes_threshold %}
+                    <a
+                      class="save-btn small refine-btn"
+                      target="_blank"
+                      href="{{ url_for('refine_pair') }}?d1={{ s.dataprofile1 }}&d2={{ s.dataprofile2 }}&folder={{ (folder or '').replace('\\','/') }}&kw={{ request.args.get('kw', 0.6) }}&desc={{ request.args.get('desc', 0.3) }}&head={{ request.args.get('head', 0.1) }}&th={{ request.args.get('th', 30) }}"
+                      title="Refine similarity"
+                    >🔁</a>
+                    {% endif %}
+                </td>
+                <td>{{ '✅' if s.passes_threshold else '❌' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const banner = document.getElementById("alert-banner");
+        const bannerText = document.getElementById("alert-text");
+        const forms = document.querySelectorAll("form");
+
+        function hideBanner() {
+            // Full reset: classes, text, and display
+            banner.className = "alert-banner";
+            bannerText.textContent = "";
+            banner.style.display = "none";
+        }
+
+        // Initial reset (normal reload)
+        hideBanner();
+
+        // Reset when returning from history (bfcache)
+        window.addEventListener("pageshow", function (ev) {
+            // ev.persisted === true when the page is restored from bfcache
+            hideBanner();
+        });
+
+        // Extra for Safari/some cases: when the tab becomes visible again
+        document.addEventListener("visibilitychange", function () {
+            if (document.visibilityState === "visible") hideBanner();
+        });
+
+        forms.forEach(form => {
+            form.addEventListener("submit", function () {
+                const action = form.getAttribute("action");
+
+                if (action.includes("save")) {
+                    bannerText.textContent = "💾 Saving results...";
+                    banner.className = "alert-banner saving show";
+                } else {
+                    bannerText.textContent = "🔍 Analyzing profiles...";
+                    banner.className = "alert-banner analyzing show";
+                }
+
+                banner.style.display = "block";
+
+                // Download case: close when the cookie is detected
+                if (form.getAttribute("target") === "download-frame") {
+                    const checkInterval = setInterval(() => {
+                        if (document.cookie.includes("downloadComplete=1")) {
+                            hideBanner();
+                            clearInterval(checkInterval);
+                            document.cookie = "downloadComplete=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                        }
+                    }, 200);
+                }
+            });
+        });
+    });
+    </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // === Script for sorting columns ===
+        const table = document.getElementById("results-table");
+        if (!table) return;
+
+        const headers = table.querySelectorAll("th");
+
+        headers.forEach((header, index) => {
+            if (header.textContent.trim() === "Save") return;
+            header.style.cursor = "pointer";
+            header.addEventListener("click", () => sortTable(index));
+        });
+
+        function sortTable(colIndex) {
+            const tbody = table.querySelector("tbody");
+            const rows = Array.from(tbody.querySelectorAll("tr"));
+            const header = headers[colIndex];
+
+            const ascending = !header.classList.contains("asc");
+            headers.forEach(h => h.classList.remove("asc", "desc"));
+
+            rows.sort((a, b) => {
+                const cellA = a.children[colIndex].innerText.trim();
+                const cellB = b.children[colIndex].innerText.trim();
+
+                const numA = parseFloat(cellA.replace('%','').replace(',','.'));
+                const numB = parseFloat(cellB.replace('%','').replace(',','.'));
+                if (!isNaN(numA) && !isNaN(numB)) {
+                    return ascending ? numA - numB : numB - numA;
+                }
+
+                return ascending
+                    ? cellA.localeCompare(cellB)
+                    : cellB.localeCompare(cellA);
+            });
+
+            rows.forEach(row => tbody.appendChild(row));
+
+            header.classList.add(ascending ? "asc" : "desc");
+            headers.forEach(h => {
+                h.textContent = h.textContent.replace(/[▲▼]/g, '');
+            });
+            header.textContent += ascending ? " ▲" : " ▼";
+        }
+    });
+    </script>
+
+</body>
+</html>

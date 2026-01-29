@@ -1,0 +1,307 @@
+/*  =====================================================
+    Base layout
+    ===================================================*/
+body {
+    font-family: Arial, sans-serif;
+    margin: 30px;
+    background: #f9f9f9;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/*  =====================================================
+    Typography
+    ===================================================*/
+.weight-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+    margin-left: 10px;
+}
+
+/*  =====================================================
+    Tables
+    ===================================================*/
+table {
+    border-collapse: collapse;
+    width: 100%;
+    background: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #eee;
+}
+
+tr:hover {
+    background-color: #f5f5f5;
+}
+
+/*  =====================================================
+    Page header
+    ===================================================*/
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px 0;
+    border-bottom: 2px solid #eee;
+}
+
+.page-header h1 {
+    font-size: 1.6rem;
+    color: #333;
+    margin: 0;
+}
+
+/* Header actions (buttons, inline form) */
+.header-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.inline-form {
+    margin: 0;
+}
+
+/*  =====================================================
+    Buttons
+    ===================================================*/
+.recalc-btn, .save-btn {
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+}
+
+.recalc-btn {
+    background-color: #0078d7;
+}
+
+.recalc-btn:hover {
+    background-color: #005fa3;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.recalc-btn:active {
+    transform: scale(0.97);
+}
+
+.save-btn {
+    background-color: #28a745;
+}
+
+.save-btn:hover {
+    background-color: #218838;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.save-btn:active {
+    transform: scale(0.97);
+}
+
+/* Small version of save button */
+.save-btn.small {
+    padding: 4px 8px;
+    font-size: 13px;
+    border-radius: 6px;
+    background-color: white;
+}
+
+.refine-btn {
+    background-color: #ffeaa7;
+    border: 1px solid #e1b12c;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+.refine-btn.small {
+    font-size: 0.8em;
+    padding: 2px 6px;
+}
+
+/*  =====================================================
+    Forms
+    ===================================================*/
+.form-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* spazio tra Analyze e Save Results */
+}
+
+.folder-form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.folder-form input[type="text"] {
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    width: 620px;
+}
+
+.folder-form input[type="text"]:focus {
+    outline: none;
+    border-color: #0078d7;
+    box-shadow: 0 0 3px rgba(0,120,215,0.4);
+}
+
+/* Weight inputs */
+.weight-input {
+    width: 55px;
+    padding: 6px 8px;
+    margin-left: 4px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.weight-input:focus {
+    outline: none;
+    border-color: #0078d7;
+    box-shadow: 0 0 3px rgba(0,120,215,0.4);
+}
+
+/*  =====================================================
+    Feedback boxes
+    ===================================================*/
+.error-box,
+.success-box {
+    padding: 10px 15px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.error-box {
+    background-color: #ffe6e6;
+    border: 1px solid #ffb3b3;
+    color: #a70000;
+}
+
+.success-box {
+    background-color: #e6ffea;
+    border: 1px solid #9ddba0;
+    color: #146c2e;
+}
+
+/*  =====================================================
+    Alert banner
+    ===================================================*/
+.alert-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #0078d7;
+    color: white;
+    text-align: center;
+    padding: 8px 0;
+    font-weight: 600;
+    font-size: 14px;
+    z-index: 9999;
+    display: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.alert-banner.analyzing {
+    background-color: #ff9800;
+}
+
+.alert-banner.saving {
+    background-color: #28a745;
+}
+
+.alert-banner.show {
+    animation: slideDown 0.4s ease-out forwards;
+}
+
+/*  =====================================================
+    Spinner
+    ===================================================*/
+.spinner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    border-top-color: #fff;
+    border-radius: 50%;
+    margin-right: 8px;
+    animation: spin 0.8s linear infinite;
+    vertical-align: middle;
+}
+
+/*  =====================================================
+    Animations
+    ===================================================*/
+@keyframes slideDown {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/*  =====================================================
+    Header logo layout
+    ===================================================*/
+.page-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px; /* spacing between logo, title, and logo */
+    margin-bottom: 20px;
+}
+
+.header-top h1 {
+    font-size: 1.8em;
+    text-align: center;
+    margin: 0;
+}
+
+.logo {
+    height: 70px;
+    width: auto;
+}
+
+.header-bottom {
+    text-align: center;
+    margin-top: 10px;
+}
+
+/*  =====================================================
+    Icon
+    ===================================================*/
+.icon {
+    font-size: 1.3em;
+    margin-right: 5px;
+    vertical-align: middle;
+    cursor: pointer;
+}
