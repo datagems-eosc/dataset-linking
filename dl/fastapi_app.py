@@ -11,10 +11,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
-from app.refine import refine_similarity, build_refinement_profile
-from app.reports import build_croissant_report
-from app.similarity import compute_similarities
-from app.utils import normalize_weights
+from dl.refine import refine_similarity, build_refinement_profile
+from dl.reports import build_croissant_report
+from dl.similarity import compute_similarities
+from dl.utils import normalize_weights
 
 app = FastAPI(title="Profile Similarity API", version="1.0")
 app.add_middleware(

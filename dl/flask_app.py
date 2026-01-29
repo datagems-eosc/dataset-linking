@@ -6,10 +6,10 @@ from datetime import datetime
 from pathlib import Path
 from flask import Flask, render_template, request, send_file, make_response
 
-from app.similarity import compute_similarities
-from app.reports import build_croissant_report
-from app.refine import refine_similarity, build_refinement_profile
-from app.utils import get_weights_and_threshold
+from dl.similarity import compute_similarities
+from dl.reports import build_croissant_report
+from dl.refine import refine_similarity, build_refinement_profile
+from dl.utils import get_weights_and_threshold
 
 # ---------------------------------------------------------------------------- #
 # App setup

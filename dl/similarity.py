@@ -6,7 +6,7 @@ from typing import Optional, Tuple, List, Dict, Any
 
 from sentence_transformers import SentenceTransformer
 
-from app.utils import normalize_keywords, get_DLRepository_path
+from dl.utils import normalize_keywords, get_DLRepository_path
 
 
 # Lazy load
