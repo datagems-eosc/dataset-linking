@@ -1,5 +1,4 @@
 # 🧩 Profile Similarity Web App
-
 A modular web application for analyzing and comparing JSON profile datasets.  
 It computes semantic similarities between profiles based on **keywords**, **descriptions**, and **headlines**, using transformer models and configurable weights. 
 
