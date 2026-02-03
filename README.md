@@ -1,4 +1,5 @@
 # 🧩 Profile Similarity Web App
+
 A modular web application for analyzing and comparing JSON profile datasets.  
 It computes semantic similarities between profiles based on **keywords**, **descriptions**, and **headlines**, using transformer models and configurable weights. 
 
@@ -58,27 +59,31 @@ Now includes both:
 
 ---
 
-## ⚙️ Installation and how to Run
+## 📦 Install dependencies (with `uv`)
 
 > Note: Git is recommended to clone the repository, but the project can also be downloaded as a ZIP archive.
 
-Clone the repository and move into the project folder:
+After cloning the repository, you don’t need to run `uv init` or `uv add`.  
+Simply sync the environment using the existing `pyproject.toml` and `uv.lock` files:
 ```bash
-git clone <repository-url>
-cd <repository-folder>
+uv venv
+uv sync
 ```
 
-Create and activate a virtual environment
+This will recreate the exact environment (including all libraries and versions) used in development.
+
+### 🚀 Run the Flask app
+Once dependencies are installed, you can start the web interface directly using uv and the Flask CLI:
 ```bash
-python -m venv venv
-venv\Scripts\Activate
+uv run flask --dl dl.flask_app run
 ```
 
-Install the required dependencies:
-```bash
-pip install flask fastapi uvicorn sentence-transformers torch numpy scipy scikit-learn
+By default, the application will be available at:
 ```
-📁 Input Data
+http://127.0.0.1:5000
+```
+
+### 📁 Input Data
 
 The application expects a folder containing Croissant DataProfiles in JSON format.
 
@@ -92,10 +97,6 @@ Profiles/
 By default, the application looks for profiles in: **C:\Users\<username>\Desktop\Profiles**
 
 ### ▶️ Running the Web Application
-To start the flask web interface, run:
-```bash
-python -m app.main
-```
 If the application starts correctly, the terminal will display **Running on http://127.0.0.1:5000**.
 Now Open a web browser and navigate to **http://127.0.0.1:5000**.
 
@@ -121,7 +122,7 @@ programmatic access, integration with external systems, and long-running batch j
 Start the API server with:
 
 ```bash
-python -m uvicorn app.fastapi_app:app --reload
+python -m uvicorn dl.fastapi_app:dl --reload
 ```
 
 Then open the interactive documentation at:
@@ -143,7 +144,7 @@ Available endpoints:
 
 ---
 
-## ⏳ Asynchronous Jobs (Long-running Operations
+## ⏳ Asynchronous Jobs (Long-running Operations)
 Some operations (such as computing similarities on large profile collections or performing structural refinement) may take a significant amount of time.
 To avoid client timeouts and to enable progress monitoring, the FastAPI backend supports asynchronous job-based execution.
 
