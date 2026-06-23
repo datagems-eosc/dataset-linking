@@ -1,0 +1,91 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "a3443f7d-975a-4440-a7fe-caafd1215d29",
+    "distribution": [],
+    "recordSet": [],
+    "country": "",
+    "keywords": [
+        "global education",
+        "education inequalities",
+        "gender gap in education",
+        "school enrollment"
+    ],
+    "description": "This dataset explores global education trends, highlighting how access to and quality of education have evolved over centuries. Education empowers individuals and societies, yet disparities remain, especially in low-income countries where many children still cannot read by the end of primary school. The dataset comprises four parts: The first tracks the share of the adult population with at least basic education, showing a dramatic rise from fewer than 20% in the early 1800s to a majority today, reflecting widespread improvements in literacy. The second measures learning-adjusted years of schooling, accounting for both the time spent in school and the quality of education. It reveals stark differences between wealthy countries, where children often receive over 10 years of quality schooling, and poorer regions like South Asia and Sub-Saharan Africa, where this figure is below seven years on average. The third focuses on the number of out-of-school children, which was around 260 million in 2019, with higher dropout rates in secondary education. The fourth examines gender gaps in education, illustrating that global disparities in enrollment between boys and girls have largely closed, and young women now surpass young men in tertiary education enrollment. The fourth examines gender gaps in education, illustrating that global disparities in enrollment between boys and girls have largely closed, and young women now surpass young men in tertiary education enrollment. Together, these datasets provide a comprehensive view of progress and ongoing challenges in global education access and quality.",
+    "inLanguage": [
+        "en"
+    ],
+    "url": "https://www.kaggle.com/datasets/imtkaggleteam/global-education",
+    "datePublished": "2025-05-24",
+    "license": "CC-BY 4.0",
+    "archivedAt": "s3://dataset/a3443f7d-975a-4440-a7fe-caafd1215d29",
+    "fieldOfScience": [
+        "EDUCATIONAL SCIENCES"
+    ],
+    "name": "Global Education",
+    "headline": "Analytical statistics about global education progress.",
+    "status": "loaded"
+}

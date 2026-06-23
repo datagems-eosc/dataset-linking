@@ -1,0 +1,104 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "056ff7ea-ac5a-4496-abc5-ad254ddf58fa",
+    "distribution": [
+        {
+            "@id": "38d53b0e-c88f-4509-aeea-f9cfa189eab2",
+            "contentUrl": "s3://dataset/056ff7ea-ac5a-4496-abc5-ad254ddf58fa/weather_data_fr.csv",
+            "sha256": "6df8c700f8c47533c567b7b3108f8f6ddf807474260bcb576f626b72107fa3ad",
+            "contentSize": "2407043 B",
+            "name": "weather_data_fr.csv",
+            "encodingFormat": "text/csv",
+            "description": "",
+            "@type": "cr:FileObject"
+        }
+    ],
+    "recordSet": [],
+    "country": "PT",
+    "citeAs": "",
+    "keywords": [
+        "dev",
+        "keyword"
+    ],
+    "inLanguage": [
+        "el"
+    ],
+    "description": "Subway data",
+    "version": "",
+    "url": "",
+    "datePublished": "2025-05-24",
+    "archivedAt": "s3://dataset/056ff7ea-ac5a-4496-abc5-ad254ddf58fa",
+    "license": "Public Domain",
+    "fieldOfScience": [
+        "CIVIL ENGINEERING"
+    ],
+    "name": "OASA Data",
+    "conformsTo": "",
+    "headline": "Subway data.",
+    "doi": "10.1234/oasa-dataset",
+    "status": "loaded"
+}

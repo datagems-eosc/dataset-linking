@@ -1,0 +1,740 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "729f8932-8300-4ac5-a71e-b41904ca7433",
+    "distribution": [
+        {
+            "@id": "95513a42-d3ab-4e80-ba4a-c50fe6ce887d",
+            "contentUrl": "/s3/dataset/729f8932-8300-4ac5-a71e-b41904ca7433/cities.csv",
+            "sha256": "596c4801fb5032977148ed314b04580d053e6755fe234ed23754aa4ac1363681",
+            "contentSize": "22582102 B",
+            "name": "cities.csv",
+            "description": "",
+            "encodingFormat": "text/csv",
+            "@type": "cr:FileObject"
+        },
+        {
+            "@id": "796fd7f6-0e10-41f0-b524-4ea100b534a6",
+            "contentUrl": "/s3/dataset/729f8932-8300-4ac5-a71e-b41904ca7433/stations_list.csv",
+            "sha256": "e96ec02b5a58e1a26a638eefb2a88c0c900f6e5e0b0d61780f45e6b9fa0cb6fd",
+            "contentSize": "1917 B",
+            "name": "stations_list.csv",
+            "description": "",
+            "encodingFormat": "text/csv",
+            "@type": "cr:FileObject"
+        }
+    ],
+    "recordSet": [
+        {
+            "@id": "c2638519-1bc5-4f52-96f8-68c9520983cd",
+            "examples": "{\"stations\": [\"aghiosnikolaos\", \"alexandroupolis\", \"amfiklia\", \"argos\", \"arta\", \"athens\", \"chania\", \"dion\", \"drama\", \"florina\", \"grevena\", \"heraclion\", \"igoumenitsa\", \"ioannina\", \"ithaki\", \"kea\", \"kerkyra\", \"kilkis\", \"kyparissia\", \"larissa\", \"lavrio\", \"lefkada\", \"lemnos\", \"livadeia\", \"megalopoli\", \"petrokefali\", \"mornos1\", \"naousa\", \"nemea\", \"nevrokopi\"], \"latitude\": [35.187909, 40.87631, 38.61142, 37.628115, 39.172784, 37.978408, 35.533365, 40.223638, 41.117828, 40.794947, 40.08919, 35.300751, 39.541749, 39.622062, 38.364249, 37.665689, 39.647164, 41.010394, 37.238147, 39.627532, 37.7112, 38.830648, 39.912736, 38.45389, 37.401816, 35.030074, 38.523067, 40.624855, 37.833601, 41.336361], \"longitude\": [25.715552, 25.85828, 22.64053, 22.713401, 20.999435, 23.715448, 24.068349, 22.470709, 24.143734, 21.420556, 21.445693, 25.163781, 20.279882, 20.864351, 20.717326, 24.396392, 19.853211, 22.878884, 21.653342, 22.398836, 24.055828, 20.711752, 25.200424, 22.914198, 22.141593, 24.834587, 22.122221, 22.070141, 22.654205, 23.870063], \"altitude\": [30.0, 69.0, 245.0, 38.0, 50.0, 50.0, 137.0, 50.0, 83.0, 637.0, 510.0, 115.0, 77.0, 475.0, 10.0, 192.0, 5.0, 290.0, 36.0, 82.0, 2.0, 12.0, 22.0, 120.0, 432.0, 54.0, 445.0, 365.0, 290.0, 585.0]}",
+            "name": "stations_list",
+            "@type": "cr:RecordSet",
+            "field": [
+                {
+                    "@id": "370a172b-d819-4ea9-8a45-8691510ce052",
+                    "dataType": "sc:Text",
+                    "column": "stations",
+                    "name": "stations",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "lefkada",
+                        "heraclion",
+                        "notiopedio",
+                        "livadeia",
+                        "karpenisitown",
+                        "lindos",
+                        "mornos1",
+                        "aghiosnikolaos",
+                        "ithaki",
+                        "trikala"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "stations"
+                        },
+                        "fileObject": {
+                            "@id": "796fd7f6-0e10-41f0-b524-4ea100b534a6"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "c8a8e76e-8ea5-4304-9ead-7847d07d7bf4",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "cdcf5489-d19a-4ac0-90e2-f783a0098ce1",
+                    "dataType": "sc:Float",
+                    "column": "latitude",
+                    "name": "latitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        38.830648,
+                        38.45389,
+                        40.373429,
+                        37.053581,
+                        41.010394,
+                        41.090406,
+                        37.66944,
+                        39.12172,
+                        39.172784,
+                        41.336361
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "latitude"
+                        },
+                        "fileObject": {
+                            "@id": "796fd7f6-0e10-41f0-b524-4ea100b534a6"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "dfbc93fe-0f29-45b6-9d11-70b5654fb9e8",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "bfa2c333-54f9-44fa-984f-f552a06d6646",
+                    "dataType": "sc:Float",
+                    "column": "longitude",
+                    "name": "longitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        20.279882,
+                        22.961939,
+                        23.583889,
+                        22.713401,
+                        23.870063,
+                        21.76247,
+                        21.735215,
+                        24.143734,
+                        28.086268,
+                        24.834587
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "longitude"
+                        },
+                        "fileObject": {
+                            "@id": "796fd7f6-0e10-41f0-b524-4ea100b534a6"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "1f6af0ae-983c-42dd-8369-7a024daf6056",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "36ec75ac-4331-40e7-bb4b-77db7346467e",
+                    "dataType": "sc:Float",
+                    "column": "altitude",
+                    "name": "altitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        606.0,
+                        510.0,
+                        82.0,
+                        69.0,
+                        60.0,
+                        65.0,
+                        12.0,
+                        30.0,
+                        52.0,
+                        50.0
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "altitude"
+                        },
+                        "fileObject": {
+                            "@id": "796fd7f6-0e10-41f0-b524-4ea100b534a6"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "643da828-1789-4a3b-a3ed-cf5246efc90c",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                }
+            ]
+        },
+        {
+            "@id": "100a6ae0-8307-45b5-98b4-273b12ddcf08",
+            "examples": "{\"Date\": [\"2010-01-01\", \"2010-01-02\", \"2010-01-03\", \"2010-01-04\", \"2010-01-05\", \"2010-01-06\", \"2010-01-07\", \"2010-01-08\", \"2010-01-09\", \"2010-01-10\", \"2010-01-11\", \"2010-01-12\", \"2010-01-13\", \"2010-01-14\", \"2010-01-15\", \"2010-01-16\", \"2010-01-17\", \"2010-01-18\", \"2010-01-19\", \"2010-01-20\", \"2010-01-21\", \"2010-01-22\", \"2010-01-23\", \"2010-01-24\", \"2010-01-25\", \"2010-01-26\", \"2010-01-27\", \"2010-01-28\", \"2010-01-29\", \"2010-01-30\"], \"T_mean\": [\"20.9\", \"17.5\", \"16.5\", \"13.3\", \"14.7\", \"17.2\", \"17.8\", \"17.3\", \"20.1\", \"16.4\", \"14.3\", \"13.7\", \"13.9\", \"13.6\", \"14.1\", \"14.3\", \"13.9\", \"13.5\", \"11.1\", \"11.1\", \"12.3\", \"11.6\", \"9.8\", \"9.8\", \"9.6\", \"8.3\", \"10.6\", \"13.8\", \"15.4\", \"14.4\"], \"T_max\": [\"24.2\", \"19.3\", \"19.1\", \"15.1\", \"17.4\", \"18.3\", \"19.1\", \"18.9\", \"22.8\", \"18.9\", \"16.2\", \"16.7\", \"15.3\", \"16.6\", \"16.0\", \"16.2\", \"14.7\", \"14.3\", \"13.1\", \"13.0\", \"14.8\", \"14.1\", \"11.3\", \"10.6\", \"10.4\", \"8.8\", \"13.6\", \"16.1\", \"17.7\", \"16.3\"], \"T_min\": [\"18.6\", \"15.4\", \"14.7\", \"10.3\", \"10.2\", \"16.1\", \"16.2\", \"16.1\", \"16.9\", \"12.3\", \"11.3\", \"11.7\", \"11.3\", \"11.3\", \"12.7\", \"12.7\", \"11.7\", \"11.2\", \"8.1\", \"7.3\", \"8.2\", \"9.8\", \"8.7\", \"7.7\", \"8.6\", \"6.8\", \"5.7\", \"11.1\", \"13.7\", \"12.1\"], \"RH_mean\": [\"47.9\", \"54.3\", \"56.0\", \"66.7\", \"70.1\", \"67.3\", \"64.4\", \"68.2\", \"50.3\", \"62.9\", \"57.7\", \"71.8\", \"70.4\", \"80.4\", \"79.5\", \"81.9\", \"87.0\", \"80.0\", \"78.4\", \"66.7\", \"70.1\", \"82.4\", \"80.6\", \"70.9\", \"66.4\", \"63.9\", \"68.0\", \"77.3\", \"67.8\", \"71.7\"], \"RH_max\": [\"69\", \"73\", \"71\", \"80\", \"80\", \"74\", \"74\", \"75\", \"68\", \"83\", \"65\", \"84\", \"80\", \"88\", \"86\", \"88\", \"93\", \"88\", \"90\", \"86\", \"84\", \"89\", \"89\", \"89\", \"75\", \"70\", \"85\", \"86\", \"78\", \"84\"], \"RH_min\": [\"26\", \"41\", \"44\", \"57\", \"49\", \"61\", \"42\", \"59\", \"37\", \"36\", \"46\", \"59\", \"58\", \"63\", \"71\", \"71\", \"80\", \"71\", \"55\", \"52\", \"52\", \"69\", \"70\", \"62\", \"58\", \"57\", \"59\", \"67\", \"57\", \"60\"], \"Prs_mean\": [\"1006.5\", \"1008.3\", \"1012.3\", \"1018.3\", \"1017.5\", \"1014.4\", \"1015.3\", \"1016.8\", \"1013.4\", \"1013.4\", \"1016.8\", \"1011.3\", \"1008.2\", \"1006.2\", \"1012.9\", \"1013.6\", \"1014.9\", \"1012.9\", \"1011.1\", \"1013.1\", \"1014.2\", \"1008.4\", \"1015.5\", \"1019.6\", \"1025.9\", \"1027.9\", \"1017.2\", \"1005.5\", \"1002.1\", \"1003.4\"], \"Prs_max\": [\"1008.1\", \"1011.1\", \"1015.4\", \"1020.2\", \"1019.5\", \"1016.1\", \"1017.4\", \"1018.9\", \"1015.1\", \"1015.6\", \"1018.5\", \"1015.0\", \"1009.8\", \"1010.6\", \"1014.0\", \"1014.9\", \"1016.2\", \"1014.8\", \"1012.0\", \"1016.4\", \"1017.7\", \"1013.5\", \"1016.9\", \"1022.5\", \"1028.9\", \"1030.0\", \"1024.9\", \"1008.3\", \"1003.6\", \"1006.2\"], \"Prs_min\": [\"1003.4\", \"1005.5\", \"1010.7\", \"1015.2\", \"1015.3\", \"1012.8\", \"1012.8\", \"1015.0\", \"1011.9\", \"1012.1\", \"1015.1\", \"1008.2\", \"1005.4\", \"1003.2\", \"1010.7\", \"1012.6\", \"1013.0\", \"1011.2\", \"1009.9\", \"1010.4\", \"1007.5\", \"1005.3\", \"1013.2\", \"1015.8\", \"1022.4\", \"1024.9\", \"1008.1\", \"1003.2\", \"1001.1\", \"1001.3\"], \"Ac_R\": [\"0.0\", \"0.0\", \"0.0\", \"0.0\", \"0.0\", \"0.0\", \"0.0\", \"0.0\", \"0.0\", \"0.0\", \"0.0\", \"6.4\", \"0.2\", \"5.4\", \"2.0\", \"2.6\", \"52.2\", \"13.0\", \"10.8\", \"5.8\", \"13.8\", \"25.0\", \"7.4\", \"10.8\", \"0.0\", \"0.0\", \"1.6\", \"1.2\", \"0.0\", \"0.2\"], \"WS_mean\": [\"35.0\", \"20.2\", \"21.9\", \"15.2\", \"13.5\", \"26.0\", \"30.0\", \"18.1\", \"28.7\", \"14.6\", \"15.4\", \"12.8\", \"12.9\", \"10.1\", \"4.6\", \"5.2\", \"22.5\", \"18.4\", \"10.0\", \"18.0\", \"13.9\", \"13.1\", \"9.3\", \"18.6\", \"18.9\", \"10.6\", \"6.4\", \"6.7\", \"19.0\", \"12.4\"], \"DWD\": [\"S\", \"S\", \"WNW\", \"NW\", \"S\", \"S\", \"S\", \"S\", \"S\", \"S\", \"S\", \"S\", \"S\", \"S\", \"S\", \"SE\", \"NNW\", \"NW\", \"S\", \"WNW\", \"S\", \"NW\", \"WNW\", \"NNW\", \"NNW\", \"NNW\", \"S\", \"S\", \"S\", \"S\"], \"WG\": [\"91.7\", \"82.1\", \"70.8\", \"66.0\", \"62.8\", \"72.4\", \"74.0\", \"66.0\", \"74.0\", \"64.4\", \"53.1\", \"45.1\", \"45.1\", \"41.8\", \"19.3\", \"29.0\", \"59.5\", \"49.9\", \"82.1\", \"51.5\", \"77.2\", \"53.1\", \"46.7\", \"54.7\", \"51.5\", \"40.2\", \"37.0\", \"43.5\", \"66.0\", \"53.1\"], \"city\": [\"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\", \"rethymno\"]}",
+            "name": "cities",
+            "@type": "cr:RecordSet",
+            "field": [
+                {
+                    "@id": "baa8ed6a-cd77-4a43-9ed7-94dafad1a098",
+                    "dataType": "sc:Float",
+                    "column": "T_min",
+                    "name": "T_min",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "3.1",
+                        "7.0",
+                        "9.2",
+                        "2.4",
+                        "-0.3",
+                        "26.7",
+                        "14.8",
+                        "3.7",
+                        "6.7",
+                        "10.3"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "T_min"
+                        },
+                        "fileObject": {
+                            "@id": "95513a42-d3ab-4e80-ba4a-c50fe6ce887d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "bf3eeccb-dbdc-4045-942e-befbd996f95f",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "8a5b8b55-11f3-4ae7-9112-4a5f59d7d557",
+                    "dataType": "sc:Integer",
+                    "column": "RH_min",
+                    "name": "RH_min",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "49",
+                        "44",
+                        "65",
+                        "20",
+                        "93",
+                        "52",
+                        "82",
+                        "36",
+                        "21",
+                        "43"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "RH_min"
+                        },
+                        "fileObject": {
+                            "@id": "95513a42-d3ab-4e80-ba4a-c50fe6ce887d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "2944070c-5c61-4902-ac66-5d1d07bb747c",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "04301c92-0fc7-475d-8164-b3066e21a266",
+                    "dataType": "sc:Float",
+                    "column": "WS_mean",
+                    "name": "WS_mean",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "0.8",
+                        "15.3",
+                        "20.2",
+                        "17.8",
+                        "4.2",
+                        "1.4",
+                        "0.3",
+                        "8.9",
+                        "8.8",
+                        "4.3"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "WS_mean"
+                        },
+                        "fileObject": {
+                            "@id": "95513a42-d3ab-4e80-ba4a-c50fe6ce887d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "9124fa08-e848-4688-9ef8-eb7c4a92ee4d",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "d40a97ac-0ea3-45d6-8d63-c2e2d1e53b74",
+                    "dataType": "sc:Date",
+                    "column": "Date",
+                    "name": "Date",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "2014-12-16",
+                        "2019-05-04",
+                        "2022-12-14",
+                        "2017-03-08",
+                        "2010-08-05",
+                        "2020-03-27",
+                        "2014-10-28",
+                        "2016-02-28",
+                        "2017-05-19",
+                        "2019-10-30"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Date"
+                        },
+                        "fileObject": {
+                            "@id": "95513a42-d3ab-4e80-ba4a-c50fe6ce887d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "e9c37f72-db47-4133-bd05-d36fd46ed9f7",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "90a69a99-f269-486b-a0f9-817774fa345c",
+                    "dataType": "sc:Float",
+                    "column": "WG",
+                    "name": "WG",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "45.1",
+                        "30.6",
+                        "40.2",
+                        "32.2",
+                        "51.5",
+                        "30.6",
+                        "11.3",
+                        "32.2",
+                        "8.0",
+                        "25.7"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "WG"
+                        },
+                        "fileObject": {
+                            "@id": "95513a42-d3ab-4e80-ba4a-c50fe6ce887d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "650388d6-dbbf-4ecd-891f-f553d31576d4",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "a509bef4-cc82-4145-b5aa-f3ae7b13d933",
+                    "dataType": "sc:Float",
+                    "column": "Prs_min",
+                    "name": "Prs_min",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "1022.8",
+                        "1001.7",
+                        "1015.1",
+                        "1010.0",
+                        "1010.0",
+                        "1011.1",
+                        "1014.0",
+                        "1018.5",
+                        "1018.5",
+                        "1005.3"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Prs_min"
+                        },
+                        "fileObject": {
+                            "@id": "95513a42-d3ab-4e80-ba4a-c50fe6ce887d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "ad790685-5785-4bb3-92b1-5b31ccafecbe",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "fec1b12c-27b9-4323-aaa9-0804c688f0a5",
+                    "dataType": "sc:Integer",
+                    "column": "RH_max",
+                    "name": "RH_max",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "92",
+                        "94",
+                        "76",
+                        "91",
+                        "92",
+                        "96",
+                        "90",
+                        "90",
+                        "81",
+                        "93"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "RH_max"
+                        },
+                        "fileObject": {
+                            "@id": "95513a42-d3ab-4e80-ba4a-c50fe6ce887d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "e0f39746-f063-40d8-9b4c-7c2531067658",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "0bef3927-6a5b-4e57-a453-071f4646f48d",
+                    "dataType": "sc:Float",
+                    "column": "Ac_R",
+                    "name": "Ac_R",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "0.0",
+                        "0.0",
+                        "0.0",
+                        "0.0",
+                        "0.0",
+                        "0.0",
+                        "1.0",
+                        "0.0",
+                        "0.0",
+                        "0.0"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Ac_R"
+                        },
+                        "fileObject": {
+                            "@id": "95513a42-d3ab-4e80-ba4a-c50fe6ce887d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "2b487439-1b7b-423e-bac2-5e96dc3e985c",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "5f850019-9f9e-4cab-929d-1b92057f522e",
+                    "dataType": "sc:Float",
+                    "column": "Prs_max",
+                    "name": "Prs_max",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "1015.0",
+                        "1021.8",
+                        "1011.8",
+                        "1020.7",
+                        "1018.5",
+                        "1013.0",
+                        "1027.1",
+                        "1015.6",
+                        "1010.9",
+                        "1032.3"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Prs_max"
+                        },
+                        "fileObject": {
+                            "@id": "95513a42-d3ab-4e80-ba4a-c50fe6ce887d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "13d817ea-c047-4c3b-91a4-75d1f29654fc",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "0824605f-87c8-42f8-b02f-8fbfd8c23e7f",
+                    "dataType": "sc:Float",
+                    "column": "T_max",
+                    "name": "T_max",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "15.2",
+                        "32.7",
+                        "22.1",
+                        "30.2",
+                        "33.8",
+                        "---",
+                        "30.4",
+                        "33.4",
+                        "28.6",
+                        "30.7"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "T_max"
+                        },
+                        "fileObject": {
+                            "@id": "95513a42-d3ab-4e80-ba4a-c50fe6ce887d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "cec03d37-103f-40c4-b7ea-adf2659dc06a",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "bb2b5d0d-2ee2-4c83-b91c-12f8c68e55fe",
+                    "dataType": "sc:Text",
+                    "column": "DWD",
+                    "name": "DWD",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "NNE",
+                        "W",
+                        "NW",
+                        "---",
+                        "NNE",
+                        "NW",
+                        "ESE",
+                        "NE",
+                        "NNE",
+                        "NW"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "DWD"
+                        },
+                        "fileObject": {
+                            "@id": "95513a42-d3ab-4e80-ba4a-c50fe6ce887d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "d703053f-e15b-429a-ab47-f8b83dca15ce",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "4d8d31ff-e103-495d-b920-4ed580b6046b",
+                    "dataType": "sc:Float",
+                    "column": "RH_mean",
+                    "name": "RH_mean",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "37.5",
+                        "93.8",
+                        "70.8",
+                        "65.0",
+                        "91.5",
+                        "60.2",
+                        "54.8",
+                        "75.6",
+                        "85.1",
+                        "53.0"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "RH_mean"
+                        },
+                        "fileObject": {
+                            "@id": "95513a42-d3ab-4e80-ba4a-c50fe6ce887d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "01ac6a62-df4d-410f-b5b2-4f3d49cd3a41",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "e32807fe-72db-4f2c-af14-4fbf8d3394df",
+                    "dataType": "sc:Text",
+                    "column": "city",
+                    "name": "city",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "heraclion",
+                        "trikala",
+                        "amfiklia",
+                        "arta",
+                        "samos",
+                        "rethymno",
+                        "notiopedio",
+                        "vatopedi",
+                        "larissa",
+                        "sparti"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "city"
+                        },
+                        "fileObject": {
+                            "@id": "95513a42-d3ab-4e80-ba4a-c50fe6ce887d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "8090326f-5454-4c1c-84af-b08688cdd424",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "514631fd-eadf-40ff-b78e-f43aca0979c9",
+                    "dataType": "sc:Float",
+                    "column": "Prs_mean",
+                    "name": "Prs_mean",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "1010.8",
+                        "1018.3",
+                        "1013.2",
+                        "1014.6",
+                        "1016.1",
+                        "1020.3",
+                        "1013.5",
+                        "1018.4",
+                        "1010.7",
+                        "1020.2"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Prs_mean"
+                        },
+                        "fileObject": {
+                            "@id": "95513a42-d3ab-4e80-ba4a-c50fe6ce887d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "1e87f31c-c3d1-471b-b4f2-d199ea8c73eb",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "f0c73f44-b88e-4ff7-8375-4733c6e3d280",
+                    "dataType": "sc:Float",
+                    "column": "T_mean",
+                    "name": "T_mean",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "18.3",
+                        "23.7",
+                        "4.5",
+                        "22.2",
+                        "26.4",
+                        "---",
+                        "11.1",
+                        "8.7",
+                        "11.4",
+                        "19.1"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "T_mean"
+                        },
+                        "fileObject": {
+                            "@id": "95513a42-d3ab-4e80-ba4a-c50fe6ce887d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "313f8f4d-60ea-4d67-8415-cba4ed1ea106",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                }
+            ]
+        }
+    ],
+    "country": "GR",
+    "citeAs": "ca",
+    "keywords": [
+        "weather",
+        "greece",
+        "weather prediction"
+    ],
+    "description": "The dataset includes daily meteorological parameters for the period 2010-2023 from 54 meteorological stations. You can see visualizations of the data from these stations on the page https://www.meteo.gr/climate/ The parameters are temperature (°C), relative humidity (%), pressure (hPa), rainfall (mm), wind speed (km/h), dominant wind direction, and wind gust (km/h). The measurements come from the network of automatic meteorological stations of the National Observatory of Athens/meteo.gr. Information about the stations and any malfunctions are provided at http://meteosearch.meteo.gr/ on the respective station page. Reference to the network is made through the scientific publication https://rmets.onlinelibrary.wiley.com/doi/full/10.1002/gdj3.44",
+    "inLanguage": [
+        "el"
+    ],
+    "version": "",
+    "url": "https://data.climpact.gr/dataset/497dc26d-45e0-4ad5-b8f3-5f8890f65129",
+    "datePublished": "2025-05-24",
+    "archivedAt": "s3://dataset/729f8932-8300-4ac5-a71e-b41904ca7433",
+    "license": "CC-BY-SA 4.0",
+    "fieldOfScience": [
+        "EARTH AND RELATED ENVIRONMENTAL SCIENCES"
+    ],
+    "name": "Meteorological data time series (Daily - UTC)",
+    "conformsTo": "",
+    "headline": "Daily meteorological parameters for the period 2010-2023 from 54 meteorological stations in Greece.",
+    "doi": "10.1000/1234567890",
+    "status": "ready"
+}

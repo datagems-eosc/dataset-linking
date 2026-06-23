@@ -1,0 +1,509 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "6f562229-3642-4158-923d-345eec2e5c66",
+    "distribution": [
+        {
+            "@id": "54f2cff1-a1bc-48f3-b4f9-01a36626e663",
+            "contentUrl": "ds_esco.public.occupations_to_skills",
+            "sha256": "",
+            "contentSize": "",
+            "name": "occupations_to_skills",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "ea1e2f7e-b0ec-4479-a21a-47c453d1a0cf"
+            }
+        },
+        {
+            "@id": "09076042-06d1-42d5-929f-03a02a5386d1",
+            "contentUrl": "ds_esco.public.occupations",
+            "sha256": "",
+            "contentSize": "",
+            "name": "occupations",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "ea1e2f7e-b0ec-4479-a21a-47c453d1a0cf"
+            }
+        },
+        {
+            "@id": "511f1851-2e19-4e1e-90d8-67c786f0ba26",
+            "contentUrl": "ds_esco.public.skills",
+            "sha256": "",
+            "contentSize": "",
+            "name": "skills",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "ea1e2f7e-b0ec-4479-a21a-47c453d1a0cf"
+            }
+        },
+        {
+            "@id": "ea1e2f7e-b0ec-4479-a21a-47c453d1a0cf",
+            "contentUrl": "postgresql://172.16.59.5:30432/ds_esco",
+            "name": "ds_esco",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "dg:DatabaseConnection"
+        }
+    ],
+    "recordSet": [
+        {
+            "@id": "b8c231a0-e6af-4b3c-b709-0e973416bf21",
+            "examples": "{\"occupation_uri\": [\"http://data.europa.eu/esco/occupation/00030d09-2b3a-4efd-87cc-c4ea39d27c34\", \"http://data.europa.eu/esco/occupation/000e93a3-d956-4e45-aacb-f12c83fedf84\", \"http://data.europa.eu/esco/occupation/0019b951-c699-4191-8208-9822882d150c\", \"http://data.europa.eu/esco/occupation/0022f466-426c-41a4-ac96-a235c945cf97\", \"http://data.europa.eu/esco/occupation/002da35b-7808-43f3-83bf-63596b8b351f\", \"http://data.europa.eu/esco/occupation/0044c991-c26f-4261-a213-4bd1c0564a4c\", \"http://data.europa.eu/esco/occupation/00634fc4-802a-461b-8af0-499273756f99\", \"http://data.europa.eu/esco/occupation/00674f21-2f8f-4a41-9896-133f7cbe2a6e\", \"http://data.europa.eu/esco/occupation/006cc1f9-2841-41c3-991a-dc3f2f3bd533\", \"http://data.europa.eu/esco/occupation/42a96d07-1e1d-49ae-9399-c1f4be27ddea\", \"http://data.europa.eu/esco/occupation/00747307-6341-4266-a061-25416f7c6a96\", \"http://data.europa.eu/esco/occupation/0085f271-5999-4d42-b879-75c3b4269883\", \"http://data.europa.eu/esco/occupation/0090dd54-057a-4f65-bbe8-f74c4999e8e8\", \"http://data.europa.eu/esco/occupation/00913533-5237-4870-9003-d1cb806603c9\", \"http://data.europa.eu/esco/occupation/009d29de-5872-43be-8d9b-abd27f8c99f1\", \"http://data.europa.eu/esco/occupation/00ab29a3-6d4a-4df9-b46d-de31069e36e8\", \"http://data.europa.eu/esco/occupation/00ab5610-e715-428f-99f6-b1e5e469dbcd\", \"http://data.europa.eu/esco/occupation/00c8d1cf-24f2-47d1-9f10-765e1c102811\", \"http://data.europa.eu/esco/occupation/00cee175-1376-43fb-9f02-ba3d7a910a58\", \"http://data.europa.eu/esco/occupation/00fdad73-4551-4e43-b256-1d4a3759db1e\", \"http://data.europa.eu/esco/occupation/01205776-db8d-4588-a6a6-56d0b9c660a9\", \"http://data.europa.eu/esco/occupation/01484951-15e6-4b88-a20f-1201868d36a0\", \"http://data.europa.eu/esco/occupation/0152b59d-5005-470c-9273-ef321477d8dc\", \"http://data.europa.eu/esco/occupation/01649ae9-22ee-4dba-83a8-3a2c51fbbe95\", \"http://data.europa.eu/esco/occupation/0181835d-dd00-49e2-9fc4-e1382a65957f\", \"http://data.europa.eu/esco/occupation/01989dd8-36c0-43cc-a82d-2bfc409de9c4\", \"http://data.europa.eu/esco/occupation/01a83071-6533-4675-b2da-f0c6d02669f5\", \"http://data.europa.eu/esco/occupation/01bcac9f-7881-4664-bd63-dea700e3b117\", \"http://data.europa.eu/esco/occupation/01d74409-5303-4b5c-8925-0cc21c4da8ee\", \"http://data.europa.eu/esco/occupation/01da600c-ddb3-4a37-95e9-5301b459ae90\"], \"isco_group\": [\"2654\", \"8121\", \"7543\", \"3155\", \"2431\", \"3212\", \"3116\", \"5312\", \"2264\", \"3333\", \"2310\", \"8160\", \"8160\", \"1420\", \"5249\", \"2165\", \"2263\", \"7233\", \"8331\", \"1324\", \"2422\", \"3434\", \"8131\", \"1345\", \"3123\", \"2149\", \"3315\", \"1223\", \"2641\", \"8131\"], \"preferred_label\": [\"technical director\", \"metal drawing machine operator\", \"precision device inspector\", \"air traffic safety technician\", \"hospitality revenue manager\", \"medical laboratory assistant\", \"asphalt laboratory technician\", \"primary school teaching assistant\", \"physiotherapist\", \"employment agent\", \"performing arts theatre instructor\", \"hydrogenation machine operator\", \"pasta operator\", \"tobacco shop manager\", \"rental service representative in other machinery, equipment and tangible goods\", \"mine surveyor\", \"food safety specialist\", \"land-based machinery technician\", \"bus driver\", \"import export manager in meat and meat products\", \"housing policy officer\", \"head chef\", \"nonwoven filament machine operator\", \"head of higher education institutions\", \"insulation supervisor\", \"dismantling engineer\", \"insurance claims handler\", \"clothing development manager\", \"medical writer\", \"nitroglycerin separator operator\"], \"alt_labels\": [[\"technical and operations director\", \"head of technical\", \"director of technical arts\", \"head of technical department\", \"technical supervisor\", \"technical manager\"], [\"metal drawing machine technician\", \"metal drawing machine operative\", \"wire drawer\", \"draw machine operative\", \"forming machine technician\", \"draw machine operator\", \"wiredrawing setter\", \"wirer drawer machine operator\", \"forming machine operative\", \"draw machine technician\", \"wiredrawing  machine tender\"], [\"inspector of precision instruments\", \"precision device quality control supervisor\", \"precision instrument QC inspector\", \"precision instrument quality control inspector\", \"precision device QC inspector\", \"precision device quality assurance supervisor\", \"precision device quality control inspector\", \"inspector of precision devices\", \"precision instrument inspector\", \"precision instrument supervisor\"], [\"air traffic safety electronics hardware specialist\", \"air traffic safety software specialist\", \"air traffic safety engineer\", \"air traffic safety hardware specialist\", \"air traffic safety electronics software specialist\", \"air traffic safety electronics engineer\", \"air traffic safety electronics technician\"], [\"hospitality revenues manager\", \"yield manager\", \"hospitality yields manager\", \"hospitality revenue manager\", \"revenue manager\"], [\"medical laboratory research assistant\", \"biomedical laboratory assistant\", \"clinical research assistant\", \"assistant in medical laboratory\", \"biomedical laboratory research assistant\", \"assistant clinical researcher\", \"medical lab assistant\", \"assistant in biomedical laboratory\"], [\"road surface technician\", \"materials technician\", \"aggregates and bitumen laboratory technician\", \"technical supervisor\", \"asphalt production\", \"site technician\", \"bitumen production technician\", \"road surface laboratory technician\", \"asphalt technician\", \"bitumen technician\", \"asphalt production technical supervisor\", \"site technician\", \"asphalt\", \"aggregates and asphalt laboratory technician\", \"asphalt production technician\"], [\"primary school teaching aide\", \"elementary school teaching assistant\", \"teaching assistant in primary schools\", \"primary education teaching assistant\", \"primary school assistant\", \"primary school paraprofessional\", \"primary school instructional assistant\", \"primary school TA\"], [\"neuromusculoskeletal physiotherapist\", \"osteopath\", \"eurythmy therapist\", \"respiratory therapist\", \"remedial physiotherapist\", \"physiotherapist manager\", \"occupational therapist\", \"neurological physiotherapist\", \"occupational physiotherapist\", \"bobath physiotherapist\", \"neuromuscular physiotherapist\", \"manipulative physiotherapist\", \"hydrotherapist\", \"rehabilitation therapist\", \"masseuse\", \"health promotion worker\", \"cardiovascular physiotherapist\", \"respiratory physiotherapist\", \"chiropractor\", \"sports physiotherapist\", \"chiropractic therapist\", \"neurodevelopmental physiotherapist\", \"physical therapist\", \"health and well-being therapist\", \"business physiotherapist\"], [\"job placement officer\"], [\"acting school teacher\", \"conservatory theatre instructor\", \"professor of theatre\", \"theatre instructor\", \"performing arts theater instructor\", \"acting school instructor\", \"conservatory theatre lecturer\", \"instructor in performing arts\", \"theatre instructor in performing arts school\"], [\"hydrogenation machine operative\", \"hydrogenator\", \"hydrogenation operator\", \"hydrogenation process operator\"], [\"pasta products operator\", \"pasta manufacturer\", \"dry pasta production operator\", \"pasta production operator\", \"pasta maker\"], [\"smokers products shop manager\", \"tobacconists shop manager\", \"cigar and cigarette store manager\", \"tobacco store manager\", \"cigarette shop manager\", \"cigar shop manager\", \"cigarette store manager\", \"cigar and cigarette shop manager\", \"purveyor of tobacco and tobacco products\", \"tobacconist store manager\", \"cigar store manager\", \"tobacconists store manager\", \"pipe smokers shop manager\", \"tobacconist shop manager\"], [\"rental sales desk clerk in other machinery\", \"equipment and tangible goods\", \"rental sales worker in other machinery\", \"equipment and tangible goods\", \"rental service manager in other machinery\", \"equipment and tangible goods\", \"rental service assistant in other machinery\", \"equipment and tangible goods\", \"rental sales desk supervisor in other machinery\", \"equipment and tangible goods\", \"rental sales manager in other machinery\", \"equipment and tangible goods\", \"rental service desk clerk in other machinery\", \"equipment and tangible goods\", \"rental service supervisor in other machinery\", \"equipment and tangible goods\", \"rental service team leader in other machinery\", \"equipment and tangible goods\", \"rental service desk agent in other machinery\", \"equipment and tangible goods\", \"rental sales desk agent in other machinery\", \"equipment and tangible goods\", \"rental service desk supervisor in other machinery\", \"equipment and tangible goods\", \"rental sales team leader in other machinery\", \"equipment and tangible goods\", \"rental advisor in other machinery\", \"equipment and tangible goods\", \"rental specialist in other machinery\", \"equipment and tangible goods\", \"rental service worker in other machinery\", \"equipment and tangible goods\", \"rental sales supervisor in other machinery\", \"equipment and tangible goods\", \"rental sales assistant in other machinery\", \"equipment and tangible goods\"], [\"mining surveyor\", \"mine operations surveyor\", \"mine plan maker\", \"mine records keeper\", \"mine surveyors\", \"planner of mining operations\", \"mine planning surveyor\"], [\"food production quality controller\", \"trainee food safety specialist\", \"food safety controller\", \"senior food safety specialist\", \"food scientist\", \"food safety monitor\", \"food safety advisor\", \"food safety technician\", \"food compliance manager (food safety)\", \"assistant food safety specialist\", \"HACCP compliance manager\", \"food safety consultant\", \"technical manager for food safety\", \"food hygiene specialist\", \"food quality controller\"], [\"land-based machinery mechanic\", \"land-based machinery technicians\", \"landbased machinery technician\"], [\"intercity bus driver\", \"private bus operator\", \"transit bus driver\", \"public service vehicle operator\", \"passenger driver\", \"international bus driver\", \"public bus operator\", \"touristic bus driver\", \"coach driver\", \"private coach driver\", \"public bus driver\", \"bus operator\", \"driver of bus\", \"bus driving operator\", \"schoolbus driver\"], [\"graduate export manager in meat and meat products\", \"senior export manager in meat and meat products\", \"international trade compliance manager in meat and meat products\", \"international trade manager in meat and meat products\", \"senior import manager in meat and meat products\", \"assistant export manager in meat and meat products\", \"trainee import manager in meat and meat products\", \"graduate import manager in meat and meat products\", \"graduate import export manager in meat and meat products\", \"assistant import export manager in meat and meat products\", \"assistant import manager in meat and meat products\", \"senior import export manager in meat and meat products\", \"customs compliance manager in meat and meat products\", \"trainee export manager in meat and meat products\", \"trainee import export manager in meat and meat products\"], [\"housing policy development officer\", \"housing policy analyst\", \"policy officer\", \"housing policy researcher\", \"affordable housing policy officer\", \"planning and housing\", \"housing policy and strategy officer\", \"senior housing policy officer\", \"housing policy advisor\"], [\"industrial head chef\", \"chef de cuisine\", \"kitchen manager\", \"executive chef\", \"managing partner head chef\", \"head of kitchen\", \"master Chef\", \"sous chef\", \"master kitchen manager\", \"patron cuisinier\", \"master chef\"], [\"non-woven filament machine operator\", \"non-woven yarn worker\", \"non woven yarn worker\", \"nonwoven filament machinist\", \"nonwoven yarn worker\", \"non woven filament machine operator\"], [\"university chancellor\", \"rector of higher education\", \"rector for higher education institutions\"], [\"supervisor of installation of insulating materials\", \"supervisor of insulation materials installation\", \"supervisor of installation of insulation\", \"solid wall insulation installation supervisor\", \"insulation installers supervisor\", \"cavity wall insulation installation supervisor\", \"loft insulation installation supervisor\"], [\"disassembly planner\", \"dismantling manager\", \"dismantling planner\"], [\"claims handler\", \"contract claims examiner\", \"claims consultant\", \"claims representative\", \"property and casualty insurance claims examiner\", \"claims inspector\", \"claims service supervisor\", \"insurance claims consultant\", \"claims examiner\", \"claims processor\", \"insurance claims officer\", \"casualty insurance adjuster\", \"claims adjuster\", \"insurance claims analyst\", \"travelling insurance assessor\", \"insurance claims processor\", \"claims analyst\", \"insurance claims assessor\", \"insurance claims examiner\", \"civil damages inspector\", \"insurance claims inspector\"], [\"clothing manager\", \"sample room manager\", \"clothing product manager\", \"apparel product developer\", \"clothes product developer\"], [\"medical editor\", \"regulatory medical writer\", \"medical technical writer\", \"healthcare writer\", \"medical information analyst\", \"medical publications associate\", \"research medical writer\"], [\"nitro-separator operator\", \"nitroglycerin separator tender\", \"nitroglycerin separator operative\", \"gravity separator operator\", \"nitroglycerin-separator tender\", \"chemical equipment operative\", \"nitroglycerin- separator operative\", \"nitroglycerin-separator worker\", \"nitro-separator operative\", \"nitroglycerin gravity separator\", \"chemical equipment worker\", \"nitroglycerin-separator operator\", \"nitroglycerin separator worker\", \"chemical equipment operator\"]], \"description\": [\"Technical directors realise the artistic visions of the creators within technical constraints. They coordinate the operations of various production units, such as scene, wardrobe, sound and lighting, and make-up. They adapt the prototype and study the feasibility, implementation, operation and technical monitoring of the artistic project. They are also responsible for the stage equipment and technical equipment.\", \"Metal drawing machine operators set up and operate drawing machines for ferrous and non-ferrous metal products, designed to provide wires, bars, pipes, hollow profiles and tubes with their specific form by reducing its cross-section and by pulling the working materials through a series of drawing dies.\", \"Precision device inspectors make sure precision devices, such as micrometers and gauges, operate according to design specifications. They may adjust the precision devices and their components in case of any faults.\", \"Air traffic safety technicians provide technical support regarding the safety of air traffic control and navigation systems. They design, maintain, install and operate these systems both in the airport and on board the aeroplane according to regulations.\", \"Hospitality revenue managers maximise revenue generated from facilities such as hotels,\\u00a0holiday resorts and camping grounds by analysing trends and competition. They assist establishment managers in strategic decisions. Hospitality revenue managers analyse and optimise the financial potential of facilities and manage the corresponding staff.\", \"Medical laboratory assistants work under supervision of the biomedical scientist and carry out basic laboratory procedures. They work in the pre-analytical handling of samples such as checking the details of specimens received for analysis, maintaining analysers, loading reagents, and packaging specimens. They also perform clerical tasks such as monitoring the stock levels of reagents used in analysis.\", \"Asphalt laboratory technicians perform asphalt and related raw materials inspections and laboratory testing, ensuring a high quality of the products. They also participate in coming up with resolutions to technical issues on construction sites.\", \"Primary school teaching assistants provide instructional and practical support to primary school teachers. They reinforce instruction with students in need of extra attention and prepare the materials the teacher needs in class. They also perform clerical work, monitor the students' learning progress and behaviour and supervise the students with and without the head teacher present.\", \"Physiotherapists are autonomous health professionals who are responsible for developing, maintaining or restoring motor function and movement throughout the lifespan using evidence-based practice. They relieve pain and treat or prevent physical conditions associated with injury, disease or other impairments. Physiotherapists empower patients and their carers to manage the condition outside clinical settings. They work within their scope of practice and their professional Code of Conduct.\\u00a0\", \"Employment agents work for employment services and agencies. They match job seekers with advertised job vacancies and provide advice on job search activities.\", \"Performing arts theatre instructors educate students in specific theory and, primarily, practice-based theatre courses at a specialised theatre, or acting, school or conservatory at a higher education level. They provide theoretical instruction in service of the practical skills and techniques the students must subsequently master in theatre. Performing arts theatre instructors monitor the students' progress, assist individually when necessary, and evaluate their knowledge and performance of theatre practice through assignments, tests and examinations.\", \"Hydrogenation machine operators control equipment to process base oils for manufacture of margarine and shortening products. \\r\\n\", \"Pasta operators manufacture dry pasta products. They unload raw ingredients from storage silos and ingredient delivery systems. These operators mix, press, extrude as to reach desired drying levels of pasta.\", \"Tobacco shop managers assume responsibility for activities and staff in specialised shops.\", \"Rental service representatives in other machinery, equipment and tangible goods are in charge of renting out equipment and determining specific periods of usage. They document transactions, insurances and payments.\", \"Mine surveyors prepare and maintain mining plans in line with statutory and management requirements. They keep records of the physical progress of mining operations and of ore or mineral production.\", \"Food safety specialists organise processes and implement procedures to avoid problems with food safety. They comply with regulations.\\r\\n\", \"Land-based machinery technicians maintain, overhaul and\\u00a0repair agricultural equipment and machinery.\", \"Bus drivers operate buses or coaches, take fares, and look after passengers.\", \"Import export managers in meat and meat products install and maintain procedures for cross-border business, coordinating internal and external parties.\", \"Housing policy officers research, analyse and develop housing policies which enable affordable and adequate housing for all. They implement these policies to improve the housing situation of the population by measures such as building affordable housing, supporting people to buy real estate and improving conditions in existing housing. Housing policy officers work closely with partners, external organisations or other stakeholders and provide them with regular updates.\", \"Head chefs manage the kitchen to oversee the preparation, cooking and service of food.\", \"Nonwoven filament machine operators\\u00a0perform chemical nonwoven processing operations.\", \"Heads of higher education institutions manage the day-to-day activities of a higher education institution, such as a college or vocational school. Heads of higher education institutions make decisions concerning admissions and are responsible for meeting curriculum standards, which facilitate academic development for the students. They manage staff, the school's budget, campus programmes and oversee the communication between departments. They also ensure the institution meets the national education requirements set by law.\", \"Insulation supervisors monitor insulation operations. They assign tasks and take quick decisions to resolve problems.\", \"Dismantling engineers research and plan the optimal way to dismantle industrial equipment, machinery and buildings that reached the end-of-life phase. They analyse the required work and schedule the various operations. They give team leaders instructions and supervise their work. \\r\\n\", \"Insurance claims handlers ensure\\u00a0that all insurance claims are handled accurately and that payment for valid claims is made to the policyholders. They use statistical data and reporting to calculate and adjust claims as needed, communicate with and guide policyholders and monitor the progress of a claim.\", \"Clothing development managers define product concepts that are consistent with target consumers and overall marketing strategy. They receive scientific findings and specifications in order to lead the briefing and implementation of all relevant seasonal and strategic concepts, including distribution by channel, product, colour introductions, and merchandised assortments. They ensure realisation and execution within budget. They manage and execute the product line and category life cycle from concept determination through sales and distribution, contribution in market research and industry trends to influence category concepts and products.\", \"Medical writers produce and process scientific documents related to medical affairs. Work alongside scientists, doctors and other healthcare professionals\", \"Nitroglycerin separator operators maintain the gravity separator, used in explosives processing, controlling the temperature and liquid flow, in order to separate nitroglycerin from spent acids.\"], \"code\": [\"2654.1.7\", \"8121.4\", \"7543.10.3\", \"3155.1\", \"2431.9\", \"3212.2\", \"3116.1.1\", \"5312.2\", \"2264.2\", \"3333.1\", \"2310.1.30\", \"8160.39\", \"8160.46\", \"1420.4.42\", \"5249.2.1\", \"2165.4.2\", \"2263.2\", \"7233.8\", \"8331.1\", \"1324.3.2.22\", \"2422.12.8\", \"3434.1.1\", \"8131.15\", \"1345.1.5\", \"3123.1.13\", \"2149.8\", \"3315.3\", \"1223.2.1.1\", \"2641.4.5\", \"8131.14\"]}",
+            "name": "occupations",
+            "field": [
+                {
+                    "@id": "5ccf2203-fd34-4e1e-85ab-fe83935803b4",
+                    "name": "preferred_label",
+                    "column": "preferred_label",
+                    "sample": [
+                        "crossing guard",
+                        "imagesetter",
+                        "coffee grinder"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "preferred_label"
+                        },
+                        "fileObject": {
+                            "@id": "09076042-06d1-42d5-929f-03a02a5386d1"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "335b2be5-8295-4b50-b625-8410e46a662f",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "2458448c-bf44-4b5d-8c60-980b79e66c12",
+                    "name": "code",
+                    "column": "code",
+                    "sample": [
+                        "1324.8.2",
+                        "7543.10.3",
+                        "3132.1"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "code"
+                        },
+                        "fileObject": {
+                            "@id": "09076042-06d1-42d5-929f-03a02a5386d1"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "ff7cec8b-4227-43db-9e0a-8a05172010b4",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "ca5cd766-56d8-457e-ba61-e3c6e585a90d",
+                    "name": "alt_labels",
+                    "column": "alt_labels",
+                    "sample": [
+                        "['electrical systems draughter', 'electrical draughtsperson', 'draughter of electrical systems', 'electrical equipment engineering draughter', 'electrical design draughter', 'electrical drafting consultant', 'electrical design drafter', 'electrical equipment design drafter', 'electrical drafting adviser', 'electrical draughtsman', 'electric draughtsperson', 'draughter in electrical systems', 'electrical drafting expert', 'electrical draughter', 'electrical equipment design draughter', 'electrical draughtswoman', 'electric drafter', 'electrical engineering drafter', 'electrical draftsperson', 'electrical drafting specialist', 'electric draftsperson', 'electric draughter']",
+                        "['audio describers', 'visual describer', 'video describer', 'audio description expert', 'dubber', 'audio description professional']",
+                        "['fire suppression engineer', 'fire risk assessor', 'fire and security systems engineer', 'fire protection service engineer', 'fire alarm service technician', 'senior fire engineer', 'fire and security maintenance engineer']"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "alt_labels"
+                        },
+                        "fileObject": {
+                            "@id": "09076042-06d1-42d5-929f-03a02a5386d1"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "de6d82c4-e996-44b9-b6d8-c44f47416630",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "e7d15a0c-1fae-4186-b018-264a1791e04e",
+                    "name": "isco_group",
+                    "column": "isco_group",
+                    "sample": [
+                        "2643",
+                        "7231",
+                        "8342"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "isco_group"
+                        },
+                        "fileObject": {
+                            "@id": "09076042-06d1-42d5-929f-03a02a5386d1"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "7929552c-15d8-4c90-bfb6-865579434076",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "3876200a-bd75-4d41-ba86-4fd93c47f3dd",
+                    "name": "description",
+                    "column": "description",
+                    "sample": [
+                        "Aquaculture hatchery managers plan, direct, and coordinate the production in large-scale aquaculture operations to breed fish and shellfish, developing aquaculture breeding strategies using various types of spawning techniques. They control the reproduction and the early life cycle stages of cultured species. They supervise incubation, early feeding and rearing techniques of the cultured species.",
+                        "Beauty vocational teachers instruct students in their specialised field of study, beauty, which is predominantly practical in nature. They provide theoretical instruction in service of the practical skills and techniques the students must subsequently master for a cosmetology-related profession, such as manicurist and make-up and hair designer. Beauty vocational teachers monitor the students' progress, assist individually when necessary, and evaluate their knowledge and performance on the subject of cosmetology through assignments, tests and examinations.",
+                        "Research engineers combine research skills and knowledge of engineering principles to assist in the development or design of new products and technology. They also improve existing technical processes, machines and systems and create new, innovative technologies. The duties of research engineers depend on the branch of engineering and the industry in which they work. Research engineers generally work in an office or laboratory, analysing processes and conducting experiments."
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "description"
+                        },
+                        "fileObject": {
+                            "@id": "09076042-06d1-42d5-929f-03a02a5386d1"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "f6ecda62-c7bc-4ed7-b451-274e5fea8837",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "9f8df19d-d049-4cc8-8fe2-461667bd36ed",
+                    "name": "occupation_uri",
+                    "column": "occupation_uri",
+                    "sample": [
+                        "http://data.europa.eu/esco/occupation/0c041d1e-1841-4acb-b0a1-2c387a61bf65",
+                        "http://data.europa.eu/esco/occupation/3e7bf729-4442-4b9f-ad5e-83111963795c",
+                        "http://data.europa.eu/esco/occupation/49ca9fe4-4513-4657-b27f-eaad11e6158a"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "occupation_uri"
+                        },
+                        "fileObject": {
+                            "@id": "09076042-06d1-42d5-929f-03a02a5386d1"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "391bc665-8bc3-43cc-933c-7bd0741862cd",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                }
+            ],
+            "@type": "cr:RecordSet"
+        },
+        {
+            "@id": "0d03c9cb-e955-4384-8de8-cc0eadd7b838",
+            "examples": "{\"occupation_uri\": [\"http://data.europa.eu/esco/occupation/00030d09-2b3a-4efd-87cc-c4ea39d27c34\", \"http://data.europa.eu/esco/occupation/00030d09-2b3a-4efd-87cc-c4ea39d27c34\", \"http://data.europa.eu/esco/occupation/00030d09-2b3a-4efd-87cc-c4ea39d27c34\", \"http://data.europa.eu/esco/occupation/00030d09-2b3a-4efd-87cc-c4ea39d27c34\", \"http://data.europa.eu/esco/occupation/00030d09-2b3a-4efd-87cc-c4ea39d27c34\", \"http://data.europa.eu/esco/occupation/00030d09-2b3a-4efd-87cc-c4ea39d27c34\", \"http://data.europa.eu/esco/occupation/00030d09-2b3a-4efd-87cc-c4ea39d27c34\", \"http://data.europa.eu/esco/occupation/00030d09-2b3a-4efd-87cc-c4ea39d27c34\", \"http://data.europa.eu/esco/occupation/00030d09-2b3a-4efd-87cc-c4ea39d27c34\", \"http://data.europa.eu/esco/occupation/00030d09-2b3a-4efd-87cc-c4ea39d27c34\", \"http://data.europa.eu/esco/occupation/000e93a3-d956-4e45-aacb-f12c83fedf84\", \"http://data.europa.eu/esco/occupation/000e93a3-d956-4e45-aacb-f12c83fedf84\", \"http://data.europa.eu/esco/occupation/000e93a3-d956-4e45-aacb-f12c83fedf84\", \"http://data.europa.eu/esco/occupation/000e93a3-d956-4e45-aacb-f12c83fedf84\", \"http://data.europa.eu/esco/occupation/000e93a3-d956-4e45-aacb-f12c83fedf84\", \"http://data.europa.eu/esco/occupation/000e93a3-d956-4e45-aacb-f12c83fedf84\", \"http://data.europa.eu/esco/occupation/000e93a3-d956-4e45-aacb-f12c83fedf84\", \"http://data.europa.eu/esco/occupation/000e93a3-d956-4e45-aacb-f12c83fedf84\", \"http://data.europa.eu/esco/occupation/000e93a3-d956-4e45-aacb-f12c83fedf84\", \"http://data.europa.eu/esco/occupation/000e93a3-d956-4e45-aacb-f12c83fedf84\", \"http://data.europa.eu/esco/occupation/000e93a3-d956-4e45-aacb-f12c83fedf84\", \"http://data.europa.eu/esco/occupation/000e93a3-d956-4e45-aacb-f12c83fedf84\", \"http://data.europa.eu/esco/occupation/000e93a3-d956-4e45-aacb-f12c83fedf84\", \"http://data.europa.eu/esco/occupation/000e93a3-d956-4e45-aacb-f12c83fedf84\", \"http://data.europa.eu/esco/occupation/000e93a3-d956-4e45-aacb-f12c83fedf84\", \"http://data.europa.eu/esco/occupation/000e93a3-d956-4e45-aacb-f12c83fedf84\", \"http://data.europa.eu/esco/occupation/000e93a3-d956-4e45-aacb-f12c83fedf84\", \"http://data.europa.eu/esco/occupation/000e93a3-d956-4e45-aacb-f12c83fedf84\", \"http://data.europa.eu/esco/occupation/000e93a3-d956-4e45-aacb-f12c83fedf84\", \"http://data.europa.eu/esco/occupation/000e93a3-d956-4e45-aacb-f12c83fedf84\"], \"skill_uri\": [\"http://data.europa.eu/esco/skill/fed5b267-73fa-461d-9f69-827c78beb39d\", \"http://data.europa.eu/esco/skill/05bc7677-5a64-4e0c-ade3-0140348d4125\", \"http://data.europa.eu/esco/skill/271a36a0-bc7a-43a9-ad29-0a3f3cac4e57\", \"http://data.europa.eu/esco/skill/47ed1d37-971b-472c-86be-26f893991274\", \"http://data.europa.eu/esco/skill/591dd514-735b-46e4-a28d-3a4c42f49b72\", \"http://data.europa.eu/esco/skill/860be36a-d19b-4ba8-ae74-bc61b9f0bf63\", \"http://data.europa.eu/esco/skill/892f8e2f-189a-41d5-a4b6-b8e2afb99974\", \"http://data.europa.eu/esco/skill/93a68dcb-3dc6-4dbe-b196-f6d212228a50\", \"http://data.europa.eu/esco/skill/f64fe2c2-d090-4e91-ba74-1355d96b9bca\", \"http://data.europa.eu/esco/skill/a2dfc063-7b24-4258-a778-d395c41d4966\", \"http://data.europa.eu/esco/skill/3b3b7373-220a-4287-87cf-e24a208b63c6\", \"http://data.europa.eu/esco/skill/7f107a85-d6ac-410f-a995-d635c5aa418b\", \"http://data.europa.eu/esco/skill/86ed2a45-eae9-4ab7-b0e6-d7508d33df4f\", \"http://data.europa.eu/esco/skill/8d4271ca-c9fd-40b3-875f-15f78332a49e\", \"http://data.europa.eu/esco/skill/b652c752-ef22-4648-9a30-afe8c4d20d6e\", \"http://data.europa.eu/esco/skill/285cac9e-dad3-4b7b-848f-9bd2860ae345\", \"http://data.europa.eu/esco/skill/31f01be9-7bbf-4afb-a647-bcd4931cfc8b\", \"http://data.europa.eu/esco/skill/334e3e49-fb02-4051-809a-f06adfdc1c40\", \"http://data.europa.eu/esco/skill/357e1729-e2a8-49f4-8b42-dc8b278320fa\", \"http://data.europa.eu/esco/skill/45c19aa0-2c28-42ab-936b-a367face2268\", \"http://data.europa.eu/esco/skill/465ff64a-1271-4064-8ed1-e969cb68d8b4\", \"http://data.europa.eu/esco/skill/69f23426-9279-4fe6-a283-24c2aa4c855d\", \"http://data.europa.eu/esco/skill/7aa52bdc-9c56-4341-be65-e8e30f64403f\", \"http://data.europa.eu/esco/skill/9ea652f6-accf-45bb-b9a8-590f06f7bd51\", \"http://data.europa.eu/esco/skill/d9818afc-1dec-4944-8c9c-e3ae8fad176d\", \"http://data.europa.eu/esco/skill/0b472dad-1a3f-456e-99ba-de5ffe8665c2\", \"http://data.europa.eu/esco/skill/46786464-6c5b-4970-9a63-2f2fb29b4c12\", \"http://data.europa.eu/esco/skill/6055f185-3214-491e-975a-cfcc1756fe1d\", \"http://data.europa.eu/esco/skill/67df159c-735e-4784-b75b-90859ea8a170\", \"http://data.europa.eu/esco/skill/8296eb2d-c9bf-41fc-be72-781383c51298\"], \"relation_type\": [\"essential\", \"essential\", \"essential\", \"essential\", \"essential\", \"essential\", \"essential\", \"essential\", \"essential\", \"optional\", \"essential\", \"essential\", \"essential\", \"essential\", \"essential\", \"essential\", \"essential\", \"essential\", \"essential\", \"essential\", \"essential\", \"essential\", \"essential\", \"essential\", \"essential\", \"optional\", \"optional\", \"optional\", \"optional\", \"optional\"], \"skill_type\": [\"knowledge\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"knowledge\", \"knowledge\", \"knowledge\", \"knowledge\", \"knowledge\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"knowledge\", \"knowledge\", \"knowledge\", \"knowledge\", \"knowledge\"]}",
+            "name": "occupations_to_skills",
+            "field": [
+                {
+                    "@id": "c5a58eae-2383-432d-9559-f5aac3c92d5e",
+                    "name": "skill_uri",
+                    "column": "skill_uri",
+                    "sample": [
+                        "http://data.europa.eu/esco/skill/11747665-0e98-4f27-bd0d-536862cd5746",
+                        "http://data.europa.eu/esco/skill/4e09e2d2-e317-47d2-bf5e-1d6c66be3efc",
+                        "http://data.europa.eu/esco/skill/632a96bc-498c-48ea-a83f-fdc42d811a51"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "skill_uri"
+                        },
+                        "fileObject": {
+                            "@id": "54f2cff1-a1bc-48f3-b4f9-01a36626e663"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "4b95cdfd-78c8-4554-b496-c66196c30b4d",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "57815b52-3bf2-49d9-b18e-aaf5775f1681",
+                    "name": "occupation_uri",
+                    "column": "occupation_uri",
+                    "sample": [
+                        "http://data.europa.eu/esco/occupation/00030d09-2b3a-4efd-87cc-c4ea39d27c34",
+                        "http://data.europa.eu/esco/occupation/0085f271-5999-4d42-b879-75c3b4269883",
+                        "http://data.europa.eu/esco/occupation/006cc1f9-2841-41c3-991a-dc3f2f3bd533"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "occupation_uri"
+                        },
+                        "fileObject": {
+                            "@id": "54f2cff1-a1bc-48f3-b4f9-01a36626e663"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "e7404f8b-1403-45c7-83ac-964cf22f04ba",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "4d62ddea-6362-4c39-a5e5-786ba3ba5053",
+                    "name": "skill_type",
+                    "column": "skill_type",
+                    "sample": [
+                        "skill/competence",
+                        "knowledge"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "skill_type"
+                        },
+                        "fileObject": {
+                            "@id": "54f2cff1-a1bc-48f3-b4f9-01a36626e663"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "83122d2f-3c29-4e44-9bf8-2c171162b56f",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "d69ac686-bf26-4200-9673-45e1c099b786",
+                    "name": "relation_type",
+                    "column": "relation_type",
+                    "sample": [
+                        "essential",
+                        "optional"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "relation_type"
+                        },
+                        "fileObject": {
+                            "@id": "54f2cff1-a1bc-48f3-b4f9-01a36626e663"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "8fcb8045-aab3-4de6-ab9e-df83813dbe82",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                }
+            ],
+            "@type": "cr:RecordSet"
+        },
+        {
+            "@id": "03b46ea1-18e8-485a-a2a7-caaa74e06e1a",
+            "examples": "{\"skill_uri\": [\"http://data.europa.eu/esco/skill/0005c151-5b5a-4a66-8aac-60e734beb1ab\", \"http://data.europa.eu/esco/skill/00064735-8fad-454b-90c7-ed858cc993f2\", \"http://data.europa.eu/esco/skill/000709ed-2be5-4193-b056-45a97698d828\", \"http://data.europa.eu/esco/skill/0007bdc2-dd15-4824-b7d6-416522c46f35\", \"http://data.europa.eu/esco/skill/00090cc1-1f27-439e-a4e0-19a87a501bfc\", \"http://data.europa.eu/esco/skill/000bb1e4-89f0-4b86-be05-05ece3641724\", \"http://data.europa.eu/esco/skill/000c94d2-2a2e-4545-993c-6df8cb5b0316\", \"http://data.europa.eu/esco/skill/000f1d3d-220f-4789-9c0a-cc742521fb02\", \"http://data.europa.eu/esco/skill/001115fb-569f-4ee6-8381-c6807ef2527f\", \"http://data.europa.eu/esco/skill/001d46db-035e-4b92-83a3-ed8771e0c123\", \"http://data.europa.eu/esco/skill/0023e7a5-43da-4b68-bee3-726ef21f986d\", \"http://data.europa.eu/esco/skill/00298d97-3dc3-4086-a902-bce0a2fba831\", \"http://data.europa.eu/esco/skill/002b2e58-35ab-460c-be97-ca2f585fd990\", \"http://data.europa.eu/esco/skill/0037c821-2898-4919-b96e-7ed1cd89554c\", \"http://data.europa.eu/esco/skill/004017c9-0337-4f5a-8077-798de9ef12e3\", \"http://data.europa.eu/esco/skill/004f1e68-9ca2-4f3f-92d9-e7d7ff6b9330\", \"http://data.europa.eu/esco/skill/00506f28-e884-4496-800c-3477c67eb355\", \"http://data.europa.eu/esco/skill/0058526a-11e9-40a1-ab33-7c5ffdf5da05\", \"http://data.europa.eu/esco/skill/00735755-adc6-4ea0-b034-b8caff339c9f\", \"http://data.europa.eu/esco/skill/0082c13b-5866-4542-bc4f-722a4ae9530e\", \"http://data.europa.eu/esco/skill/00831ebb-bac3-4bd1-8dae-2bca67be958d\", \"http://data.europa.eu/esco/skill/0085e6bd-6829-4e8e-b302-842a7fe57ed9\", \"http://data.europa.eu/esco/skill/008a0e0d-7380-4b31-abe5-0195e700f8c0\", \"http://data.europa.eu/esco/skill/008fa98b-dba6-4abf-909e-04299728e3eb\", \"http://data.europa.eu/esco/skill/00920055-eb50-4cb8-a23d-3deedbf3753e\", \"http://data.europa.eu/esco/skill/009673d9-e2fd-46ef-a64b-6027ac7fd613\", \"http://data.europa.eu/esco/skill/00994812-ac9e-4856-954b-f71bcc6066bb\", \"http://data.europa.eu/esco/skill/009db49b-fcf5-4409-b4a5-232d059f3597\", \"http://data.europa.eu/esco/skill/0165e6c7-14d9-47f6-a882-565f8da14526\", \"http://data.europa.eu/esco/skill/00a4e92d-e410-42b8-ba2d-d7b3febf49e0\"], \"skill_type\": [\"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"knowledge\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"knowledge\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"knowledge\", \"skill/competence\", \"skill/competence\", \"skill/competence\", \"knowledge\", \"skill/competence\"], \"preferred_label\": [\"manage musical staff\", \"supervise correctional procedures\", \"apply anti-oppressive practices\", \"control compliance of railway vehicles regulations\", \"identify available services\", \"perform toxicological studies\", \"ensure coquille uniformity\", \"Haskell\", \"show initiative\", \"train staff to reduce food waste\", \"apply diplomatic principles\", \"lead police investigations\", \"handle fish harvesting waste\", \"develop energy saving concepts\", \"perform street interventions in social work\", \"work with soloists\", \"sport and exercise medicine\", \"conduct research on flora\", \"install heat pump\", \"design biomass installations\", \"handle equipment while suspended\", \"teach housekeeping skills\", \"check train engines\", \"influence public policies\", \"enterprise risk management\", \"manufacture ingredients\", \"maintain aquaculture ponds\", \"apply credit risk policy\", \"water skiing\", \"handle customer requests related to cargo\"], \"alt_labels\": [[\"manage staff of music\", \"coordinate duties of musical staff\", \"manage music staff\", \"direct musical staff\"], [\"oversee prison procedures\", \"manage correctional procedures\", \"monitor correctional procedures\", \"manage prison procedures\", \"monitor prison procedures\", \"oversee correctional procedures\"], [\"apply non-oppressive practices\", \"apply an anti-oppressive practice\", \"make use of anti-oppressive practices\", \"act in a non-oppressive way\", \"identify oppression in societies and groups\", \"apply anti-oppresive practice\", \"use anti-oppressive practices\"], [\"monitoring of compliance with railway vehicles regulations\", \"monitoring of compliance with rolling stock regulations\", \"checking compliance with rolling stock regulations\", \"control compliance of regulations of rolling stock\", \"inspection of compliance with rolling stock regulations\", \"ensuring compliance with railway vehicles regulations\", \"compliance controls of railway vehicles regulations\", \"conduct controls of compliance of railway vehicles regulations\"], [\"establish available services\", \"determine rehabilitation services\", \"analyse rehabilitation services\", \"establish rehabilitation services\", \"determine available services\", \"analyse available services\", \"classify available services\", \"classify rehabilitation services\"], [\"apply toxicological testing methods\", \"perform toxicological tests\", \"perform toxicological study\", \"carry out toxicological studies\"], [\"ensure uniformity of coquille\", \"checking that coquille is uniform\", \"ensuring uniformity of coquille\", \"ensuring coquille is uniform\", \"ensure coquille is uniform\", \"ensuring of coquille uniformity\", \"make sure coquille is uniform\", \"check that coquille is uniform\"], [\"Haskell techniques\"], [\"take the initiative\", \"give impetus\", \"be a driving force\", \"demonstrate sense of initiative\", \"initiate action\", \"show sense of initiative\", \"show active initiative\"], [\"teach students food waste reduction practices\", \"inform staff on food waste reduction practices\", \"educate workers on food recycling methods\", \"educate staff on food waste reduction\"], [\"utilise diplomacy principles\", \"administer diplomacy principles\", \"use diplomatic principles\", \"implement diplomacy principles\", \"utilise diplomatic principles\", \"implement diplomatic principles\", \"use diplomacy principles\", \"administer diplomatic principles\"], [\"supervise police investigations\", \"manage police enquiries\", \"supervise police enquiries\", \"oversee police investigations\", \"manage police investigations\", \"oversee police enquiries\"], [\"dispose of waste from fish harvesting\", \"fish harvesting waste handling\", \"fish harvesting waste disposing\", \"dispose of fish harvesting waste\"], [\"create concepts for energy saving\", \"energy saving concepts developing\", \"creating energy saving concepts\", \"creating concepts for energy saving\", \"create energy saving concepts\", \"energy saving concepts creating\", \"develop concepts for energy saving\"], [\"do street interventions in social work\", \"perform street-intervention in social work\", \"perform street intervention in social-work\", \"perform street-intervention in social-work\", \"conduct outreach activites\", \"carry out street interventions in social work\"], [\"collaborate with soloists\", \"work with a soloist\", \"communicate with solo artists\"], [\"sports injury treatment\", \"sports medicine\", \"exercise and sports medicine\", \"sports injury medicine\"], [\"carry out research on flora\", \"flora research\", \"perform research on flora\", \"run research on flora\", \"research on flora\"], [\"installation of heat pumps\", \"commission heat pumps\", \"heat pump commissioning\", \"commissioning of heat pump\", \"commission heat pump\", \"heat pump installation\", \"commissioning heat pump\", \"commissioning heat pumps\", \"installation of heat pump\", \"commissioning of heat pumps\", \"heat pump installing\"], [\"design biomass energy system\", \"design biomass installation\", \"calculate capacity indicators for biomass installations\", \"design biomass system\", \"determine construction boundaries for biomass energy systems\"], [\"using climbing equipment\", \"equipment handling while suspended\", \"use climbing equipment while on a rope\", \"use climbing equipment\", \"using climbing equipment while on a rope\"], [\"teach house-keeping skills\", \"teach house keeping skills\", \"teach domestic science skills\", \"teach skills for housekeeping\", \"instruct on housekeeping skills\", \"train on housekeeping skills\", \"teach housekeeping skill\"], [\"check engines on trains meet regulations\", \"check locomotive engines\", \"check engines on locomotives\", \"ensure train engines comply with regulations\", \"ensure compliance of train engines with regulations\", \"perform train engine compliance activities\", \"check engines of trains\", \"ensure train engines meet regulatory requirements\", \"check train engines meet regulations\", \"check engines on trains\", \"ensure train engines comply with applicable regulations\"], [\"lobbying for public policies\", \"communicate with policymakers for lobbying purposes\", \"communicate with policymakers for lobbying aims\", \"communicate with policymakers to influence policies\", \"convince policymakers to change policies\"], [\"ERM\", \"enterprise risk management process\"], [\"ingredients manufacture\", \"assemble ingredients\", \"manufacture of ingredients\", \"produce ingredients\", \"construct ingredients\", \"manufacture of an ingredient\", \"fabricate ingredients\"], [\"aquaculture pond maintaining\", \"cleaning aquaculture ponds\", \"aquaculture pond cleaning\", \"aquaculture ponds maintaining\", \"pond maintaining in aquaculture\", \"clean aquaculture ponds\", \"aquaculture ponds cleaning\", \"pond cleaning in aquaculture\"], [\"employ credit risk policy\", \"administer credit risk policy\", \"credit risk policy application\", \"apply a credit risk policy\", \"implement credit risk policy\", \"utilise credit risk policy\"], [\"waterski\"], [\"respond to customer freight requests\", \"deal with customer requests related to cargo\", \"respond to customer cargo requests\", \"handle requests of customers related to cargo\", \"address requests made by customers in relation to cargo\", \"address customer requests in relation to shipments\", \"handle customer requests related to freight\", \"deal with requests of customers related to cargo\", \"deal with customer requests related to freight\", \"respond to customer requests in relation to cargo\", \"handle requests of customers related to freight\"]], \"description\": [\"Assign and manage staff tasks in areas such as scoring, arranging, copying music and vocal coaching.\", \"Supervise the operations of a correctional facility or other correctional procedures, ensuring that they are compliant with legal regulations, and ensure that the staff complies with regulations, and aim to improve the facility's efficiency and safety.\", \"Identify oppression in societies, economies, cultures, and groups, acting as a professional in an non-oppressive way, enabling service users to take action to improve their lives and enabling citizens to change their environment in accordance with their own interests.\", \"Inspect rolling stock, components and systems to ensure compliance with standards and specifications.\", \"Identify the different services available for an offender during probation in order to help in the rehabilitation and re-integration process, as well as advising the offenders as to how they can identify services available to them.\", \"Perform tests to detect poisons or drug misuse and help to monitor therapy by using chemical reagents, enzymes, radioisotopes and antibodies to detect abnormal chemical concentrations in the body.\", \"Oversee uniformity of coquilles; use casting equipment and tools such as welding machines.\", \"The techniques and principles of software development, such as analysis, algorithms, coding, testing and compiling of programming paradigms in Haskell.\", \"Be proactive and take the first step in an action without waiting for what others say or do.\\r\\n\", \"Establish new trainings and staff development provisions to support staff knowledge in food waste prevention and food recycling practices. Ensure that staff understands methods of and tools for food recycling, e.g., separating waste.\", \"Apply the processes involved in the creation of international treaties by conducting negotiations between representatives of different countries, protecting the home government's interests, and facilitating compromise.\", \"Lead investigations in police cases, which involves establishing an investigation strategy, contacting experts, being able to use different methods and points of view, and leading investigative staff.\", \"Dispose of waste, blood and inferior quality fish according to site waste management procedures.\", \"Use current research results and collaborate with experts to optimise or develop concepts, equipment, and production processes which require a lesser amount of energy such as new insulation practices and materials.\", \"Conduct outreach activities by providing direct information or counselling services to individuals in their neighbourhood or in the streets, usually targeted at youth or homeless people.\", \"Communicate with solo artists and concert masters to discuss and prepare for performances.\", \"Prevention and treatement of injuries or conditions resulted from a physical activity or sport.\", \"Collect and analyse data about plants in order to discover their basic aspects such as origin, anatomy, and function.\", \"Install heat pumps, which use the physical properties of substances called refrigerants to extract heat from an environment and release it to a warmer environment, counter to spontaneous heat flow. Create the necessary openings and install the indoors and outdoors parts of the heat pump. Connect electricity and any ducts, and configure the heat pump.\", \"Design the biomass energy system. Determine construction boundaries such as needed space and weight. Calculate indicators such as capacity, flow, and temperatures. Make detailed descriptions and drawings of the design.\", \"Safely operate hand equipment while suspended on a rope. Take on a secure and stable position before starting the operation. After finishing, store the equipment safely, usually by attaching it to a belt buckle.\", \"Teach housekeeping as well as manual skills aiming to improve everyday tasks and life circumstances.\", \"Ensure that train engines comply with regulations before commencing a journey.\", \"Communicate with policymakers and provide them with data to convince them to change legislation or allocate funds to a specific cause.\", \"A plan-based business strategy that aims to identify, assess, and prepare for any dangers, hazards, and other potentials for disaster, both physical and figurative, that may interfere with an organization's operations and objectives. \", \"Manufacture ingredients such as spices, additives and vegetables.\", \"Clean equipment and treatment tools. Drain and clean aquaculture ponds using brushes, chemicals, and water. Prepare holding containers for fish and change the nets. Conduct swimthroughs. Stock fish in holding units. Collect dead fish in holding units.\", \"Implement company policies and procedures in the credit risk management process. Permanently keep company's credit risk at a manageable level and take measures to avoid credit failure.\", \"The techniques and rules for the practice of water skiing. Knowledge of the equipment needed for this high-speed water surface sport such as the tow rope, boat, wetsuits, and the ski boards.\", \"Handle requests of port users and customers in the field of containers, shipping arrangements or cargo.\"]}",
+            "name": "skills",
+            "field": [
+                {
+                    "@id": "52d0487e-acaa-4150-ac3a-ce209e02e24c",
+                    "name": "skill_type",
+                    "column": "skill_type",
+                    "sample": [
+                        "skill/competence",
+                        "knowledge"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "skill_type"
+                        },
+                        "fileObject": {
+                            "@id": "511f1851-2e19-4e1e-90d8-67c786f0ba26"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "f76e64c1-0308-4cdc-b8ab-e345f4c1ecd9",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "c7dd1a2d-7bcc-4e37-be20-c6a967ae77a9",
+                    "name": "skill_uri",
+                    "column": "skill_uri",
+                    "sample": [
+                        "http://data.europa.eu/esco/skill/03b9b491-fc9b-4868-914a-bf7cd47b5041",
+                        "http://data.europa.eu/esco/skill/118efbcd-8fc5-4668-81d1-c383a0d16070",
+                        "http://data.europa.eu/esco/skill/11c0bfec-6bc8-4ec0-a535-91bd65be92c5"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "skill_uri"
+                        },
+                        "fileObject": {
+                            "@id": "511f1851-2e19-4e1e-90d8-67c786f0ba26"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "55f229c9-9b57-4858-8eba-c86c7dd6eb50",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "bdd09d99-d44a-4611-be47-9df47a457b6c",
+                    "name": "alt_labels",
+                    "column": "alt_labels",
+                    "sample": [
+                        "['solder lead came parts', 'conjoin lead came joints', 'solder joints of lead came', 'soldering of lead came joints']",
+                        "['technology for the production of knitted fabric', 'knitted fabric machinery technology', 'technology for knitting machines', 'knitted fabric production technology', 'technology for knitting machinery', 'knitting machinery technology']",
+                        "['demolish structure with wrecking ball', 'wrecking ball control', 'wrecking ball operation', 'operation of wrecking ball', 'control wrecking ball', 'demolition with wrecking ball']"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "alt_labels"
+                        },
+                        "fileObject": {
+                            "@id": "511f1851-2e19-4e1e-90d8-67c786f0ba26"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "61a750a4-cef4-48c5-8ade-a8eb11cb86b4",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "b186c171-aeb7-4fe2-b331-080557344cc2",
+                    "name": "description",
+                    "column": "description",
+                    "sample": [
+                        "Solvent-free sample extraction technique to concentrate and isolate analytes from a sample matrix. It uses a volume of sorbent dispersed on small fibre surfaces, following two different steps, an adsorption of solute and a transfer of adsorbed analytes by liquid or thermal desorption.",
+                        "Maintain the chamber or tank used in production processes to manufacture a workpiece in vacuum by preconditioning it, cleaning it, performing gas purging, changing the door seals, changing the filters, and others.",
+                        "Operate equipment which treats energy crops and waste from farms, called anaerobic digesters. Ensure the equipment functions correctly in the transformation of biomass to biogas which is used for the generation of heat and electricity."
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "description"
+                        },
+                        "fileObject": {
+                            "@id": "511f1851-2e19-4e1e-90d8-67c786f0ba26"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "cdbaf669-71c9-4230-827a-003a0d35e5a6",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "c12c09e9-1247-41dd-8e68-d3495b2a8fec",
+                    "name": "preferred_label",
+                    "column": "preferred_label",
+                    "sample": [
+                        "use traditional carpet making techniques",
+                        "restrain individuals",
+                        "clinical reports"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "preferred_label"
+                        },
+                        "fileObject": {
+                            "@id": "511f1851-2e19-4e1e-90d8-67c786f0ba26"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "9ef8ef65-90ea-4496-a77b-9e0ca2de11ab",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                }
+            ],
+            "@type": "cr:RecordSet"
+        }
+    ],
+    "country": "GR",
+    "citeAs": "ca",
+    "keywords": [
+        "qualifications",
+        "lifelong learning",
+        "skills"
+    ],
+    "description": "The European Skills, Competences, Qualifications, and Occupations (ESCO) dataset functions as a standardized classification system for occupations, skills, and qualifications across the European labor market. It acts as a structured dictionary, defining skills and linking them to relevant job roles and qualifications.",
+    "inLanguage": [
+        "en"
+    ],
+    "version": "",
+    "url": "https://esco.ec.europa.eu/en/use-esco/download",
+    "datePublished": "2025-05-24",
+    "archivedAt": "s3://dataset/6f562229-3642-4158-923d-345eec2e5c66",
+    "license": "CC-BY 4.0",
+    "fieldOfScience": [
+        "EDUCATIONAL SCIENCES"
+    ],
+    "name": "ESCO",
+    "conformsTo": "",
+    "headline": "Standarized Classification of Occupations, Skills, and Qualifications in Europe",
+    "doi": "10.1000/1234567890",
+    "status": "ready"
+}

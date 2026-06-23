@@ -1,0 +1,108 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "d84d1a2e-127d-4393-91d0-afb7e4fd9c68",
+    "distribution": [
+        {
+            "@id": "bfb3fac6-6c65-4ba2-a9d3-a55780e90ef6",
+            "contentUrl": "/s3/dataset/d84d1a2e-127d-4393-91d0-afb7e4fd9c68/kp_editions.json",
+            "sha256": "7a35e0e711cd5e6f3fd234e5f765e5244cbdad0d89e2660fa01ef190d02cab27",
+            "contentSize": "315541528 B",
+            "name": "kp_editions.json",
+            "description": "",
+            "encodingFormat": "application/json",
+            "@type": "cr:FileObject"
+        }
+    ],
+    "recordSet": [],
+    "country": "FR",
+    "citeAs": "ca",
+    "keywords": [
+        "encyclopedia",
+        "diderot",
+        "french history",
+        "enlightenment",
+        "knowledge project"
+    ],
+    "description": "This dataset contains machine-readable transcriptions of historical editions of the Encyclopedia Britannica, currently the 7th edition (1830-1842, 21 volumes) and 9th edition (1875-1889, 25 volumes). It provides structured encyclopedic articles covering scientific, historical, philosophical, and cultural topics from a 19th-century perspective.",
+    "inLanguage": [
+        "en"
+    ],
+    "version": "",
+    "url": "https://tu-plogan.github.io/source/r_releases.html",
+    "datePublished": "2025-07-18",
+    "archivedAt": "s3://dataset/d84d1a2e-127d-4393-91d0-afb7e4fd9c68",
+    "license": "CC BY 4.0",
+    "fieldOfScience": [
+        "HISTORY AND ARCHAEOLOGY",
+        "LANGUAGES AND LITERATURE"
+    ],
+    "name": "19th century knowledge project",
+    "conformsTo": "",
+    "headline": "19th Century Encyclopedia Britannica Transcriptions",
+    "doi": "10.1000/1234567890",
+    "status": "loaded"
+}

@@ -30,11 +30,11 @@ def build_croissant_report(folder_path, weights, similarities, file_data=None):
         "@type": "DatasetSimilarityReport",
         "analyzedFolder": str(folder_path),
         "weights": weights,
-        "elements": [],
+        # "elements": [],
         "links": []
     }
 
-    # --- Elements ---
+    ''' --- Elements ---
     unique_dataset = set()
     for s in similarities:
         unique_dataset.add(s["dataprofile1"])
@@ -55,17 +55,17 @@ def build_croissant_report(folder_path, weights, similarities, file_data=None):
                 "encodingFormat": "application/json"
             }
         }
-        report["elements"].append(element)
+        report["elements"].append(element) '''
 
     # --- Links ---
     for s in similarities:
         link = {
-            "@type": "SimilarityLink",
+            "@type": "DataLinkingBase",
             "@id": f"link:{uuid.uuid4()}",
-            "dataprofile1": f"profile:{s['dataprofile1'].replace('.json', '')}",
-            "dataprofile2": f"profile:{s['dataprofile2'].replace('.json', '')}",
-            "dataprofile1_id": s.get("id1"),
-            "dataprofile2_id": s.get("id2"),
+            "dp1Name": f"{s['dataprofile1'].replace('.json', '')}",
+            "dp2Name": f"{s['dataprofile2'].replace('.json', '')}",
+            "dataprofile1ref": s.get("id1"),
+            "dataprofile2ref": s.get("id2"),
             "metrics": {
                 "keywords_similarity": s["keywords_similarity"],
                 "description_similarity": s["description_similarity"],

@@ -1,0 +1,291 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "98521b66-80a9-4a48-a9ef-d63831eb3e18",
+    "distribution": [
+        {
+            "@id": "4d9c1759-7b77-40af-98fd-f479558f733d",
+            "contentUrl": "/s3/dataset/98521b66-80a9-4a48-a9ef-d63831eb3e18/Barcelona_rent_price.csv",
+            "sha256": "3241fe0d2c1019bde2027bbfb60a3e0d12c63e715b81c36da2bc40fa418bc90f",
+            "contentSize": "345141 B",
+            "name": "Barcelona_rent_price.csv",
+            "encodingFormat": "text/csv",
+            "description": "",
+            "@type": "cr:FileObject"
+        }
+    ],
+    "recordSet": [
+        {
+            "@id": "164129e9-d7da-40aa-848e-42e9c8e94f32",
+            "examples": "{\"Year\": [2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014, 2014], \"Trimester\": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], \"District\": [\"Ciutat Vella\", \"Ciutat Vella\", \"Ciutat Vella\", \"Ciutat Vella\", \"Eixample\", \"Eixample\", \"Eixample\", \"Eixample\", \"Eixample\", \"Eixample\", \"Sants-Montjuic\", \"Sants-Montjuic\", \"Sants-Montjuic\", \"Sants-Montjuic\", \"Sants-Montjuic\", \"Sants-Montjuic\", \"Sants-Montjuic\", \"Les Corts\", \"Les Corts\", \"Les Corts\", \"Sarria-Sant Gervasi\", \"Sarria-Sant Gervasi\", \"Sarria-Sant Gervasi\", \"Sarria-Sant Gervasi\", \"Sarria-Sant Gervasi\", \"Sarria-Sant Gervasi\", \"Gracia\", \"Gracia\", \"Gracia\", \"Gracia\"], \"Neighbourhood\": [\"el Raval\", \"Gothic Quarter\", \"la Barceloneta\", \"Sant Pere, Santa Caterina i la Ribera\", \"Fort Pienc\", \"Sagrada Familia\", \"la Dreta de l'Eixample\", \"l'Antiga Esquerra de l'Eixample\", \"la Nova Esquerra de l'Eixample\", \"Sant Antoni\", \"el Poble Sec\", \"la Marina de Port\", \"la Font de la Guatlla\", \"Hostafrancs\", \"la Bordeta\", \"Sants - Badal\", \"Sants\", \"les Corts\", \"la Maternitat i Sant Ramon\", \"Pedralbes\", \"Vallvidrera, el Tibidabo i les Planes\", \"Sarria\", \"les Tres Torres\", \"Sant Gervasi - la Bonanova\", \"Sant Gervasi - Galvany\", \"el Putxet i el Farro\", \"Vallcarca i els Penitents\", \"el Coll\", \"la Salut\", \"la Vila de Gracia\"], \"Average _rent\": [\"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\", \"average rent (euro/month)\"], \"Price\": [589.55, 712.79, 540.71, 673.44, 736.09, 673.37, 921.4, 827.87, 716.13, 693.43, 568.0, 553.55, 631.5, 580.71, 604.74, 584.27, 605.28, 777.23, 700.16, 1230.0, 837.33, 1042.16, 1215.85, 927.63, 1053.7, 750.84, 679.66, 583.93, 634.48, 679.8]}",
+            "name": "Barcelona_rent_price",
+            "field": [
+                {
+                    "@id": "8eaacfc5-7efb-4cfb-b5ff-1dbae4559da0",
+                    "name": "Average _rent",
+                    "column": "Average _rent",
+                    "sample": [
+                        "average rent (euro/month)",
+                        "average rent per surface (euro/m2)",
+                        "average rent (euro/month)",
+                        "average rent per surface (euro/m2)",
+                        "average rent (euro/month)",
+                        "average rent (euro/month)",
+                        "average rent per surface (euro/m2)",
+                        "average rent per surface (euro/m2)",
+                        "average rent (euro/month)",
+                        "average rent per surface (euro/m2)"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Average _rent"
+                        },
+                        "fileObject": {
+                            "@id": "4d9c1759-7b77-40af-98fd-f479558f733d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "c1027c3c-ab74-4186-8119-53f7f5929042",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "0617cc6e-84cc-433f-a281-d78d51ef89e9",
+                    "name": "Price",
+                    "column": "Price",
+                    "sample": [
+                        1187.57,
+                        15.1,
+                        16.26,
+                        775.3,
+                        671.85,
+                        11.8,
+                        11.42,
+                        1009.5,
+                        17.6,
+                        865.8
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Price"
+                        },
+                        "fileObject": {
+                            "@id": "4d9c1759-7b77-40af-98fd-f479558f733d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "6d4b87d8-f17c-4e6b-b8a2-43889e3c51dd",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "4c9d9a98-2b21-42fd-a611-4c2698521524",
+                    "name": "Neighbourhood",
+                    "column": "Neighbourhood",
+                    "sample": [
+                        "Sant Pere, Santa Caterina i la Ribera",
+                        "el Putxet i el Farro",
+                        "Navas",
+                        "Vilapicina i la Torre Llobeta",
+                        "el Coll",
+                        "Sarria",
+                        "Sants - Badal",
+                        "la Trinitat Vella",
+                        "el Putxet i el Farro",
+                        "el Coll"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Neighbourhood"
+                        },
+                        "fileObject": {
+                            "@id": "4d9c1759-7b77-40af-98fd-f479558f733d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "1288a402-c687-45af-b691-9315aec65ea7",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "1dba1f78-146e-43f6-ba4a-65103cbb5b95",
+                    "name": "Trimester",
+                    "column": "Trimester",
+                    "sample": [
+                        2,
+                        4,
+                        4,
+                        2,
+                        4,
+                        2,
+                        4,
+                        2,
+                        4,
+                        3
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Trimester"
+                        },
+                        "fileObject": {
+                            "@id": "4d9c1759-7b77-40af-98fd-f479558f733d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "8f23ef8b-8f2c-4f0f-9a53-99bf95aeced4",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "6fb1e36d-dd93-400e-9bf4-3a608f987a32",
+                    "name": "District",
+                    "column": "District",
+                    "sample": [
+                        "Horta-Guinardo",
+                        "Les Corts",
+                        "Gracia",
+                        "Sant Marti",
+                        "Nou Barris",
+                        "Sarria-Sant Gervasi",
+                        "Sants-Montjuic",
+                        "Nou Barris",
+                        "Nou Barris",
+                        "Sant Marti"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "District"
+                        },
+                        "fileObject": {
+                            "@id": "4d9c1759-7b77-40af-98fd-f479558f733d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "4383c7fd-47d2-4254-a63a-15e96d04b80b",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "72db707f-0aea-44f9-8f6e-d86bbb2bbfc1",
+                    "name": "Year",
+                    "column": "Year",
+                    "sample": [
+                        2021,
+                        2017,
+                        2016,
+                        2016,
+                        2014,
+                        2016,
+                        2016,
+                        2021,
+                        2016,
+                        2021
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Year"
+                        },
+                        "fileObject": {
+                            "@id": "4d9c1759-7b77-40af-98fd-f479558f733d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "2cfce8a6-62da-4e28-9373-b878839b0f5c",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                }
+            ],
+            "@type": "cr:RecordSet"
+        }
+    ],
+    "country": "",
+    "keywords": [
+        "rent prices",
+        "barcelona"
+    ],
+    "description": "This dataset includes data on price for rent in Barcelona, Spain. The data was collected for a period of 2014 - 2022 years, divided into trimesters. The prices go by neighbourhoods and districts. This dataset includes both prices per month and prices per square meter, so that you can easier compare them.",
+    "inLanguage": [
+        "en"
+    ],
+    "version": "",
+    "url": "https://www.kaggle.com/datasets/marshuu/rent-price-in-barcelona-2014-2022",
+    "datePublished": "2025-05-24",
+    "license": "CC BY-NC-SA 4.0",
+    "archivedAt": "s3://dataset/98521b66-80a9-4a48-a9ef-d63831eb3e18",
+    "fieldOfScience": [
+        "ECONOMICS AND BUSINESS"
+    ],
+    "name": "Barcelona Rent Prices",
+    "conformsTo": "",
+    "headline": "Rent price in Barcelona 2014 - 2022",
+    "status": "ready"
+}

@@ -1,0 +1,127 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "59c43aa5-0f9b-479f-96e6-6bdbe564042c",
+    "distribution": [
+        {
+            "@id": "331a8272-ca15-434d-a348-ddcff83e9008",
+            "contentUrl": "/s3/dataset/59c43aa5-0f9b-479f-96e6-6bdbe564042c/forest_fires.json",
+            "sha256": "b91c12b7ac4c411146bfcacfd7b71c4fcdf9a88f59dbab674c38543354054e6b",
+            "contentSize": "1746 B",
+            "name": "forest_fires.json",
+            "description": "",
+            "encodingFormat": "application/json",
+            "@type": "cr:FileObject"
+        },
+        {
+            "@id": "8494aaf2-0d91-4c0d-a59b-6d4c996b5e30",
+            "contentUrl": "/s3/dataset/59c43aa5-0f9b-479f-96e6-6bdbe564042c/data",
+            "contentSize": "28898 B",
+            "name": "data",
+            "encodingFormat": "text/csv",
+            "@type": "cr:FileSet"
+        },
+        {
+            "@id": "a8738212-e3c2-4463-8c11-5130a0c85e1d",
+            "contentUrl": "/s3/dataset/59c43aa5-0f9b-479f-96e6-6bdbe564042c/data/forestfires.csv",
+            "sha256": "958fb2bf58d34ed918b053a80d9ff3ddb983fef17944bde46b082f52a606d39a",
+            "contentSize": "25478 B",
+            "name": "forestfires.csv",
+            "description": "",
+            "encodingFormat": "text/csv",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "8494aaf2-0d91-4c0d-a59b-6d4c996b5e30"
+            }
+        }
+    ],
+    "recordSet": [],
+    "country": "",
+    "keywords": [
+        "forest fires",
+        "Portugal",
+        "meteorological data",
+        "predictive modeling",
+        "environmental factors"
+    ],
+    "citeAs": "Cortez, P. & Morais, A. (2007). Forest Fires [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5D88D.",
+    "description": "This dataset focuses on predicting the burned area of forest fires in the northeast region of Portugal using meteorological and other related data. It contains 517 instances with 12 real-valued features related to weather conditions such as temperature, relative humidity, wind, and rainfall. The burned area output was transformed using a logarithmic function (ln(x+1)) for modeling, with results later inverted back for interpretation. Various data mining techniques, including Gaussian Support Vector Machines (SVM), were applied to predict fire sizes, showing the best performance in predicting smaller fires, which constitute the majority of cases. The dataset has no missing values and supports regression tasks. The experiments were validated using 10-fold cross-validation repeated 30 times, with evaluation metrics including Mean Absolute Deviation (MAD) and Root Mean Square Error (RMSE). This dataset is ideal for studying environmental factors influencing forest fires and developing predictive models to improve fire management and prevention strategies.",
+    "inLanguage": [
+        "en"
+    ],
+    "version": "",
+    "url": "https://archive.ics.uci.edu/dataset/162/forest+fires",
+    "datePublished": "2025-05-24",
+    "license": "CC-BY 4.0",
+    "archivedAt": "s3://dataset/59c43aa5-0f9b-479f-96e6-6bdbe564042c",
+    "fieldOfScience": [
+        "EARTH AND RELATED ENVIRONMENTAL SCIENCES"
+    ],
+    "name": "Forest Fires",
+    "conformsTo": "",
+    "headline": "Predicting Forest Fire Burned Area in Northeast Portugal Using Meteorological Data",
+    "status": "loaded"
+}

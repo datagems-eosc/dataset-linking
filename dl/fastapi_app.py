@@ -579,3 +579,40 @@ def api_job_download(job_id: str):
     job_type = job.get("type", "job")
     filename = f"{job_type}_{job_id}_{_timestamp()}.json"
     return _json_download(payload, filename)
+
+@app.get("/api/discover-and-compare")
+async def api_discover_and_compare(
+    kw: float = Query(0.6, ge=0),
+    desc: float = Query(0.3, ge=0),
+    head: float = Query(0.1, ge=0),
+    th: float = Query(30.0, ge=0, le=100)
+):
+    """
+    Download 'ready' profile by API
+    """
+    try:
+        kw, desc, head, normalized = normalize_weights(kw, desc, head)
+        error, similarities, from_cache = compute_similarities(
+            folder_path=None,
+            kw_weight=kw,
+            desc_weight=desc,
+            head_weight=head,
+            threshold=th,
+            use_api=True
+        )
+
+        if error:
+            raise HTTPException(status_code=400, detail=error)
+
+        return {
+            "status": "success",
+            "results": similarities,
+            "metadata": {
+                "total_pairs": len(similarities),
+                "from_cache": from_cache,
+                "weights": {"kw": kw, "desc": desc, "head": head},
+                "threshold": th
+            }
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

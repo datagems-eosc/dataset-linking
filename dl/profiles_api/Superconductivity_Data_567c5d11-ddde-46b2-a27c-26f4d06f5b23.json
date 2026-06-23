@@ -1,0 +1,140 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "567c5d11-ddde-46b2-a27c-26f4d06f5b23",
+    "distribution": [
+        {
+            "@id": "d4f391db-b613-4aed-8613-af1f33b43faa",
+            "contentUrl": "/s3/dataset/567c5d11-ddde-46b2-a27c-26f4d06f5b23/superconductivty_data.json",
+            "sha256": "cfd7fa29c1179c9edf34a665f158a1bef904174161d9924e3dc1813637ccb58e",
+            "contentSize": "1249 B",
+            "name": "superconductivty_data.json",
+            "encodingFormat": "application/json",
+            "description": "",
+            "@type": "cr:FileObject"
+        },
+        {
+            "@id": "6c2e83b8-bad3-4e18-905e-35005f797453",
+            "contentUrl": "/s3/dataset/567c5d11-ddde-46b2-a27c-26f4d06f5b23/data/unique_m.csv",
+            "sha256": "c7aea622132deb86a6547b206aacbfa6ae2f506033511e9dcad11b50adac4d62",
+            "contentSize": "4291603 B",
+            "name": "unique_m.csv",
+            "description": "",
+            "encodingFormat": "text/csv",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "619aceb0-a81f-4342-a58d-f152c0743fcc"
+            }
+        },
+        {
+            "@id": "619aceb0-a81f-4342-a58d-f152c0743fcc",
+            "contentUrl": "/s3/dataset/567c5d11-ddde-46b2-a27c-26f4d06f5b23/data",
+            "contentSize": "28151383 B",
+            "name": "data",
+            "encodingFormat": "text/csv",
+            "@type": "cr:FileSet"
+        },
+        {
+            "@id": "603a8bf3-be0b-442d-b787-a0914c46fa15",
+            "contentUrl": "/s3/dataset/567c5d11-ddde-46b2-a27c-26f4d06f5b23/data/train.csv",
+            "sha256": "e22516faa6a10e1a12e2f1407804df140eacedfdf9f4dce84e5bcbcc96b3b2f7",
+            "contentSize": "23859780 B",
+            "name": "train.csv",
+            "description": "",
+            "encodingFormat": "text/csv",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "619aceb0-a81f-4342-a58d-f152c0743fcc"
+            }
+        }
+    ],
+    "recordSet": [],
+    "country": "",
+    "keywords": [
+        "superconductivity",
+        "critical temperature",
+        "regression",
+        "machine learning"
+    ],
+    "citeAs": "Hamidieh, K. (2018). Superconductivty Data [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C53P47.",
+    "description": "This dataset contains detailed information on 21,263 superconductors, including 81 features extracted from their chemical and physical properties. The key target variable is the critical temperature at which each material becomes superconductive. The dataset is split into two files: one with the feature data and critical temperatures, and another with the chemical formulas broken down. The goal is to predict the critical temperature using the given features. The original data is sourced from the National Institute for Materials Science (NIMS) Superconductivity Database.",
+    "inLanguage": [
+        "en"
+    ],
+    "version": "",
+    "url": "https://archive.ics.uci.edu/dataset/464/superconductivty+data",
+    "datePublished": "2025-05-24",
+    "license": "CC-BY 4.0",
+    "archivedAt": "s3://dataset/567c5d11-ddde-46b2-a27c-26f4d06f5b23",
+    "fieldOfScience": [
+        "MATERIALS ENGINEERING",
+        "PHYSICAL SCIENCES"
+    ],
+    "name": "Superconductivity Data",
+    "conformsTo": "",
+    "headline": "Two files contain data on 21263 superconductors and their relevant features.",
+    "status": "loaded"
+}

@@ -1,0 +1,399 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "cbb778ba-1856-4515-9f53-12abc6324cd5",
+    "distribution": [
+        {
+            "@id": "8b9f4e83-ad6f-4d08-b42a-1297dd42055e",
+            "contentUrl": "/s3/dataset/cbb778ba-1856-4515-9f53-12abc6324cd5/MANIFEST.TXT",
+            "sha256": "d1da0d16e583914f288358553c9ec8ad6b6b554996b3070959d8df4c958622d8",
+            "contentSize": "127 B",
+            "name": "MANIFEST.TXT",
+            "description": "",
+            "encodingFormat": "text/plain",
+            "@type": "cr:FileObject"
+        },
+        {
+            "@id": "0d161028-04b6-4455-ba1c-0fddee1cff8d",
+            "contentUrl": "/s3/dataset/cbb778ba-1856-4515-9f53-12abc6324cd5/Random_customers.csv",
+            "sha256": "d5f35bec9eac659b4b69dc982515597b4e40760af696b396e2f915ac692850b5",
+            "contentSize": "911 B",
+            "name": "Random_customers.csv",
+            "encodingFormat": "text/csv",
+            "description": "",
+            "@type": "cr:FileObject"
+        },
+        {
+            "@id": "56c8f1c6-8ee9-45ae-91d5-4181788bfeac",
+            "contentUrl": "/s3/dataset/cbb778ba-1856-4515-9f53-12abc6324cd5/Payloads.csv",
+            "sha256": "d940493e6f4c630a7b1bf52d0164b66439a68de58158a3ceabc1bdc7e2450f1a",
+            "contentSize": "221 B",
+            "name": "Payloads.csv",
+            "description": "",
+            "encodingFormat": "text/csv",
+            "@type": "cr:FileObject"
+        },
+        {
+            "@id": "b7be1ff5-8da6-45d4-8ba5-7105af2bac02",
+            "contentUrl": "/s3/dataset/cbb778ba-1856-4515-9f53-12abc6324cd5/Clustered_customers.csv",
+            "sha256": "9bc90c98eefe515aa469f21ace248a8a12eb8276d9cbbf14228bd4c4b3d1d700",
+            "contentSize": "912 B",
+            "name": "Clustered_customers.csv",
+            "encodingFormat": "text/csv",
+            "description": "",
+            "@type": "cr:FileObject"
+        }
+    ],
+    "recordSet": [
+        {
+            "@id": "6fbf272d-3263-4c2d-8a66-4a80eefa3a9b",
+            "examples": "{\"Client\": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], \"Demand\": [0, -1, -1, -2, -4, -2, -4, -8, -8, -1, -2, -1, -2, -4, -4, -8, -8, -2, -3, -4, -2, -1, -3, -4, -4, -5, -6, -3, -5, -3]}",
+            "name": "Payloads",
+            "field": [
+                {
+                    "@id": "026256d2-a233-47a2-99d2-bba080ad7aa6",
+                    "name": "Client",
+                    "column": "Client",
+                    "sample": [
+                        6,
+                        22,
+                        29,
+                        12,
+                        2,
+                        1,
+                        27,
+                        18,
+                        5,
+                        15
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Client"
+                        },
+                        "fileObject": {
+                            "@id": "56c8f1c6-8ee9-45ae-91d5-4181788bfeac"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "83feeede-ef1a-40b0-8581-3320778f1027",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "84e482fd-6b4b-4c04-a8e4-03d890aedbd7",
+                    "name": "Demand",
+                    "column": "Demand",
+                    "sample": [
+                        -1,
+                        -8,
+                        -8,
+                        -8,
+                        -8,
+                        0,
+                        -2,
+                        -4,
+                        -4,
+                        -2
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Demand"
+                        },
+                        "fileObject": {
+                            "@id": "56c8f1c6-8ee9-45ae-91d5-4181788bfeac"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "ef13eaed-f8d5-4bc7-8233-9f5138659894",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                }
+            ],
+            "@type": "cr:RecordSet"
+        },
+        {
+            "@id": "44c0f207-a07a-4fc1-bc7a-f190cd383c26",
+            "examples": "{\"\\u00ef\\u00bb\\u00bfclient\": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], \"latitude\": [41.80680393, 41.78720474, 41.76954651, 41.81116486, 41.79141235, 41.8082695, 41.81499863, 41.79782486, 41.79860687, 41.79177094, 41.80888367, 41.80687714, 41.81797409, 41.81480789, 41.81728363, 41.81322098, 41.80543899, 41.81611252, 41.80365372, 41.8129921, 41.81259155, 41.81991196, 41.8183403, 41.80391312, 41.81254578, 41.81866837, 41.81095505, 41.81969833, 41.78130341, 41.77265167], \"longitude\": [-6.758241459, -6.781184196, -6.810986041, -6.768366814, -6.772583008, -6.77579689, -6.770178795, -6.758851052, -6.757502079, -6.769806863, -6.762235165, -6.771979809, -6.770468235, -6.765183926, -6.760145187, -6.77055502, -6.764297009, -6.763720989, -6.765027047, -6.760776997, -6.762523174, -6.761175156, -6.752517223, -6.745913982, -6.753838062, -6.755339146, -6.747744083, -6.7578969, -6.774549007, -6.789904118]}",
+            "name": "Clustered_customers",
+            "field": [
+                {
+                    "@id": "33ad870a-df81-4e08-b29f-0de73786dd8f",
+                    "name": "﻿client",
+                    "column": "﻿client",
+                    "sample": [
+                        23,
+                        5,
+                        12,
+                        6,
+                        18,
+                        27,
+                        21,
+                        2,
+                        4,
+                        19
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "﻿client"
+                        },
+                        "fileObject": {
+                            "@id": "b7be1ff5-8da6-45d4-8ba5-7105af2bac02"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "d7e87352-4dbc-4d1c-975e-e79de2ce74c2",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "fce7a12f-e8d4-4319-88c9-9b5f6d9fa701",
+                    "name": "longitude",
+                    "column": "longitude",
+                    "sample": [
+                        -6.768366814,
+                        -6.765183926,
+                        -6.762235165,
+                        -6.757502079,
+                        -6.760145187,
+                        -6.77579689,
+                        -6.769806863,
+                        -6.758241459,
+                        -6.762523174,
+                        -6.810986041
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "longitude"
+                        },
+                        "fileObject": {
+                            "@id": "b7be1ff5-8da6-45d4-8ba5-7105af2bac02"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "0cbf8cd8-dfd2-4399-b0f6-8d5fd8ecec0d",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "122fa6fc-1e9b-4bd9-8ce9-a5b94df5961b",
+                    "name": "latitude",
+                    "column": "latitude",
+                    "sample": [
+                        41.76954651,
+                        41.81116486,
+                        41.81611252,
+                        41.81969833,
+                        41.81797409,
+                        41.81480789,
+                        41.77265167,
+                        41.80365372,
+                        41.81095505,
+                        41.81254578
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "latitude"
+                        },
+                        "fileObject": {
+                            "@id": "b7be1ff5-8da6-45d4-8ba5-7105af2bac02"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "add69a2f-ac92-41a0-99ec-10a2b256ff1e",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                }
+            ],
+            "@type": "cr:RecordSet"
+        },
+        {
+            "@id": "76af1c76-8868-442f-8531-7f5452a5bed1",
+            "examples": "{\"clients\": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], \"latitude\": [41.80680393, 41.8134007, 41.79068357, 41.80043673, 41.81365944, 41.81797409, 41.79860687, 41.76954651, 41.81259155, 41.81057095, 41.81313324, 41.80365372, 41.80391312, 41.79577637, 41.81523678, 41.79687682, 41.8030158, 41.80787016, 41.80522156, 41.81866837, 41.79603207, 41.80862045, 41.81991196, 41.8059762, 41.79896837, 41.81695175, 41.78995668, 41.8033048, 41.81095505, 41.80111177], \"longitude\": [-6.758241459, -6.764746539, -6.779543291, -6.764070008, -6.758736868, -6.770468235, -6.757502079, -6.810986041, -6.762523174, -6.762623175, -6.759532928, -6.765027047, -6.745913982, -6.764268875, -6.766200988, -6.785315342, -6.773297486, -6.770427356, -6.773818969, -6.755339146, -6.775039263, -6.769526005, -6.761175156, -6.775250086, -6.770327489, -6.75733614, -6.77221766, -6.761840085, -6.747744083, -6.784972536]}",
+            "name": "Random_customers",
+            "field": [
+                {
+                    "@id": "cb61c4c7-b548-48fb-8c59-8bdac3eb1a4a",
+                    "name": "longitude",
+                    "column": "longitude",
+                    "sample": [
+                        -6.784972536,
+                        -6.770427356,
+                        -6.773818969,
+                        -6.745913982,
+                        -6.747744083,
+                        -6.757502079,
+                        -6.762623175,
+                        -6.775250086,
+                        -6.762523174,
+                        -6.761840085
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "longitude"
+                        },
+                        "fileObject": {
+                            "@id": "0d161028-04b6-4455-ba1c-0fddee1cff8d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "d4855e2b-af98-4edf-8bd3-3f786ba73aee",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "1efbf2e4-a593-4cc9-a4d9-2cc1b3cd1990",
+                    "name": "clients",
+                    "column": "clients",
+                    "sample": [
+                        17,
+                        19,
+                        15,
+                        1,
+                        6,
+                        7,
+                        24,
+                        20,
+                        13,
+                        0
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "clients"
+                        },
+                        "fileObject": {
+                            "@id": "0d161028-04b6-4455-ba1c-0fddee1cff8d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "49765819-e13d-4acd-a115-ab547925a5a3",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "6f5b383a-ffc1-4d61-8d6f-df0c87ebba6b",
+                    "name": "latitude",
+                    "column": "latitude",
+                    "sample": [
+                        41.80680393,
+                        41.80787016,
+                        41.78995668,
+                        41.79603207,
+                        41.81095505,
+                        41.79896837,
+                        41.81057095,
+                        41.81866837,
+                        41.80862045,
+                        41.80522156
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "latitude"
+                        },
+                        "fileObject": {
+                            "@id": "0d161028-04b6-4455-ba1c-0fddee1cff8d"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "36c2cc59-5bae-4c76-9ad7-b7ef631249b2",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                }
+            ],
+            "@type": "cr:RecordSet"
+        }
+    ],
+    "country": "",
+    "keywords": [
+        "Vehicle Routing Problem",
+        "customer delivery",
+        "synthetic dataset"
+    ],
+    "description": "This dataset consists of two sets of potential delivery clients in residential areas of Bragança, Portugal. The first set was generated randomly, while the second set was created using the DBSCAN clustering technique based on the distance between points. Random payloads were assigned to these locations, and the dataset can be utilized to optimize last-mile delivery services. The best-known solution to this problem was achieved using the Guided Local Search metaheuristic algorithm available in OR-Tools. For drone deliveries (using Euclidean distance), the optimized delivery distances were 11.284 km for the random set and 14.439 km for the clustered set. For truck deliveries (using road distances), the optimized distances were 21.089 km for the random set and 20.967 km for the clustered set.",
+    "inLanguage": [
+        "en"
+    ],
+    "version": "",
+    "url": "https://dados.ipb.pt/dataset.xhtml?persistentId=doi:10.34620/dadosipb/CBKQK8",
+    "datePublished": "2025-05-24",
+    "license": "CC0 1.0",
+    "archivedAt": "s3://dataset/cbb778ba-1856-4515-9f53-12abc6324cd5",
+    "fieldOfScience": [
+        "MATHEMATICS",
+        "ELECTRICAL ENGINEERING, ELECTRONIC ENGINEERING, INFORMATION ENGINEERING"
+    ],
+    "name": "Last-mile customer delivery instances",
+    "conformsTo": "",
+    "headline": "Education.",
+    "status": "ready"
+}

@@ -1,0 +1,93 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "21310389-f082-4c45-8077-39404c766f6f",
+    "distribution": [],
+    "recordSet": [],
+    "country": "",
+    "keywords": [
+        "traffic accidents",
+        "Barcelona",
+        "road safety",
+        "urban data",
+        "accident analysis"
+    ],
+    "description": "This dataset compiles detailed records of traffic accidents in Barcelona, collected from annual reports by the Guardia Urbana and made available via OpenDataBCN. It includes over 110,000 observations spanning multiple years, capturing comprehensive information about each incident. Key attributes include unique identifiers for each case, district, neighborhood, and street, alongside location details such as postal codes and geographic coordinates (latitude, longitude, and UTM). Temporal data cover the exact year, month, day, hour, and part of the day when accidents occurred. The dataset also records the cause of each accident and the resulting human impact, including numbers of deaths, severely and mildly wounded, and total victims. Vehicle involvement counts are provided as well. This rich combination of spatial, temporal, and incident-specific data allows for in-depth analysis of accident patterns, enabling studies on risk factors, hotspot identification, and temporal trends. The dataset is ideal for urban planners, traffic safety analysts, and policymakers aiming to improve road safety and reduce accidents in Barcelona.",
+    "inLanguage": [
+        "en",
+        "es"
+    ],
+    "url": "https://www.kaggle.com/datasets/emmanuelfwerr/barcelona-car-accidents",
+    "datePublished": "2025-05-24",
+    "license": "CC0: Public Domain",
+    "archivedAt": "s3://dataset/21310389-f082-4c45-8077-39404c766f6f",
+    "fieldOfScience": [
+        "SOCIAL AND ECONOMIC GEOGRAPHY"
+    ],
+    "name": "Barcelona Traffic Accidents",
+    "headline": "Incidents recorded by the Barcelona Urban Guard from 2010 to present day",
+    "status": "loaded"
+}

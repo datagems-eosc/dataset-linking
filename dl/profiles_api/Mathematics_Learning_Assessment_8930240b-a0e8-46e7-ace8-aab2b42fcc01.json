@@ -1,0 +1,370 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "8930240b-a0e8-46e7-ace8-aab2b42fcc01",
+    "distribution": [
+        {
+            "@id": "ba9fb52c-8415-454b-9f28-1ccedc68cc72",
+            "contentUrl": "/s3/dataset/8930240b-a0e8-46e7-ace8-aab2b42fcc01/mathe_assessment_dataset.csv",
+            "sha256": "73bf2ebca58714c19341c26f7d31f44a5882704f304b146d2db57f4a997fde0b",
+            "contentSize": "1057461 B",
+            "name": "mathe_assessment_dataset.csv",
+            "encodingFormat": "text/csv",
+            "description": "",
+            "@type": "cr:FileObject"
+        }
+    ],
+    "recordSet": [
+        {
+            "@id": "4d4a65fa-c1ef-4c03-8ff9-3d110c8f1771",
+            "examples": "{\"Student ID\": [647, 41, 340, 641, 669, 697, 720, 675, 663, 28, 953, 636, 639, 684, 683, 725, 57, 690, 675, 679, 663, 638, 953, 637, 658, 647, 657, 674, 41, 41], \"Student Country\": [\"Ireland\", \"Portugal\", \"Portugal\", \"Italy\", \"Portugal\", \"Portugal\", \"Portugal\", \"Portugal\", \"Portugal\", \"Portugal\", \"Lithuania\", \"Italy\", \"Italy\", \"Ireland\", \"Ireland\", \"Portugal\", \"Portugal\", \"Portugal\", \"Portugal\", \"Portugal\", \"Portugal\", \"Italy\", \"Lithuania\", \"Italy\", \"Ireland\", \"Ireland\", \"Ireland\", \"Ireland\", \"Portugal\", \"Portugal\"], \"Question ID\": [77, 77, 77, 77, 77, 77, 77, 77, 77, 77, 77, 77, 77, 78, 78, 78, 78, 78, 78, 78, 78, 78, 78, 78, 79, 79, 79, 79, 79, 79], \"Type of Answer\": [0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1], \"Question Level\": [\"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\", \"Basic\"], \"Topic\": [\"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\"], \"Subtopic\": [\"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\", \"Statistics\"], \"Keywords\": [\"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\", \"Stem and Leaf diagram,Relative frequency,Sample,Frequency\"]}",
+            "name": "mathe_assessment_dataset",
+            "@type": "cr:RecordSet",
+            "field": [
+                {
+                    "@id": "a8576690-3b13-4290-8ab9-960a74e4b09e",
+                    "dataType": "sc:Text",
+                    "column": "Question Level",
+                    "name": "Question Level",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "Advanced",
+                        "Basic",
+                        "Advanced",
+                        "Advanced",
+                        "Advanced",
+                        "Basic",
+                        "Advanced",
+                        "Basic",
+                        "Basic",
+                        "Basic"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Question Level"
+                        },
+                        "fileObject": {
+                            "@id": "ba9fb52c-8415-454b-9f28-1ccedc68cc72"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "08418e11-17db-4d79-9dbc-0cf29e7e7f69",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "f8f1d85d-42c5-4e34-bfc7-31f246c2d7a4",
+                    "dataType": "sc:Integer",
+                    "column": "Question ID",
+                    "name": "Question ID",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        378,
+                        243,
+                        434,
+                        378,
+                        375,
+                        186,
+                        394,
+                        353,
+                        292,
+                        454
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Question ID"
+                        },
+                        "fileObject": {
+                            "@id": "ba9fb52c-8415-454b-9f28-1ccedc68cc72"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "2b211052-7a5c-42f8-98aa-10dff03e0a72",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "cfc133ed-ed0e-46c0-8e0f-7a4480161948",
+                    "dataType": "sc:Text",
+                    "column": "Student Country",
+                    "name": "Student Country",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "Italy",
+                        "Portugal",
+                        "Portugal",
+                        "Portugal",
+                        "Portugal",
+                        "Portugal",
+                        "Portugal",
+                        "Portugal",
+                        "Portugal",
+                        "Portugal"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Student Country"
+                        },
+                        "fileObject": {
+                            "@id": "ba9fb52c-8415-454b-9f28-1ccedc68cc72"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "7bdf778e-9eeb-49c9-862a-cf2b27032f39",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "269e9dfb-30ce-45ea-9883-8cbce5c8903f",
+                    "dataType": "sc:Text",
+                    "column": "Subtopic",
+                    "name": "Subtopic",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "Complex Numbers",
+                        "Algebraic expressions, Equations, and Inequalities",
+                        "Numerical Methods",
+                        "Derivatives",
+                        "Vector Spaces",
+                        "Analytic Geometry",
+                        "Vector Spaces",
+                        "Linear Transformations",
+                        "Partial Differentiation",
+                        "Vector Spaces"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Subtopic"
+                        },
+                        "fileObject": {
+                            "@id": "ba9fb52c-8415-454b-9f28-1ccedc68cc72"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "3b47647d-1502-46cb-bffd-0344062d3d27",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "e6550e4e-a3fb-4d86-90c4-6302d351e9eb",
+                    "dataType": "sc:Integer",
+                    "column": "Type of Answer",
+                    "name": "Type of Answer",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        0,
+                        1,
+                        1,
+                        0,
+                        1,
+                        1,
+                        1,
+                        0,
+                        0,
+                        0
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Type of Answer"
+                        },
+                        "fileObject": {
+                            "@id": "ba9fb52c-8415-454b-9f28-1ccedc68cc72"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "438f992c-12e5-4e2b-b4ab-c90615335bbe",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "e88639a5-383e-436c-a62c-0dacb80f941e",
+                    "dataType": "sc:Text",
+                    "column": "Topic",
+                    "name": "Topic",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "Linear Algebra",
+                        "Differentiation",
+                        "Analytic Geometry",
+                        "Differential Equations",
+                        "Linear Algebra",
+                        "Set Theory",
+                        "Linear Algebra",
+                        "Integration",
+                        "Linear Algebra",
+                        "Linear Algebra"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Topic"
+                        },
+                        "fileObject": {
+                            "@id": "ba9fb52c-8415-454b-9f28-1ccedc68cc72"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "29d15234-a523-4ff6-97ea-acca68df62e1",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "5786412a-7e9a-4448-9c3b-92f073ae9ce9",
+                    "dataType": "sc:Text",
+                    "column": "Keywords",
+                    "name": "Keywords",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "Linear independence,Span,Linear dependence",
+                        "Newtons method,Nonlinear equation",
+                        "Spanning tree,Shortest path,Path,Tree",
+                        "Linear independence,Span,Linear dependence",
+                        "Euclidean spaces,Orthogonal basis,Basis",
+                        "Basis",
+                        "Linear regression",
+                        "Square linear system,Inconsistent system,Solution of linear system,Undetermined solution of linear system,Consistent system",
+                        "Linear application,Linearity",
+                        "Distance,Scalar product,Cross product,Orthogonal projection,Orthogonality,Collinearity,Locus"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Keywords"
+                        },
+                        "fileObject": {
+                            "@id": "ba9fb52c-8415-454b-9f28-1ccedc68cc72"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "bc695900-d5fc-493a-a1c9-9e46cbaa9a6d",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "c9247411-2735-4be8-a417-99b9700bc36d",
+                    "dataType": "sc:Integer",
+                    "column": "Student ID",
+                    "name": "Student ID",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        37,
+                        853,
+                        26,
+                        988,
+                        637,
+                        1076,
+                        378,
+                        359,
+                        1220,
+                        1288
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Student ID"
+                        },
+                        "fileObject": {
+                            "@id": "ba9fb52c-8415-454b-9f28-1ccedc68cc72"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "893cc19f-1c65-4f52-b1eb-39c97ba292d8",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                }
+            ]
+        }
+    ],
+    "country": "PT",
+    "citeAs": "ca",
+    "keywords": [
+        "math",
+        "student",
+        "higher education"
+    ],
+    "description": "This dataset was extracted from the MathE platform, an online educational platform developed to support mathematics teaching and learning in higher education. It contains 546 student responses to questions on several mathematical topics. Each record corresponds to an individual answer and includes the following features: Student ID, Student Country, Question ID, Type of Answer (correct or incorrect), Question Level (basic or advanced based on the assessment of the contributing professor), Math Topic (broader mathematical area of the question), Math Subtopic, and Question Keywords. The data spans from February 2019 to December 2023.",
+    "inLanguage": [
+        "en"
+    ],
+    "version": "",
+    "url": "https://dados.ipb.pt//dataset.xhtml?persistentId=doi:10.34620/dadosipb/PW3OWY",
+    "datePublished": "2025-05-24",
+    "archivedAt": "s3://dataset/8930240b-a0e8-46e7-ace8-aab2b42fcc01",
+    "license": "CC0 1.0",
+    "fieldOfScience": [
+        "MATHEMATICS"
+    ],
+    "name": "Mathematics Learning Assessment",
+    "conformsTo": "",
+    "headline": "Dataset for Assessing Mathematics Learning in Higher Education.",
+    "doi": "10.1000/1234567890",
+    "status": "ready"
+}

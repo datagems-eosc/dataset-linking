@@ -1,0 +1,108 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "d5c34990-9acf-4349-91d4-924f58565922",
+    "distribution": [
+        {
+            "@id": "5244a5ed-93f9-4f3f-8b79-53192efe7283",
+            "contentUrl": "/s3/dataset/d5c34990-9acf-4349-91d4-924f58565922/diderot.json",
+            "sha256": "de4ec30cb6c1c11bac6427d45562169a5078f452cd0042f5721e294b71664e56",
+            "contentSize": "134584786 B",
+            "name": "diderot.json",
+            "description": "",
+            "encodingFormat": "application/json",
+            "@type": "cr:FileObject"
+        }
+    ],
+    "recordSet": [],
+    "country": "FR",
+    "citeAs": "ca",
+    "keywords": [
+        "encyclopedia",
+        "diderot",
+        "french history",
+        "enlightenment",
+        "knowledge project"
+    ],
+    "description": "A digitized version of Diderot’s encyclopedia (1751-1772), extracted from Wikisource.",
+    "inLanguage": [
+        "en"
+    ],
+    "version": "",
+    "url": "https://github.com/ThoraHagen/languagedatagems/releases/tag/v1.0",
+    "datePublished": "2025-07-18",
+    "archivedAt": "s3://dataset/d5c34990-9acf-4349-91d4-924f58565922",
+    "license": "CC BY 4.0",
+    "fieldOfScience": [
+        "HISTORY AND ARCHAEOLOGY",
+        "LANGUAGES AND LITERATURE"
+    ],
+    "name": "Encyclopédie, ou Dictionnaire raisonné des sciences, des arts et des métiers",
+    "conformsTo": "",
+    "headline": "Digitized Version of Diderot’s Encyclopedia (1751-1772)",
+    "doi": "10.1000/1234567890",
+    "status": "loaded"
+}

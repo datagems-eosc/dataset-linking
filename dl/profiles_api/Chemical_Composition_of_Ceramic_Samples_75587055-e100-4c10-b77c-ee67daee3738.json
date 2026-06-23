@@ -1,0 +1,684 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "75587055-e100-4c10-b77c-ee67daee3738",
+    "distribution": [
+        {
+            "@id": "73070699-004a-42e8-8d70-4ca62812fe10",
+            "contentUrl": "/s3/dataset/75587055-e100-4c10-b77c-ee67daee3738/Chemical Composion of Ceramic.csv",
+            "sha256": "0a51a64dd6ad6c89a46d215e326fdc7874d30fe2e283d5ff632b7db9960ea60f",
+            "contentSize": "8672 B",
+            "name": "Chemical Composion of Ceramic.csv",
+            "description": "",
+            "encodingFormat": "text/csv",
+            "@type": "cr:FileObject"
+        }
+    ],
+    "recordSet": [
+        {
+            "@id": "6ace6aeb-9cb3-4ce6-8169-374a2dc40539",
+            "examples": "{\"Ceramic Name\": [\"FLQ-1-b\", \"FLQ-2-b\", \"FLQ-3-b\", \"FLQ-4-b\", \"FLQ-5-b\", \"FLQ-6-b\", \"FLQ-7-b\", \"FLQ-8-b\", \"FLQ-9-b\", \"FLQ-10-b\", \"FLQ-11-b\", \"FLQ-12-b\", \"FLQ-13-b\", \"DY-BS-1-b\", \"DY-BS-2-b\", \"DY-BS-3-b\", \"DY-BS-4-b\", \"DY-BS-5-b\", \"DY-BS-6-b\", \"DY-BS-7-b\", \"DY-NS-1-b\", \"DY-NS-2-b\", \"DY-NS-3-b\", \"DY-NS-4-b\", \"DY-NS-5-b\", \"DY-NS-6-b\", \"DY-NS-7-b\", \"DY-NS-8-b\", \"DY-Y-1-b\", \"DY-Y-2-b\"], \"Part\": [\"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\", \"Body\"], \"Na2O\": [0.62, 0.57, 0.49, 0.89, 0.03, 0.62, 0.45, 0.59, 0.42, 0.56, 0.35, 0.43, 0.76, 0.03, 0.71, 0.25, 0.43, 0.28, 0.25, 0.16, 0.03, 0.24, 0.29, 0.45, 0.29, 0.41, 0.34, 0.71, 0.3, 0.5], \"MgO\": [0.38, 0.47, 0.19, 0.3, 0.36, 0.18, 0.33, 0.45, 0.53, 0.49, 0.23, 0.7, 0.44, 0.26, 0.31, 0.24, 0.47, 0.22, 0.49, 0.34, 0.36, 0.55, 0.33, 0.46, 0.23, 0.25, 0.47, 0.25, 0.37, 0.32], \"Al2O3\": [19.61, 21.19, 18.6, 18.01, 18.41, 18.82, 17.65, 21.42, 23.12, 19.86, 19.53, 19.35, 19.45, 18.34, 24.47, 23.07, 20.67, 20.89, 20.79, 23.77, 25.13, 22.81, 23.49, 25.8, 22.26, 19.48, 22.48, 19.49, 25.0, 25.15], \"SiO2\": [71.99, 70.09, 74.7, 74.19, 73.99, 73.79, 74.99, 71.46, 67.41, 72.0, 72.87, 71.21, 72.52, 73.26, 65.2, 67.37, 70.07, 70.77, 69.92, 66.31, 64.58, 66.31, 67.94, 64.42, 68.93, 71.97, 67.8, 70.85, 65.09, 65.37], \"K2O\": [4.84, 4.98, 3.47, 4.01, 4.33, 4.28, 3.53, 3.47, 3.81, 4.51, 4.62, 4.77, 3.94, 5.11, 6.16, 5.8, 5.27, 4.79, 5.37, 6.05, 6.56, 5.59, 4.46, 4.57, 4.19, 5.03, 5.45, 5.43, 6.17, 5.34], \"CaO\": [0.31, 0.49, 0.43, 0.27, 0.65, 0.3, 0.7, 0.35, 0.74, 0.25, 0.28, 1.26, 0.58, 0.14, 0.17, 0.18, 0.13, 0.15, 0.18, 0.16, 0.17, 0.2, 0.17, 0.15, 0.12, 0.28, 0.49, 0.27, 0.18, 0.12], \"TiO2\": [0.07, 0.09, 0.06, 0.09, 0.05, 0.04, 0.07, 0.05, 0.16, 0.23, 0.07, 0.04, 0.07, 0.12, 0.09, 0.14, 0.2, 0.13, 0.15, 0.16, 0.07, 0.18, 0.16, 0.19, 0.29, 0.04, 0.14, 0.14, 0.07, 0.1], \"Fe2O3\": [1.18, 1.12, 1.07, 1.23, 1.19, 0.96, 1.28, 1.2, 2.81, 1.1, 1.05, 1.23, 1.24, 1.74, 1.89, 1.94, 1.77, 1.77, 1.86, 2.05, 2.11, 3.11, 2.15, 2.97, 2.68, 1.53, 1.83, 1.88, 1.83, 2.1], \"MnO\": [630, 380, 420, 460, 380, 350, 650, 500, 340, 330, 320, 420, 420, 480, 430, 280, 300, 230, 470, 280, 400, 350, 310, 240, 250, 490, 310, 370, 360, 400], \"CuO\": [10, 20, 20, 20, 40, 20, 20, 10, 40, 20, 70, 0, 50, 0, 40, 0, 10, 60, 30, 40, 20, 20, 0, 60, 50, 80, 10, 30, 30, 30], \"ZnO\": [70, 80, 50, 70, 90, 80, 90, 70, 120, 70, 40, 90, 100, 100, 110, 70, 80, 90, 120, 80, 90, 110, 80, 110, 120, 110, 120, 110, 80, 90], \"PbO2\": [10, 40, 50, 60, 40, 10, 90, 50, 30, 20, 20, 30, 10, 90, 20, 60, 40, 60, 80, 80, 40, 70, 20, 40, 60, 60, 40, 70, 100, 10], \"Rb2O\": [430, 430, 380, 380, 360, 390, 410, 380, 370, 350, 450, 430, 390, 370, 360, 370, 350, 290, 370, 400, 380, 330, 230, 270, 270, 320, 320, 330, 370, 380], \"SrO\": [0, -10, 40, 10, 10, 10, 30, 70, 20, 10, 10, 10, 30, 20, 10, 10, 40, 0, 10, 20, 10, 30, 20, 0, 20, 10, 10, 30, 10, 0], \"Y2O3\": [40, 40, 40, 40, 30, 40, 30, 40, 30, 40, 40, 40, 30, 50, 50, 50, 60, 60, 50, 50, 70, 50, 30, 50, 40, 60, 60, 60, 60, 70], \"ZrO2\": [80, 100, 80, 70, 80, 80, 90, 80, 150, 130, 120, 80, 80, 200, 200, 200, 180, 190, 180, 230, 170, 220, 210, 260, 310, 160, 170, 190, 160, 190], \"P2O5\": [90, 110, 200, 210, 150, 130, 140, 440, 180, 150, 140, 100, 150, 80, 60, 90, 110, 60, 60, 70, 110, 90, 170, 120, 70, 200, 120, 70, 110, 50]}",
+            "name": "Chemical Composion of Ceramic",
+            "field": [
+                {
+                    "@id": "c8006863-f5fc-4bdd-b7e5-926c3657550f",
+                    "name": "MnO",
+                    "column": "MnO",
+                    "sample": [
+                        630,
+                        870,
+                        910,
+                        400,
+                        750,
+                        430,
+                        640,
+                        950,
+                        1600,
+                        660
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "MnO"
+                        },
+                        "fileObject": {
+                            "@id": "73070699-004a-42e8-8d70-4ca62812fe10"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "311854fc-bff5-486e-a2bc-fe3b2bcc6e1d",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "f1aa4b9c-cdf2-4417-b398-d4150bf3fcb4",
+                    "name": "CuO",
+                    "column": "CuO",
+                    "sample": [
+                        70,
+                        20,
+                        40,
+                        20,
+                        0,
+                        40,
+                        20,
+                        40,
+                        0,
+                        0
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "CuO"
+                        },
+                        "fileObject": {
+                            "@id": "73070699-004a-42e8-8d70-4ca62812fe10"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "d8a7a49d-f93f-4e02-83a0-75bb56fe13a7",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "2d5a8e51-956e-48ff-b9d1-54b9b58182ba",
+                    "name": "P2O5",
+                    "column": "P2O5",
+                    "sample": [
+                        70,
+                        110,
+                        210,
+                        60,
+                        60,
+                        1080,
+                        880,
+                        60,
+                        690,
+                        70
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "P2O5"
+                        },
+                        "fileObject": {
+                            "@id": "73070699-004a-42e8-8d70-4ca62812fe10"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "d561b980-e192-4c8b-ae3b-84d3ace9af2d",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "a374e009-f4d8-4632-93bd-bf181a628f01",
+                    "name": "Na2O",
+                    "column": "Na2O",
+                    "sample": [
+                        0.03,
+                        0.28,
+                        0.39,
+                        0.42,
+                        0.31,
+                        0.14,
+                        0.3,
+                        0.29,
+                        0.25,
+                        0.14
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Na2O"
+                        },
+                        "fileObject": {
+                            "@id": "73070699-004a-42e8-8d70-4ca62812fe10"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "85dacdf3-3d74-48e2-b697-fa4a20f36461",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "0abb1702-d2ba-4569-a27c-49f0abe1f748",
+                    "name": "Al2O3",
+                    "column": "Al2O3",
+                    "sample": [
+                        18.41,
+                        21.4,
+                        11.84,
+                        13.15,
+                        24.07,
+                        23.49,
+                        12.83,
+                        12.95,
+                        13.47,
+                        12.42
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Al2O3"
+                        },
+                        "fileObject": {
+                            "@id": "73070699-004a-42e8-8d70-4ca62812fe10"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "4aa2b2d3-a484-4183-aa8a-03929c44f093",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "fd77ea52-50a0-4ee6-b45b-d7653f036ccd",
+                    "name": "MgO",
+                    "column": "MgO",
+                    "sample": [
+                        0.53,
+                        0.47,
+                        0.19,
+                        0.5,
+                        0.33,
+                        0.97,
+                        0.38,
+                        0.22,
+                        0.46,
+                        0.47
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "MgO"
+                        },
+                        "fileObject": {
+                            "@id": "73070699-004a-42e8-8d70-4ca62812fe10"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "6a25c222-202c-4631-af72-7cdefbc5105e",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "8e815c32-06bb-400a-a811-175ec55815a4",
+                    "name": "TiO2",
+                    "column": "TiO2",
+                    "sample": [
+                        0.06,
+                        0.21,
+                        0.05,
+                        0.16,
+                        0.07,
+                        0.07,
+                        0.08,
+                        0.16,
+                        0.09,
+                        0.1
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "TiO2"
+                        },
+                        "fileObject": {
+                            "@id": "73070699-004a-42e8-8d70-4ca62812fe10"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "51cb8fe1-330b-4213-ad11-a93e2ec94df0",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "4c129b6b-8e3f-44f8-9c17-e0dfcb2e7653",
+                    "name": "Ceramic Name",
+                    "column": "Ceramic Name",
+                    "sample": [
+                        "DY-BS-6-b",
+                        "FLQ-6-g",
+                        "FLQ-1-b",
+                        "DY-BS-7-g",
+                        "FLQ-7-b",
+                        "DY-BS-3-b",
+                        "DY-QC-2-b",
+                        "FLQ-13-b",
+                        "FLQ-9-g",
+                        "DY-Y-9-b"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Ceramic Name"
+                        },
+                        "fileObject": {
+                            "@id": "73070699-004a-42e8-8d70-4ca62812fe10"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "1e4e11b1-0470-481f-8b61-3037fe43a7e4",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "5ccb7913-5b86-4d01-be96-c2fc26b11309",
+                    "name": "Part",
+                    "column": "Part",
+                    "sample": [
+                        "Body",
+                        "Glaze",
+                        "Glaze",
+                        "Glaze",
+                        "Body",
+                        "Body",
+                        "Body",
+                        "Glaze",
+                        "Glaze",
+                        "Body"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Part"
+                        },
+                        "fileObject": {
+                            "@id": "73070699-004a-42e8-8d70-4ca62812fe10"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "c4977f52-f258-4f8b-aeee-10b7a7930be4",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "7c4eb0c0-53bb-43e0-8fa9-47ae96fb1c6c",
+                    "name": "ZnO",
+                    "column": "ZnO",
+                    "sample": [
+                        90,
+                        120,
+                        80,
+                        120,
+                        50,
+                        70,
+                        150,
+                        120,
+                        70,
+                        70
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "ZnO"
+                        },
+                        "fileObject": {
+                            "@id": "73070699-004a-42e8-8d70-4ca62812fe10"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "dd92dd42-deb2-4958-a2db-0056c4d96443",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "c205a305-8567-4c2f-8515-327ba3092db0",
+                    "name": "K2O",
+                    "column": "K2O",
+                    "sample": [
+                        5.78,
+                        5.17,
+                        3.89,
+                        5.28,
+                        5.8,
+                        6.25,
+                        4.79,
+                        4.19,
+                        5.14,
+                        4.85
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "K2O"
+                        },
+                        "fileObject": {
+                            "@id": "73070699-004a-42e8-8d70-4ca62812fe10"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "3479f2b6-3c82-4526-aa48-46ebd2e60c53",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "558ba239-7709-4cd3-98e7-7d8fcfd58113",
+                    "name": "Y2O3",
+                    "column": "Y2O3",
+                    "sample": [
+                        50,
+                        40,
+                        50,
+                        40,
+                        40,
+                        40,
+                        30,
+                        40,
+                        40,
+                        60
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Y2O3"
+                        },
+                        "fileObject": {
+                            "@id": "73070699-004a-42e8-8d70-4ca62812fe10"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "7943680e-97a8-46d3-8c3d-2f685c6e3d0e",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "d4416fd8-b3d6-4061-b6fd-aed9448a1d27",
+                    "name": "Rb2O",
+                    "column": "Rb2O",
+                    "sample": [
+                        340,
+                        390,
+                        270,
+                        250,
+                        180,
+                        400,
+                        220,
+                        310,
+                        290,
+                        230
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Rb2O"
+                        },
+                        "fileObject": {
+                            "@id": "73070699-004a-42e8-8d70-4ca62812fe10"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "290a6862-8df5-49c1-8ab5-edd984c6b9f0",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "88384f97-5e59-4563-b8c0-caea0a4b117c",
+                    "name": "Fe2O3",
+                    "column": "Fe2O3",
+                    "sample": [
+                        2.18,
+                        1.24,
+                        0.97,
+                        1.53,
+                        1.97,
+                        1.04,
+                        1.77,
+                        1.27,
+                        1.18,
+                        1.73
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Fe2O3"
+                        },
+                        "fileObject": {
+                            "@id": "73070699-004a-42e8-8d70-4ca62812fe10"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "4d3b1c2b-8318-4c21-ae91-ffe7fac9a286",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "0dd8f675-0a2f-4af9-af18-1e45cf15d05f",
+                    "name": "ZrO2",
+                    "column": "ZrO2",
+                    "sample": [
+                        390,
+                        70,
+                        130,
+                        150,
+                        150,
+                        190,
+                        130,
+                        130,
+                        80,
+                        80
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "ZrO2"
+                        },
+                        "fileObject": {
+                            "@id": "73070699-004a-42e8-8d70-4ca62812fe10"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "a0fbd298-8df9-47af-a1ae-1f647f7eb42e",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "979e782b-ab91-44ed-8b03-0b79ef7cd5eb",
+                    "name": "CaO",
+                    "column": "CaO",
+                    "sample": [
+                        0.65,
+                        6.99,
+                        6.14,
+                        8.13,
+                        1.26,
+                        6.43,
+                        9.81,
+                        6.03,
+                        0.13,
+                        12.16
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "CaO"
+                        },
+                        "fileObject": {
+                            "@id": "73070699-004a-42e8-8d70-4ca62812fe10"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "b37328a7-f11b-4a67-9b32-14b499752021",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "81914158-6dee-4d3d-9d62-cd06a77bc101",
+                    "name": "PbO2",
+                    "column": "PbO2",
+                    "sample": [
+                        40,
+                        40,
+                        0,
+                        20,
+                        40,
+                        20,
+                        20,
+                        40,
+                        70,
+                        10
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "PbO2"
+                        },
+                        "fileObject": {
+                            "@id": "73070699-004a-42e8-8d70-4ca62812fe10"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "2ceaa787-de10-4214-98bf-72cb382e0aac",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "21099c54-8094-4e59-b460-80ba6e0de243",
+                    "name": "SiO2",
+                    "column": "SiO2",
+                    "sample": [
+                        67.24,
+                        70.77,
+                        68.81,
+                        67.94,
+                        71.13,
+                        71.93,
+                        71.55,
+                        75.95,
+                        71.46,
+                        71.6
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "SiO2"
+                        },
+                        "fileObject": {
+                            "@id": "73070699-004a-42e8-8d70-4ca62812fe10"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "eb2453e5-24b7-4294-bae5-931c69d09288",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "2c7798da-2c3a-46a8-aa06-d971ae362cf6",
+                    "name": "SrO",
+                    "column": "SrO",
+                    "sample": [
+                        570,
+                        0,
+                        0,
+                        0,
+                        20,
+                        30,
+                        540,
+                        10,
+                        30,
+                        90
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "SrO"
+                        },
+                        "fileObject": {
+                            "@id": "73070699-004a-42e8-8d70-4ca62812fe10"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "8245efec-ddb5-43a3-94eb-f311a9ada113",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                }
+            ],
+            "@type": "cr:RecordSet"
+        }
+    ],
+    "country": "",
+    "keywords": [
+        "ceramics",
+        "chemical composition",
+        "EDXRF"
+    ],
+    "citeAs": "Chemical Composition of Ceramic Samples [Dataset]. (2019). UCI Machine Learning Repository. https://doi.org/10.24432/C54P5X.",
+    "description": "The energy dispersive X-ray fluorescence (EDXRF) was used to determine the chemical composition of celadon body and glaze in Longquan kiln (at Dayao County) and Jingdezhen kiln. Forty typical shards in four cultural eras were selected to investigate the raw materials and firing technology. We hope to identify chemical elements that are strongest explanatory variables to classify samples into different cultural eras and kilns.",
+    "inLanguage": [
+        "en"
+    ],
+    "version": "",
+    "url": "https://archive.ics.uci.edu/dataset/583/chemical+composition+of+ceramic+samples",
+    "datePublished": "2025-05-24",
+    "license": "CC-BY 4.0",
+    "archivedAt": "s3://dataset/75587055-e100-4c10-b77c-ee67daee3738",
+    "fieldOfScience": [
+        "MATERIALS ENGINEERING",
+        "CHEMICAL SCIENCES"
+    ],
+    "name": "Chemical Composition of Ceramic Samples",
+    "conformsTo": "",
+    "headline": "Classify ceramic samples based on their chemical composition from energy dispersive X-ray fluorescence",
+    "status": "ready"
+}

@@ -1,0 +1,506 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "cf3b920b-0ef0-4d30-ab04-ff4149cadc71",
+    "distribution": [
+        {
+            "@id": "d723af89-cfcc-4d9a-8186-a28564825d7f",
+            "contentUrl": "/s3/dataset/cf3b920b-0ef0-4d30-ab04-ff4149cadc71/heart_failure_clinical_records_dataset.csv",
+            "sha256": "95f050062f6fa407780583ee2f8966b4c99d7c67e3d8614c9aba8cab2a585773",
+            "contentSize": "12239 B",
+            "name": "heart_failure_clinical_records_dataset.csv",
+            "description": "",
+            "encodingFormat": "text/csv",
+            "@type": "cr:FileObject"
+        }
+    ],
+    "recordSet": [
+        {
+            "@id": "f429acaf-c1a7-40fb-b561-eb68e6f92978",
+            "examples": "{\"age\": [75.0, 55.0, 65.0, 50.0, 65.0, 90.0, 75.0, 60.0, 65.0, 80.0, 75.0, 62.0, 45.0, 50.0, 49.0, 82.0, 87.0, 45.0, 70.0, 48.0, 65.0, 65.0, 68.0, 53.0, 75.0, 80.0, 95.0, 70.0, 58.0, 82.0], \"anaemia\": [0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0], \"creatinine_phosphokinase\": [582, 7861, 146, 111, 160, 47, 246, 315, 157, 123, 81, 231, 981, 168, 80, 379, 149, 582, 125, 582, 52, 128, 220, 63, 582, 148, 112, 122, 60, 70], \"diabetes\": [0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1], \"ejection_fraction\": [20, 38, 20, 20, 20, 40, 15, 60, 65, 35, 38, 25, 30, 38, 30, 50, 38, 14, 25, 55, 25, 30, 35, 60, 30, 38, 40, 45, 38, 30], \"high_blood_pressure\": [1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 0], \"platelets\": [265000.0, 263358.03, 162000.0, 210000.0, 327000.0, 204000.0, 127000.0, 454000.0, 263358.03, 388000.0, 368000.0, 253000.0, 136000.0, 276000.0, 427000.0, 47000.0, 262000.0, 166000.0, 237000.0, 87000.0, 276000.0, 297000.0, 289000.0, 368000.0, 263358.03, 149000.0, 196000.0, 284000.0, 153000.0, 200000.0], \"serum_creatinine\": [1.9, 1.1, 1.3, 1.9, 2.7, 2.1, 1.2, 1.1, 1.5, 9.4, 4.0, 0.9, 1.1, 1.1, 1.0, 1.3, 0.9, 0.8, 1.0, 1.9, 1.3, 1.6, 0.9, 0.8, 1.83, 1.9, 1.0, 1.3, 5.8, 1.2], \"serum_sodium\": [130, 136, 129, 137, 116, 132, 137, 131, 138, 133, 131, 140, 137, 137, 138, 136, 140, 127, 140, 121, 137, 136, 140, 135, 134, 144, 138, 136, 134, 132], \"sex\": [1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 1], \"smoking\": [0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 1], \"time\": [4, 6, 7, 7, 8, 8, 10, 10, 10, 10, 10, 10, 11, 11, 12, 13, 14, 14, 15, 15, 16, 20, 20, 22, 23, 23, 24, 26, 26, 26], \"DEATH_EVENT\": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1]}",
+            "name": "heart_failure_clinical_records_dataset",
+            "field": [
+                {
+                    "@id": "3d284394-0c72-4176-b26b-b0dab4734cd7",
+                    "name": "DEATH_EVENT",
+                    "column": "DEATH_EVENT",
+                    "sample": [
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        1,
+                        1,
+                        1,
+                        0,
+                        1
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "DEATH_EVENT"
+                        },
+                        "fileObject": {
+                            "@id": "d723af89-cfcc-4d9a-8186-a28564825d7f"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "290f242d-2f31-4d04-bbf7-393fc7529338",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "30525345-2969-4425-a87f-f505669a34d6",
+                    "name": "ejection_fraction",
+                    "column": "ejection_fraction",
+                    "sample": [
+                        38,
+                        25,
+                        35,
+                        35,
+                        20,
+                        38,
+                        55,
+                        25,
+                        30,
+                        60
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "ejection_fraction"
+                        },
+                        "fileObject": {
+                            "@id": "d723af89-cfcc-4d9a-8186-a28564825d7f"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "02a432fa-eede-40a6-9f26-b1cf496f1532",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "81be60e6-eeb3-415a-bcae-cb83a75501cf",
+                    "name": "serum_creatinine",
+                    "column": "serum_creatinine",
+                    "sample": [
+                        1.3,
+                        1.2,
+                        1.0,
+                        2.3,
+                        0.9,
+                        0.7,
+                        1.2,
+                        1.0,
+                        1.0,
+                        1.1
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "serum_creatinine"
+                        },
+                        "fileObject": {
+                            "@id": "d723af89-cfcc-4d9a-8186-a28564825d7f"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "2f91dc3e-4c07-4e94-a5ac-346e6bb96d82",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "c2331e37-aa6a-4fde-99ad-fe2b21366923",
+                    "name": "serum_sodium",
+                    "column": "serum_sodium",
+                    "sample": [
+                        138,
+                        141,
+                        141,
+                        139,
+                        139,
+                        133,
+                        139,
+                        134,
+                        144,
+                        139
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "serum_sodium"
+                        },
+                        "fileObject": {
+                            "@id": "d723af89-cfcc-4d9a-8186-a28564825d7f"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "8828669d-786c-4fb7-9f32-4f35d0788a10",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "fe6ac326-a454-40f2-a9f8-3f21647682d9",
+                    "name": "smoking",
+                    "column": "smoking",
+                    "sample": [
+                        1,
+                        0,
+                        1,
+                        0,
+                        1,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "smoking"
+                        },
+                        "fileObject": {
+                            "@id": "d723af89-cfcc-4d9a-8186-a28564825d7f"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "a2d45347-1890-4f96-8992-4d161f252d5b",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "d90c364d-b268-4f18-b695-7651cc9b61fd",
+                    "column": "high_blood_pressure",
+                    "name": "high_blood_pressure",
+                    "sample": [
+                        0,
+                        1,
+                        1,
+                        1,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "high_blood_pressure"
+                        },
+                        "fileObject": {
+                            "@id": "d723af89-cfcc-4d9a-8186-a28564825d7f"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "a4152906-b8c1-41f0-a560-5a7a6f499361",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "1830d7d0-0410-42b6-b3cf-8c46079e19de",
+                    "name": "time",
+                    "column": "time",
+                    "sample": [
+                        76,
+                        27,
+                        33,
+                        197,
+                        90,
+                        186,
+                        201,
+                        187,
+                        120,
+                        209
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "time"
+                        },
+                        "fileObject": {
+                            "@id": "d723af89-cfcc-4d9a-8186-a28564825d7f"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "61ecf7c8-69a8-4a96-96c6-f864bd87d2be",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "0e1ebb31-a851-42af-9bbf-3cbd629e1e94",
+                    "name": "platelets",
+                    "column": "platelets",
+                    "sample": [
+                        203000.0,
+                        212000.0,
+                        286000.0,
+                        181000.0,
+                        422000.0,
+                        271000.0,
+                        249000.0,
+                        263358.03,
+                        255000.0,
+                        279000.0
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "platelets"
+                        },
+                        "fileObject": {
+                            "@id": "d723af89-cfcc-4d9a-8186-a28564825d7f"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "fa50c0f7-0990-4a99-a5c1-bea2641c66b7",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "b6bce910-6f6d-4cf6-b0b1-6e7627af7c34",
+                    "name": "diabetes",
+                    "column": "diabetes",
+                    "sample": [
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "diabetes"
+                        },
+                        "fileObject": {
+                            "@id": "d723af89-cfcc-4d9a-8186-a28564825d7f"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "cde975ac-5352-457a-a323-dfd078225e08",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "e3c0a70d-8fa3-4d42-8951-f9a040966f24",
+                    "column": "creatinine_phosphokinase",
+                    "name": "creatinine_phosphokinase",
+                    "sample": [
+                        59,
+                        92,
+                        115,
+                        23,
+                        66,
+                        168,
+                        257,
+                        130,
+                        582,
+                        835
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "creatinine_phosphokinase"
+                        },
+                        "fileObject": {
+                            "@id": "d723af89-cfcc-4d9a-8186-a28564825d7f"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "12d4d9cd-2296-4ffc-8d45-7346ea06bb10",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "a5ba3283-a391-4620-b002-9b858bcee9ee",
+                    "name": "age",
+                    "column": "age",
+                    "sample": [
+                        70.0,
+                        72.0,
+                        42.0,
+                        81.0,
+                        60.0,
+                        50.0,
+                        63.0,
+                        45.0,
+                        82.0,
+                        45.0
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "age"
+                        },
+                        "fileObject": {
+                            "@id": "d723af89-cfcc-4d9a-8186-a28564825d7f"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "57df9325-78a7-491d-94e4-a87be5b6e1e4",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "1898b873-bdd7-420c-86b3-b0a391bed3b7",
+                    "name": "sex",
+                    "column": "sex",
+                    "sample": [
+                        0,
+                        1,
+                        1,
+                        1,
+                        1,
+                        1,
+                        0,
+                        1,
+                        1,
+                        1
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "sex"
+                        },
+                        "fileObject": {
+                            "@id": "d723af89-cfcc-4d9a-8186-a28564825d7f"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "f7fa593e-3974-4550-b69b-a7bdfd388e91",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "27dbdc94-50a3-4e82-afc6-312cddf080e3",
+                    "name": "anaemia",
+                    "column": "anaemia",
+                    "sample": [
+                        1,
+                        0,
+                        1,
+                        1,
+                        1,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "anaemia"
+                        },
+                        "fileObject": {
+                            "@id": "d723af89-cfcc-4d9a-8186-a28564825d7f"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "c403b850-6afe-43cf-9c9e-ab8f5630802b",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                }
+            ],
+            "@type": "cr:RecordSet"
+        }
+    ],
+    "country": "",
+    "keywords": [
+        "heart failure",
+        "clinical records",
+        "predictive modeling",
+        "patient survival",
+        "medical data"
+    ],
+    "citeAs": "Heart Failure Clinical Records [Dataset]. (2020). UCI Machine Learning Repository. https://doi.org/10.24432/C5Z89R.",
+    "description": "This dataset contains medical records of 299 patients diagnosed with heart failure, collected during their follow-up period. Each patient profile includes 13 clinical features such as serum creatinine levels and ejection fraction, which are key indicators used in predicting patient outcomes. The data supports various machine learning tasks including classification, regression, and clustering to analyze and predict survival chances of heart failure patients. The dataset is valuable for developing predictive models aimed at improving clinical decision-making and patient care.",
+    "inLanguage": [
+        "en"
+    ],
+    "version": "",
+    "url": "https://archive.ics.uci.edu/dataset/519/heart+failure+clinical+records",
+    "datePublished": "2025-05-24",
+    "license": "CC-BY 4.0",
+    "archivedAt": "s3://dataset/cf3b920b-0ef0-4d30-ab04-ff4149cadc71",
+    "fieldOfScience": [
+        "HEALTH SCIENCES",
+        "CLINICAL MEDICINE"
+    ],
+    "name": "Heart Failure Clinical Records",
+    "conformsTo": "",
+    "headline": "Heart Failure Clinical Records Dataset for Predictive Analysis of Patient Survival",
+    "status": "ready"
+}

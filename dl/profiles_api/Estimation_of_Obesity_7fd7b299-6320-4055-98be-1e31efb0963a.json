@@ -1,0 +1,624 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "7fd7b299-6320-4055-98be-1e31efb0963a",
+    "distribution": [
+        {
+            "@id": "95108b41-c555-4e76-9e7e-7abe9afa3f33",
+            "contentUrl": "/s3/dataset/7fd7b299-6320-4055-98be-1e31efb0963a/ObesityDataSet_raw_and_data_sinthetic.csv",
+            "sha256": "dc32b6ab49d9edceff1ff513683227c5c752b0b3ca6e91e8c03e8aaf634affdb",
+            "contentSize": "263646 B",
+            "name": "ObesityDataSet_raw_and_data_sinthetic.csv",
+            "encodingFormat": "text/csv",
+            "description": "",
+            "@type": "cr:FileObject"
+        }
+    ],
+    "recordSet": [
+        {
+            "@id": "d2ddd4e7-c8a0-44fc-a1d3-6d5e2c8af38f",
+            "examples": "{\"Gender\": [\"Female\", \"Female\", \"Male\", \"Male\", \"Male\", \"Male\", \"Female\", \"Male\", \"Male\", \"Male\", \"Male\", \"Female\", \"Male\", \"Male\", \"Male\", \"Female\", \"Male\", \"Female\", \"Female\", \"Female\", \"Male\", \"Female\", \"Female\", \"Female\", \"Male\", \"Male\", \"Male\", \"Female\", \"Male\", \"Male\"], \"Age\": [21.0, 21.0, 23.0, 27.0, 22.0, 29.0, 23.0, 22.0, 24.0, 22.0, 26.0, 21.0, 22.0, 41.0, 23.0, 22.0, 27.0, 29.0, 30.0, 23.0, 22.0, 52.0, 22.0, 22.0, 21.0, 20.0, 21.0, 23.0, 19.0, 23.0], \"Height\": [1.62, 1.52, 1.8, 1.8, 1.78, 1.62, 1.5, 1.64, 1.78, 1.72, 1.85, 1.72, 1.65, 1.8, 1.77, 1.7, 1.93, 1.53, 1.71, 1.65, 1.65, 1.69, 1.65, 1.6, 1.85, 1.6, 1.7, 1.6, 1.75, 1.68], \"Weight\": [64.0, 56.0, 77.0, 87.0, 89.8, 53.0, 55.0, 53.0, 64.0, 68.0, 105.0, 80.0, 56.0, 99.0, 60.0, 66.0, 102.0, 78.0, 82.0, 70.0, 80.0, 87.0, 60.0, 82.0, 68.0, 50.0, 65.0, 52.0, 76.0, 70.0], \"family_history_with_overweight\": [\"yes\", \"yes\", \"yes\", \"no\", \"no\", \"no\", \"yes\", \"no\", \"yes\", \"yes\", \"yes\", \"yes\", \"no\", \"no\", \"yes\", \"yes\", \"yes\", \"no\", \"yes\", \"yes\", \"yes\", \"yes\", \"yes\", \"yes\", \"yes\", \"yes\", \"yes\", \"no\", \"yes\", \"no\"], \"FAVC\": [\"no\", \"no\", \"no\", \"no\", \"no\", \"yes\", \"yes\", \"no\", \"yes\", \"yes\", \"yes\", \"yes\", \"no\", \"yes\", \"yes\", \"no\", \"yes\", \"yes\", \"yes\", \"no\", \"no\", \"yes\", \"yes\", \"yes\", \"yes\", \"no\", \"yes\", \"yes\", \"yes\", \"yes\"], \"FCVC\": [2.0, 3.0, 2.0, 3.0, 2.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 2.0, 3.0, 3.0, 2.0, 2.0, 3.0, 2.0, 2.0, 3.0, 3.0, 1.0, 2.0, 2.0, 2.0, 2.0, 3.0, 2.0], \"NCP\": [3.0, 3.0, 3.0, 3.0, 1.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 1.0, 3.0, 1.0, 1.0, 4.0, 1.0, 3.0, 1.0, 3.0, 1.0, 3.0, 4.0, 1.0, 4.0, 3.0, 3.0], \"CAEC\": [\"Sometimes\", \"Sometimes\", \"Sometimes\", \"Sometimes\", \"Sometimes\", \"Sometimes\", \"Sometimes\", \"Sometimes\", \"Sometimes\", \"Sometimes\", \"Frequently\", \"Frequently\", \"Sometimes\", \"Sometimes\", \"Sometimes\", \"Always\", \"Sometimes\", \"Sometimes\", \"Frequently\", \"Sometimes\", \"Sometimes\", \"Sometimes\", \"Sometimes\", \"Sometimes\", \"Sometimes\", \"Frequently\", \"Frequently\", \"Frequently\", \"Sometimes\", \"Sometimes\"], \"SMOKE\": [\"no\", \"yes\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"yes\", \"no\", \"no\", \"yes\", \"no\", \"no\", \"no\", \"yes\", \"no\", \"no\", \"no\", \"no\"], \"CH2O\": [2.0, 3.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 3.0, 2.0, 3.0, 2.0, 1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0], \"SCC\": [\"no\", \"yes\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"yes\", \"no\", \"no\", \"no\", \"yes\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"no\", \"yes\", \"no\"], \"FAF\": [0.0, 3.0, 2.0, 2.0, 0.0, 0.0, 1.0, 3.0, 1.0, 1.0, 2.0, 2.0, 2.0, 2.0, 1.0, 2.0, 1.0, 0.0, 0.0, 0.0, 3.0, 0.0, 1.0, 0.0, 0.0, 3.0, 1.0, 2.0, 3.0, 2.0], \"TUE\": [1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 2.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 2.0, 0.0, 0.0, 2.0, 1.0, 2.0, 2.0, 1.0, 1.0, 2.0], \"CALC\": [\"no\", \"Sometimes\", \"Frequently\", \"Frequently\", \"Sometimes\", \"Sometimes\", \"Sometimes\", \"Sometimes\", \"Frequently\", \"no\", \"Sometimes\", \"Sometimes\", \"Sometimes\", \"Frequently\", \"Sometimes\", \"Sometimes\", \"Sometimes\", \"no\", \"no\", \"Sometimes\", \"no\", \"no\", \"Sometimes\", \"Sometimes\", \"Sometimes\", \"no\", \"Always\", \"Sometimes\", \"Sometimes\", \"Frequently\"], \"MTRANS\": [\"Public_Transportation\", \"Public_Transportation\", \"Public_Transportation\", \"Walking\", \"Public_Transportation\", \"Automobile\", \"Motorbike\", \"Public_Transportation\", \"Public_Transportation\", \"Public_Transportation\", \"Public_Transportation\", \"Public_Transportation\", \"Public_Transportation\", \"Automobile\", \"Public_Transportation\", \"Public_Transportation\", \"Public_Transportation\", \"Automobile\", \"Automobile\", \"Public_Transportation\", \"Walking\", \"Automobile\", \"Automobile\", \"Public_Transportation\", \"Public_Transportation\", \"Public_Transportation\", \"Walking\", \"Automobile\", \"Public_Transportation\", \"Walking\"], \"NObeyesdad\": [\"Normal_Weight\", \"Normal_Weight\", \"Normal_Weight\", \"Overweight_Level_I\", \"Overweight_Level_II\", \"Normal_Weight\", \"Normal_Weight\", \"Normal_Weight\", \"Normal_Weight\", \"Normal_Weight\", \"Obesity_Type_I\", \"Overweight_Level_II\", \"Normal_Weight\", \"Obesity_Type_I\", \"Normal_Weight\", \"Normal_Weight\", \"Overweight_Level_II\", \"Obesity_Type_I\", \"Overweight_Level_II\", \"Overweight_Level_I\", \"Overweight_Level_II\", \"Obesity_Type_I\", \"Normal_Weight\", \"Obesity_Type_I\", \"Normal_Weight\", \"Normal_Weight\", \"Normal_Weight\", \"Normal_Weight\", \"Normal_Weight\", \"Normal_Weight\"]}",
+            "name": "ObesityDataSet_raw_and_data_sinthetic",
+            "field": [
+                {
+                    "@id": "bbf81a46-2957-4461-833c-cb896285eb62",
+                    "name": "CALC",
+                    "column": "CALC",
+                    "sample": [
+                        "Sometimes",
+                        "Sometimes",
+                        "Sometimes",
+                        "Sometimes",
+                        "Sometimes",
+                        "Frequently",
+                        "Sometimes",
+                        "Sometimes",
+                        "no",
+                        "Sometimes"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "CALC"
+                        },
+                        "fileObject": {
+                            "@id": "95108b41-c555-4e76-9e7e-7abe9afa3f33"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "9029004d-9ca0-42e9-bc95-020b872c2845",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "3533dbd2-e7ae-4e02-a377-e5821857064c",
+                    "name": "FAVC",
+                    "column": "FAVC",
+                    "sample": [
+                        "yes",
+                        "yes",
+                        "yes",
+                        "yes",
+                        "no",
+                        "yes",
+                        "yes",
+                        "yes",
+                        "yes",
+                        "yes"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "FAVC"
+                        },
+                        "fileObject": {
+                            "@id": "95108b41-c555-4e76-9e7e-7abe9afa3f33"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "6288f1c8-6d82-4733-b493-7e1a43b8e1b9",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "acb0887e-54d3-480f-b0e6-7095d54279ca",
+                    "name": "NObeyesdad",
+                    "column": "NObeyesdad",
+                    "sample": [
+                        "Overweight_Level_I",
+                        "Overweight_Level_II",
+                        "Overweight_Level_I",
+                        "Overweight_Level_II",
+                        "Overweight_Level_II",
+                        "Obesity_Type_I",
+                        "Obesity_Type_II",
+                        "Normal_Weight",
+                        "Overweight_Level_I",
+                        "Normal_Weight"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "NObeyesdad"
+                        },
+                        "fileObject": {
+                            "@id": "95108b41-c555-4e76-9e7e-7abe9afa3f33"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "c2e856c6-e41b-4d5d-b55a-e1a6319f2b81",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "f0203dc3-9990-47d2-97c6-a3270f4a4026",
+                    "name": "FAF",
+                    "column": "FAF",
+                    "sample": [
+                        1.866839,
+                        0.1768,
+                        1.162519,
+                        3.0,
+                        2.0,
+                        0.503105,
+                        1.413239,
+                        1.412357,
+                        1.335857,
+                        0.069802
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "FAF"
+                        },
+                        "fileObject": {
+                            "@id": "95108b41-c555-4e76-9e7e-7abe9afa3f33"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "f0c1dcbe-9fe9-4f49-91f6-5465da7b394f",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "6288c26b-ae5e-43d3-951b-6ca3233bfadf",
+                    "name": "Weight",
+                    "column": "Weight",
+                    "sample": [
+                        102.781971,
+                        52.629374,
+                        82.130728,
+                        80.0,
+                        109.349025,
+                        90.0,
+                        133.665587,
+                        141.166265,
+                        102.174953,
+                        80.0
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Weight"
+                        },
+                        "fileObject": {
+                            "@id": "95108b41-c555-4e76-9e7e-7abe9afa3f33"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "2d217a7c-4f72-43b1-a173-92a471fcc3f1",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "59e34c2c-c4ea-4c8d-8749-01fedf50b324",
+                    "name": "SMOKE",
+                    "column": "SMOKE",
+                    "sample": [
+                        "no",
+                        "no",
+                        "no",
+                        "no",
+                        "no",
+                        "no",
+                        "no",
+                        "no",
+                        "no",
+                        "no"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "SMOKE"
+                        },
+                        "fileObject": {
+                            "@id": "95108b41-c555-4e76-9e7e-7abe9afa3f33"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "edbafdf7-5df2-4ff4-bd9b-8b2cba5661bc",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "b49264ca-ea3c-4cd3-b8b4-dc3efb8e0dc6",
+                    "name": "MTRANS",
+                    "column": "MTRANS",
+                    "sample": [
+                        "Automobile",
+                        "Public_Transportation",
+                        "Public_Transportation",
+                        "Public_Transportation",
+                        "Public_Transportation",
+                        "Public_Transportation",
+                        "Public_Transportation",
+                        "Public_Transportation",
+                        "Public_Transportation",
+                        "Public_Transportation"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "MTRANS"
+                        },
+                        "fileObject": {
+                            "@id": "95108b41-c555-4e76-9e7e-7abe9afa3f33"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "967cc0bf-73e0-4eca-b658-d9c7cf59c1ec",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "bac3ce68-0c06-496b-b25b-6ee7d5b254b2",
+                    "column": "family_history_with_overweight",
+                    "name": "family_history_with_overweight",
+                    "sample": [
+                        "yes",
+                        "yes",
+                        "yes",
+                        "yes",
+                        "yes",
+                        "yes",
+                        "yes",
+                        "yes",
+                        "yes",
+                        "yes"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "family_history_with_overweight"
+                        },
+                        "fileObject": {
+                            "@id": "95108b41-c555-4e76-9e7e-7abe9afa3f33"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "467ca36b-ab87-467e-b227-1fbe2a644a07",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "9b1ee3a8-8910-44a6-9a38-3bbdcee1f9a4",
+                    "name": "NCP",
+                    "column": "NCP",
+                    "sample": [
+                        3.0,
+                        3.0,
+                        3.0,
+                        3.0,
+                        1.73762,
+                        4.0,
+                        3.0,
+                        3.0,
+                        3.0,
+                        3.0
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "NCP"
+                        },
+                        "fileObject": {
+                            "@id": "95108b41-c555-4e76-9e7e-7abe9afa3f33"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "d897319a-e27b-4e7f-9d71-a3f56d8b9964",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "7c651943-827f-496d-b85d-11e4123f98bc",
+                    "name": "TUE",
+                    "column": "TUE",
+                    "sample": [
+                        0.162494,
+                        0.962336,
+                        0.593917,
+                        0.939726,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.999268,
+                        0.024088,
+                        0.682128
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "TUE"
+                        },
+                        "fileObject": {
+                            "@id": "95108b41-c555-4e76-9e7e-7abe9afa3f33"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "bd1d5d9e-b12b-48eb-826f-83aa0c5ee593",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "592f8d0b-e618-46b8-9a31-6c4a96493b3f",
+                    "name": "SCC",
+                    "column": "SCC",
+                    "sample": [
+                        "no",
+                        "no",
+                        "no",
+                        "no",
+                        "no",
+                        "no",
+                        "no",
+                        "no",
+                        "no",
+                        "no"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "SCC"
+                        },
+                        "fileObject": {
+                            "@id": "95108b41-c555-4e76-9e7e-7abe9afa3f33"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "56747975-3df5-42af-88a3-9bbc943a4ce1",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "d60b3c93-5949-4daa-bb8a-b29eac2399fb",
+                    "name": "Gender",
+                    "column": "Gender",
+                    "sample": [
+                        "Female",
+                        "Female",
+                        "Male",
+                        "Male",
+                        "Female",
+                        "Male",
+                        "Male",
+                        "Female",
+                        "Female",
+                        "Male"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Gender"
+                        },
+                        "fileObject": {
+                            "@id": "95108b41-c555-4e76-9e7e-7abe9afa3f33"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "b84b967d-7bbc-4607-b878-e58bd1bcb5c7",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "71ec2b89-fcad-41d1-87c8-2da418da0e1b",
+                    "name": "Height",
+                    "column": "Height",
+                    "sample": [
+                        1.548178,
+                        1.70165,
+                        1.534385,
+                        1.849507,
+                        1.8,
+                        1.532643,
+                        1.783953,
+                        1.608914,
+                        1.74379,
+                        1.728834
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Height"
+                        },
+                        "fileObject": {
+                            "@id": "95108b41-c555-4e76-9e7e-7abe9afa3f33"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "4fed2fcc-500d-4b2d-8821-544fd49d87ab",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "3fb36df1-8232-416e-b5fd-11b91177b7db",
+                    "name": "FCVC",
+                    "column": "FCVC",
+                    "sample": [
+                        3.0,
+                        2.0,
+                        2.0,
+                        2.0,
+                        3.0,
+                        2.0,
+                        2.549782,
+                        3.0,
+                        2.0,
+                        2.8557
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "FCVC"
+                        },
+                        "fileObject": {
+                            "@id": "95108b41-c555-4e76-9e7e-7abe9afa3f33"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "aa404a75-cc17-4207-b842-94481ad57fd9",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "b6048e7b-2dc4-4d8d-927f-99e38a914de0",
+                    "name": "CH2O",
+                    "column": "CH2O",
+                    "sample": [
+                        1.385175,
+                        3.0,
+                        2.065817,
+                        1.068493,
+                        3.0,
+                        2.531984,
+                        1.0,
+                        1.164644,
+                        2.224164,
+                        2.32502
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "CH2O"
+                        },
+                        "fileObject": {
+                            "@id": "95108b41-c555-4e76-9e7e-7abe9afa3f33"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "2dba8609-7494-4639-b39b-6e99e64c27f4",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "2de4dc50-4f7b-446e-a7d3-8ad5015b8905",
+                    "name": "Age",
+                    "column": "Age",
+                    "sample": [
+                        21.001458,
+                        26.015448,
+                        17.0,
+                        40.0,
+                        23.285553,
+                        18.863875,
+                        24.751511,
+                        21.701643,
+                        19.483036,
+                        26.0
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Age"
+                        },
+                        "fileObject": {
+                            "@id": "95108b41-c555-4e76-9e7e-7abe9afa3f33"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "480888a0-039e-4873-b242-d6bdaad4b147",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "d501981b-9d0e-4c90-8a90-0ac861e48dd1",
+                    "name": "CAEC",
+                    "column": "CAEC",
+                    "sample": [
+                        "Sometimes",
+                        "Frequently",
+                        "Sometimes",
+                        "Sometimes",
+                        "Frequently",
+                        "Sometimes",
+                        "Sometimes",
+                        "Sometimes",
+                        "Sometimes",
+                        "Sometimes"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "CAEC"
+                        },
+                        "fileObject": {
+                            "@id": "95108b41-c555-4e76-9e7e-7abe9afa3f33"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "9de376d9-da45-46c8-8849-95b4e89f96a0",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                }
+            ],
+            "@type": "cr:RecordSet"
+        }
+    ],
+    "country": "",
+    "keywords": [
+        "obesity",
+        "health",
+        "eating habits",
+        "physical condition"
+    ],
+    "citeAs": "Estimation of Obesity Levels Based On Eating Habits and Physical Condition  [Dataset]. (2019). UCI Machine Learning Repository. https://doi.org/10.24432/C5H31Z.",
+    "description": "This dataset include data for the estimation of obesity levels in individuals from the countries of Mexico, Peru and Colombia, based on their eating habits and physical condition.",
+    "inLanguage": [
+        "en"
+    ],
+    "version": "",
+    "url": "https://archive.ics.uci.edu/dataset/544/estimation+of+obesity+levels+based+on+eating+habits+and+physical+condition",
+    "datePublished": "2025-05-24",
+    "license": "CC BY 4.0",
+    "archivedAt": "s3://dataset/7fd7b299-6320-4055-98be-1e31efb0963a",
+    "fieldOfScience": [
+        "HEALTH SCIENCES"
+    ],
+    "name": "Estimation of Obesity",
+    "conformsTo": "",
+    "headline": "Estimation of Obesity Levels Based On Eating Habits and Physical Condition",
+    "status": "ready"
+}

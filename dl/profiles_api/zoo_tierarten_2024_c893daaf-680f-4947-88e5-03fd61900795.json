@@ -1,0 +1,159 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "c893daaf-680f-4947-88e5-03fd61900795",
+    "distribution": [
+        {
+            "@id": "f5234567-890a-bcde-f012-3456789abcde",
+            "contentUrl": "s3://dataset/c893daaf-680f-4947-88e5-03fd61900795/zoo-metadata.csv",
+            "sha256": "7eg9d801g9d58644568c8c8c119g9g7eeg918585371ccd687g737d73208gb4be",
+            "contentSize": "1500000 B",
+            "name": "zoo-metadata.csv",
+            "description": "",
+            "encodingFormat": "text/csv",
+            "@type": "cr:FileObject"
+        },
+        {
+            "@id": "883b5c9b-408a-4dd8-8619-e34e664b9920",
+            "contentUrl": "s3://dataset/c893daaf-680f-4947-88e5-03fd61900795/zoo-2024.csv",
+            "sha256": "6df8c700f8c47533c567b7b3108f8f6ddf807474260bcb576f626b72107fa3ad",
+            "contentSize": "2407043 B",
+            "name": "zoo-2024.csv",
+            "description": "",
+            "encodingFormat": "text/csv",
+            "@type": "cr:FileObject"
+        }
+    ],
+    "recordSet": [
+        {
+            "@id": "eb87b0f3-fb8a-4a24-8234-3da28b7398a0",
+            "examples": "{\"\\u00ef\\u00bb\\u00bfKategorie\": [\"Amphibien\", \"Amphibien\", \"Amphibien\", \"Fische\", \"Fische\", \"Fische\", \"Fische\", \"Fische\", \"Fische\", \"Fische\", \"Fische\", \"Fische\", \"Fische\", \"Fische\", \"Fische\", \"Fische\", \"Fische\", \"Fische\", \"Fische\", \"Fische\", \"Fische\", \"Reptilien\", \"Reptilien\", \"Reptilien\", \"Reptilien\", \"Reptilien\", \"Reptilien\", \"Reptilien\", \"Reptilien\", \"Reptilien\"], \"Art\": [\"Schmuckhornfrosch\", \"Rotaugenlaubfrosch\", \"Schwimmw\\u00c3\\u00bchle\", \"Trauermantelsalmler\", \"Antennenwels\", \"Schwielenwels\", \"Saugmaulwels\", \"Amerikanischer Wei\\u00c3\\u009fstirnmesserfisch\", \"Gr\\u00c3\\u00bcnflossen-Buntbarsch\", \"Saugbarbe\", \"Endlers Guppy\", \"Pfauenaugenbuntbarsch\", \"Augenfleckbuntbarsch\", \"Pfauenaugen-Stechrochen\", \"Hujeta Hechtsalmler\", \"Schmucksalmler\", \"Dickkopf-Scheibensalmler\", \"Roter Neon\", \"Roter Piranha\", \"Prachtkopfsteher\", \"Flaggenbuntbarsch\", \"\\u00c3\\u0084gyptische Landschildkr\\u00c3\\u00b6te\", \"Spornschildkr\\u00c3\\u00b6te\", \"Asiatischer Hausgekko\", \"Oman-Eidechse\", \"Kaiserboa\", \"Salvin Kreuzbrustschildkr\\u00c3\\u00b6te\", \"Waldschildkr\\u00c3\\u00b6te\", \"Stirnlappenbasilisk\", \"Streifenbasilisk\"], \"wissenschaftlicher Name\": [\"Ceratophrys cranwelli\", \"Agalychnis callidryas\", \"Typhlonectes natans\", \"Gymnocorymbus ternetzi\", \"Ancistrus spec.\", \"Leothoplosternum pectorale\", \"Hypostomus spec.\", \"Apteronotus albifrons\", \"Cichlasoma nigrofasciatum\", \"Garra spec.\", \"Poecilia wingei\", \"Astronotus oncellatus\", \"Heros severum\", \"Potamotrygon motoro\", \"Ctenolucius hujeta\", \"Hyphessobrycon rosaceus\", \"Methynis altidorsalis\", \"Paracheirodon axelrodi\", \"Pygocentrus nattereri\", \"Anostomus anostomus\", \"Mesonauta festivus\", \"Testudo kleinmanni\", \"Centrochelys sulcata\", \"Hemidactylus frenatus\", \"Omanosaura jayakari\", \"Boa imperator\", \"Staurotypus salvinii\", \"Chelonoides denticulata\", \"Basiliscus plumifrons\", \"Basiliscus vittatus\"], \"Anzahl\": [\"0\", \"0\", \"0\", \"0\", \"ca 15\", \"0\", \"0\", \"0\", \"ca 10\", \"0\", \"0\", \"0\", \"4\", \"4\", \"0\", \"0\", \"13\", \"21\", \"0\", \"1\", \"3\", \"4\", \"2\", \"15\", \"2\", \"0\", \"0\", \"0\", \"0\", \"0\"], \"Kommune\": [\"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\", \"Dortmund\"]}",
+            "name": "zoo-2024",
+            "@type": "cr:RecordSet",
+            "field": [
+                {
+                    "@id": "c5f7c053-4aa5-4c3f-9d7f-9a2d58a3b6e1",
+                    "dataType": "sc:Text",
+                    "name": "﻿Kategorie",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "Säugetiere",
+                        "Säugetiere",
+                        "Säugetiere",
+                        "Säugetiere",
+                        "Vögel",
+                        "Vögel",
+                        "Reptilien",
+                        "Säugetiere",
+                        "Vögel",
+                        "Säugetiere"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "﻿Kategorie"
+                        },
+                        "fileObject": {
+                            "@id": "f5234567-890a-bcde-f012-3456789abcde"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "6bc80891-81bf-4890-9e47-44f6ee72a6c1",
+                        "@type": "dg:ColumnStatistics",
+                        "missingPercentage": 0.0,
+                        "missingCount": 0,
+                        "rowCount": 192,
+                        "uniqueCount": 190
+                    }
+                }
+            ]
+        }
+    ],
+    "country": "CH",
+    "citeAs": "",
+    "keywords": [
+        "zoo",
+        "animals",
+        "species"
+    ],
+    "description": "Zoo animal species data",
+    "inLanguage": [
+        "de"
+    ],
+    "version": "",
+    "url": "",
+    "datePublished": "2024-12-09",
+    "archivedAt": "s3://dataset/c893daaf-680f-4947-88e5-03fd61900795",
+    "license": "Public Domain",
+    "fieldOfScience": [
+        "BIOLOGICAL SCIENCES"
+    ],
+    "name": "zoo_tierarten_2024",
+    "conformsTo": "",
+    "headline": "Zoo animal species data from Zurich Zoo.",
+    "doi": "10.1234/zoo-dataset",
+    "status": "ready"
+}

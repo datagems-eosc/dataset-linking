@@ -1,0 +1,145 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "d331fe5f-b0ea-4d2a-99e6-edb758001b70",
+    "distribution": [
+        {
+            "@id": "b00c7cd6-10d9-48f1-8e7d-6fdd27a664e4",
+            "contentUrl": "/s3/dataset/d331fe5f-b0ea-4d2a-99e6-edb758001b70/dataset_staging/diabetes_binary_5050split_health_indicators_BRFSS2015.csv",
+            "sha256": "4b066e45960a4a05d3e80ac1b5f21b1c45e81ba4e90188bc459ff9cf56a63efe",
+            "contentSize": "6347570 B",
+            "name": "diabetes_binary_5050split_health_indicators_BRFSS2015.csv",
+            "encodingFormat": "text/csv",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "5178bf16-cde2-44c1-ab1b-520ae2585504"
+            }
+        },
+        {
+            "@id": "10126e66-2568-4aec-bca5-a0122ee66f86",
+            "contentUrl": "/s3/dataset/d331fe5f-b0ea-4d2a-99e6-edb758001b70/dataset_staging/diabetes_binary_health_indicators_BRFSS2015.csv",
+            "sha256": "0f43f479bc5d566eda5fd7f762cf8867f7a54c55863c9506560fc1f3c620c543",
+            "contentSize": "22738154 B",
+            "name": "diabetes_binary_health_indicators_BRFSS2015.csv",
+            "encodingFormat": "text/csv",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "5178bf16-cde2-44c1-ab1b-520ae2585504"
+            }
+        },
+        {
+            "@id": "b9ca3050-4f26-4872-8abb-2fccce41c092",
+            "contentUrl": "/s3/dataset/d331fe5f-b0ea-4d2a-99e6-edb758001b70/dataset_staging/diabetes_012_health_indicators_BRFSS2015.csv",
+            "sha256": "e0c433740d353f8c18dbe3e61e304d9f186579702fdbdd1b7db1e71ae81806b6",
+            "contentSize": "22738151 B",
+            "name": "diabetes_012_health_indicators_BRFSS2015.csv",
+            "encodingFormat": "text/csv",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "5178bf16-cde2-44c1-ab1b-520ae2585504"
+            }
+        },
+        {
+            "@id": "5178bf16-cde2-44c1-ab1b-520ae2585504",
+            "contentUrl": "/s3/dataset/d331fe5f-b0ea-4d2a-99e6-edb758001b70/dataset_staging",
+            "contentSize": "51823875 B",
+            "name": "dataset_staging",
+            "encodingFormat": "text/csv",
+            "@type": "cr:FileSet"
+        }
+    ],
+    "recordSet": [],
+    "country": "",
+    "keywords": [
+        "diabetes",
+        "health indicators",
+        "BRFSS",
+        "predictive modeling",
+        "chronic disease",
+        "public health",
+        "beginner"
+    ],
+    "description": "This dataset is based on the 2015 Behavioral Risk Factor Surveillance System (BRFSS) survey conducted by the CDC, which collects health-related data from over 400,000 Americans annually. It focuses on diabetes and prediabetes prevalence, providing three versions of the dataset with responses from 253,680 to 70,692 individuals. The data includes 21 feature variables derived from survey questions and calculated indicators related to health behaviors, chronic conditions, and preventative care. The primary target variables classify respondents into diabetes status categories: no diabetes, prediabetes, or diabetes, with some datasets balancing class distribution for analysis. This data supports exploring key research questions, such as the predictive power of BRFSS survey responses for diabetes risk, identifying the most significant risk factors, and developing streamlined question sets for efficient diabetes risk screening. Given diabetes’s high prevalence and significant economic and health impacts in the U.S., this dataset is valuable for developing predictive models to aid early diagnosis and targeted interventions.",
+    "inLanguage": [
+        "en"
+    ],
+    "version": "",
+    "url": "https://www.kaggle.com/datasets/alexteboul/diabetes-health-indicators-dataset",
+    "datePublished": "2025-05-24",
+    "license": "CC0: Public Domain",
+    "archivedAt": "s3://dataset/d331fe5f-b0ea-4d2a-99e6-edb758001b70",
+    "fieldOfScience": [
+        "HEALTH SCIENCES",
+        "CLINICAL MEDICINE"
+    ],
+    "name": "Diabetes Health Indicators Dataset",
+    "conformsTo": "",
+    "headline": "Predictive Analysis of Diabetes Risk Using 2015 CDC BRFSS Survey Data",
+    "status": "loaded"
+}

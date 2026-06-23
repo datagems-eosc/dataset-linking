@@ -1,0 +1,2504 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "b573d56a-6e74-4b7b-bbce-e1c4ea847572",
+    "distribution": [
+        {
+            "@id": "cb715faf-5cbc-44d7-99bc-6fb6b83a9d37",
+            "contentUrl": "postgresql://172.16.59.5:30432/ds_era5_land",
+            "name": "ds_era5_land",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "dg:DatabaseConnection"
+        },
+        {
+            "@id": "c9d37fb6-f4cd-4e8c-b175-5940a08de0c2",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "landcover_type",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "681a480b-83e9-4fd6-b6d8-a34401c999ef"
+            }
+        },
+        {
+            "@id": "f322c65f-35fa-418e-b8bb-d62539d7bdc8",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "coordinates_of_highest_point",
+            "description": "",
+            "encodingFormat": "text/sql",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "681a480b-83e9-4fd6-b6d8-a34401c999ef"
+            }
+        },
+        {
+            "@id": "3cf9f754-18c4-41e1-9309-15ee47773ec7",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "meteo_tmax",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "681a480b-83e9-4fd6-b6d8-a34401c999ef"
+            }
+        },
+        {
+            "@id": "f46e4d47-eee3-456a-87a2-33618b27e99f",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "meteo_ssrd",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "681a480b-83e9-4fd6-b6d8-a34401c999ef"
+            }
+        },
+        {
+            "@id": "3ca33356-21f7-4149-94e6-77badc4eaa00",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "landcover_upscaled",
+            "description": "",
+            "encodingFormat": "text/sql",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "681a480b-83e9-4fd6-b6d8-a34401c999ef"
+            }
+        },
+        {
+            "@id": "1cc5fa15-e1f5-45cc-80e2-f4e50f086f3f",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "meteo_tmin",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "681a480b-83e9-4fd6-b6d8-a34401c999ef"
+            }
+        },
+        {
+            "@id": "a18601ec-b14c-4446-9d4d-a2dec53ceaf9",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "meteo_sdmax",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "681a480b-83e9-4fd6-b6d8-a34401c999ef"
+            }
+        },
+        {
+            "@id": "681a480b-83e9-4fd6-b6d8-a34401c999ef",
+            "contentUrl": "postgresql://172.16.59.5:30432/ds_era5_land",
+            "name": "ds_era5_land",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "dg:DatabaseConnection"
+        },
+        {
+            "@id": "ff725a15-3ebd-496c-9645-4326181e4a47",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "meteo_windspeedmax",
+            "description": "",
+            "encodingFormat": "text/sql",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "681a480b-83e9-4fd6-b6d8-a34401c999ef"
+            }
+        },
+        {
+            "@id": "97fc02c0-7a45-4d00-88e8-47818c58c7a8",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "meteo_tp",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "681a480b-83e9-4fd6-b6d8-a34401c999ef"
+            }
+        },
+        {
+            "@id": "67d708cf-c66a-4708-babf-dab4ea85be65",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "meteo_tmean",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "681a480b-83e9-4fd6-b6d8-a34401c999ef"
+            }
+        },
+        {
+            "@id": "0e74fc06-c114-4ce3-8513-de7fabdc6078",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "landcover",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "681a480b-83e9-4fd6-b6d8-a34401c999ef"
+            }
+        },
+        {
+            "@id": "aa74a8f1-9764-40dc-9f9f-063dfac73f4e",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "temp_2020_highest_point",
+            "description": "",
+            "encodingFormat": "text/sql",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "681a480b-83e9-4fd6-b6d8-a34401c999ef"
+            }
+        },
+        {
+            "@id": "4fa01a25-e00d-40db-873e-38f16c15f64c",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "elevation_short",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "681a480b-83e9-4fd6-b6d8-a34401c999ef"
+            }
+        },
+        {
+            "@id": "eabbb247-5829-46e7-858c-fe71edc40514",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "meteo_elevation",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "681a480b-83e9-4fd6-b6d8-a34401c999ef"
+            }
+        },
+        {
+            "@id": "d964b9d7-8ebd-429a-aa3b-cfd313c34dc7",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "landcover_type",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "cb715faf-5cbc-44d7-99bc-6fb6b83a9d37"
+            }
+        },
+        {
+            "@id": "94f78b79-f636-4384-a452-6c0d4683c057",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "landcover_upscaled",
+            "description": "",
+            "encodingFormat": "text/sql",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "cb715faf-5cbc-44d7-99bc-6fb6b83a9d37"
+            }
+        },
+        {
+            "@id": "36c3e579-c981-42b5-b024-7a04b68dd411",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "meteo_sdmax",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "cb715faf-5cbc-44d7-99bc-6fb6b83a9d37"
+            }
+        },
+        {
+            "@id": "1f649935-3888-4671-b105-7a0395df46d5",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "elevation_short",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "cb715faf-5cbc-44d7-99bc-6fb6b83a9d37"
+            }
+        },
+        {
+            "@id": "30750d7c-39e9-486a-8932-596160ab49a6",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "meteo_ssrd",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "cb715faf-5cbc-44d7-99bc-6fb6b83a9d37"
+            }
+        },
+        {
+            "@id": "c423997e-3ced-42a8-91dc-1c887e8c9b02",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "meteo_tmin",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "cb715faf-5cbc-44d7-99bc-6fb6b83a9d37"
+            }
+        },
+        {
+            "@id": "e8053384-4d8e-48b5-8d5f-3f9ea7902781",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "meteo_tmean",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "cb715faf-5cbc-44d7-99bc-6fb6b83a9d37"
+            }
+        },
+        {
+            "@id": "4be0a54a-a60b-4de2-bc33-cae228a20822",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "landcover",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "cb715faf-5cbc-44d7-99bc-6fb6b83a9d37"
+            }
+        },
+        {
+            "@id": "553483fc-7727-4665-ad8b-0f3b7bab6aaa",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "coordinates_of_highest_point",
+            "description": "",
+            "encodingFormat": "text/sql",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "cb715faf-5cbc-44d7-99bc-6fb6b83a9d37"
+            }
+        },
+        {
+            "@id": "9db0c79b-1e54-4d06-802b-a8d47e8fb697",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "meteo_windspeedmax",
+            "description": "",
+            "encodingFormat": "text/sql",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "cb715faf-5cbc-44d7-99bc-6fb6b83a9d37"
+            }
+        },
+        {
+            "@id": "fe11a4a0-f8c9-40e2-87d4-f4a3ce78328a",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "meteo_tp",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "cb715faf-5cbc-44d7-99bc-6fb6b83a9d37"
+            }
+        },
+        {
+            "@id": "a03bc426-168d-4f55-a732-5b235250e7b6",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "temp_2020_highest_point",
+            "description": "",
+            "encodingFormat": "text/sql",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "cb715faf-5cbc-44d7-99bc-6fb6b83a9d37"
+            }
+        },
+        {
+            "@id": "7bcb2da6-714c-4e8f-8b36-819a9810a5e4",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "meteo_tmax",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "cb715faf-5cbc-44d7-99bc-6fb6b83a9d37"
+            }
+        },
+        {
+            "@id": "301061a0-ffd2-47ce-b9c4-3c2afec9905e",
+            "contentUrl": "",
+            "sha256": "",
+            "contentSize": "",
+            "name": "meteo_elevation",
+            "encodingFormat": "text/sql",
+            "description": "",
+            "@type": "cr:FileObject",
+            "containedIn": {
+                "@id": "cb715faf-5cbc-44d7-99bc-6fb6b83a9d37"
+            }
+        }
+    ],
+    "recordSet": [
+        {
+            "@id": "3688dfa1-55d1-492f-8099-ac976c90c6c1",
+            "examples": "{\"time\": [\"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\", \"1991-01-28 11:00:00\"], \"time_bnds_start\": [\"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\", \"1991-01-28 00:00:00\"], \"time_bnds_end\": [\"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\", \"1991-01-28 23:00:00\"], \"latitude\": [43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5, 43.5], \"longitude\": [19.1, 19.2, 19.3, 19.4, 19.5, 19.6, 19.7, 19.8, 19.9, 20.0, 20.1, 20.2, 20.3, 20.4, 20.5, 20.6, 20.7, 20.8, 20.9, 21.0, 21.1, 21.2, 21.3, 21.4, 21.5, 21.6, 21.7, 21.8, 21.9, 22.0], \"sdmax\": [0.07715030023041825, 0.07226356854561822, 0.06835964323318022, 0.051761135611066156, 0.03906655330139014, 0.03613178427280911, 0.03906655330139014, 0.07031160588939922, 0.09863553953733234, 0.08203703191521827, 0.0615209488921612, 0.09081403882395128, 0.1210899351281034, 0.12792862946912242, 0.07324637491798025, 0.05566506092350415, 0.05761702357972315, 0.07519833757419925, 0.051761135611066156, 0.037114590645171086, 0.028323933647933064, 0.026371970991714067, 0.027341127275571087, 0.026371970991714067, 0.023437201963133036, 0.017581313994476044, 0.014646544965895014, 0.01367738868203805, 0.01659850762211401, 0.01855047027833301], \"id\": [176337, 176338, 176339, 176340, 176341, 176342, 176343, 176344, 176345, 176346, 176347, 176348, 176349, 176350, 176351, 176352, 176353, 176354, 176355, 176356, 176357, 176358, 176359, 176360, 176361, 176362, 176363, 176364, 176365, 176366]}",
+            "name": "meteo_sdmax",
+            "@type": "cr:RecordSet",
+            "field": [
+                {
+                    "@id": "58e3f954-6bce-45d3-90ed-1815b8b7d523",
+                    "column": "latitude",
+                    "name": "latitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "43.4",
+                        "43.3",
+                        "43.2"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "latitude"
+                        },
+                        "fileObject": {
+                            "@id": "36c3e579-c981-42b5-b024-7a04b68dd411"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "4b3cb228-a6f2-4ac5-a0f0-d3cdc62a8cd8",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "9b466f83-c2cd-4b08-8cc4-4cbddc2e7c15",
+                    "column": "sdmax",
+                    "name": "sdmax",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "0.059568986235942145",
+                        "0.0",
+                        "0.4775346962598996"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "sdmax"
+                        },
+                        "fileObject": {
+                            "@id": "36c3e579-c981-42b5-b024-7a04b68dd411"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "6a68107d-b870-4624-84c1-9b32919750d3",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "7c9b2c4a-c2d4-4cc1-916e-e7d7bbd15cea",
+                    "column": "time",
+                    "name": "time",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "1991-01-28 11:00:00"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "time"
+                        },
+                        "fileObject": {
+                            "@id": "36c3e579-c981-42b5-b024-7a04b68dd411"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "770fca94-e79d-471e-8f37-669f4cb1ba55",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "0d31cd7c-ed9b-44e1-b18a-cc5ab7192904",
+                    "column": "time_bnds_start",
+                    "name": "time_bnds_start",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "1991-01-28 00:00:00"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "time_bnds_start"
+                        },
+                        "fileObject": {
+                            "@id": "36c3e579-c981-42b5-b024-7a04b68dd411"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "1958de07-e3e4-4a40-96ba-fee527bdb724",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "910b3976-41d1-421f-81bd-70b4b7f018ce",
+                    "column": "time_bnds_end",
+                    "name": "time_bnds_end",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "1991-01-28 23:00:00"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "time_bnds_end"
+                        },
+                        "fileObject": {
+                            "@id": "36c3e579-c981-42b5-b024-7a04b68dd411"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "658bf040-bddb-4343-93e1-0cc69afeaa4d",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "258a748b-5ac2-42ab-9418-20c4de68398d",
+                    "column": "longitude",
+                    "name": "longitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "20.2",
+                        "17.3",
+                        "22.5"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "longitude"
+                        },
+                        "fileObject": {
+                            "@id": "36c3e579-c981-42b5-b024-7a04b68dd411"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "167cba70-eb82-459f-a8e4-060183a0b6ed",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "28d305f4-4be0-4953-9730-048bae2942c5",
+                    "dataType": "sc:Integer",
+                    "column": "id",
+                    "name": "id",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "176642",
+                        "176593",
+                        "177283"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "id"
+                        },
+                        "fileObject": {
+                            "@id": "36c3e579-c981-42b5-b024-7a04b68dd411"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "d6289483-b61a-4102-8de2-c041aec151ff",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                }
+            ]
+        },
+        {
+            "@id": "23ac8d0b-1ede-4121-86fa-e2e4fc4f7f5d",
+            "examples": "{\"longitude\": [26.348, 26.0835, 26.0862, 26.0888, 26.0915, 26.0942, 26.0968, 26.0995, 26.1022, 26.1048, 26.1075, 26.1102, 26.1128, 26.1155, 26.1182, 26.1208, 26.1235, 26.1262, 26.1288, 26.1315, 26.1342, 26.1368, 26.1395, 26.1422, 26.1448, 26.1475, 26.1502, 26.1528, 26.1555, 26.1582], \"latitude\": [71.2369, 71.2571, 71.2569, 71.2567, 71.2565, 71.2563, 71.2561, 71.2559, 71.2557, 71.2554, 71.2552, 71.255, 71.2548, 71.2546, 71.2544, 71.2542, 71.254, 71.2537, 71.2535, 71.2533, 71.2531, 71.2529, 71.2527, 71.2525, 71.2523, 71.252, 71.2518, 71.2516, 71.2514, 71.2512], \"value\": [44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44, 44], \"type_code\": [523, 523, 523, 523, 523, 523, 523, 523, 523, 523, 523, 523, 523, 523, 523, 523, 523, 523, 523, 523, 523, 523, 523, 523, 523, 523, 523, 523, 523, 523], \"level1_description\": [\"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\", \"Water bodies\"], \"level2_description\": [\"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\", \"Marine waters\"], \"level3_description\": [\"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\", \"Sea and ocean\"]}",
+            "name": "landcover",
+            "@type": "cr:RecordSet",
+            "field": [
+                {
+                    "@id": "1b9e1cb6-c1b3-4389-92ad-120680d61d30",
+                    "column": "longitude",
+                    "name": "longitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "26.2083",
+                        "26.2066",
+                        "26.1787"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "longitude"
+                        },
+                        "fileObject": {
+                            "@id": "4be0a54a-a60b-4de2-bc33-cae228a20822"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "586bf20a-616f-443d-88b8-9fca4775bbc1",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "1605e99f-81cf-4798-99a5-2f4bd4dbfb7e",
+                    "dataType": "sc:Text",
+                    "column": "level3_description",
+                    "name": "level3_description",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "Sea and ocean"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "level3_description"
+                        },
+                        "fileObject": {
+                            "@id": "4be0a54a-a60b-4de2-bc33-cae228a20822"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "87fb2f50-a01f-4ab6-bab0-b88732b859e9",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "ba664204-0673-4020-83de-f11a5888c6de",
+                    "dataType": "sc:Integer",
+                    "column": "type_code",
+                    "name": "type_code",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "523"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "type_code"
+                        },
+                        "fileObject": {
+                            "@id": "4be0a54a-a60b-4de2-bc33-cae228a20822"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "880306db-37cf-4444-b92c-f3c612cd5822",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "6170f860-fe05-4ab4-93fd-1752d7377b23",
+                    "column": "latitude",
+                    "name": "latitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "71.255",
+                        "71.2433",
+                        "71.2315"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "latitude"
+                        },
+                        "fileObject": {
+                            "@id": "4be0a54a-a60b-4de2-bc33-cae228a20822"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "98b5d3de-b09b-4398-a7f3-e0ef80ae540f",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "54afedec-317f-4d5b-89f9-4f07448a9cba",
+                    "dataType": "sc:Text",
+                    "column": "level2_description",
+                    "name": "level2_description",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "Marine waters"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "level2_description"
+                        },
+                        "fileObject": {
+                            "@id": "4be0a54a-a60b-4de2-bc33-cae228a20822"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "dd29fa44-de9e-4b15-b747-1bedbeb43aad",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "601d94c8-2e82-48f4-be6d-74c40e89106e",
+                    "dataType": "sc:Integer",
+                    "column": "value",
+                    "name": "value",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "44"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "value"
+                        },
+                        "fileObject": {
+                            "@id": "4be0a54a-a60b-4de2-bc33-cae228a20822"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "294e8cc3-6098-40dc-8bf2-56601b91b533",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "0feee7b0-212f-4deb-b553-220ef149350a",
+                    "dataType": "sc:Text",
+                    "column": "level1_description",
+                    "name": "level1_description",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "Water bodies"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "level1_description"
+                        },
+                        "fileObject": {
+                            "@id": "4be0a54a-a60b-4de2-bc33-cae228a20822"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "3031bb06-b1f1-429e-b43c-83afc46ac804",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                }
+            ]
+        },
+        {
+            "@id": "beb0af48-8557-40d8-a048-712e41d5ea80",
+            "examples": "{\"id\": [115301479], \"latitude\": [45.942], \"longitude\": [7.8691], \"elevation\": [4520.19]}",
+            "name": "coordinates_of_highest_point",
+            "@type": "cr:RecordSet",
+            "field": [
+                {
+                    "@id": "10807089-1d9c-462c-95c3-f1742c8f4555",
+                    "column": "longitude",
+                    "name": "longitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "7.8691"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "longitude"
+                        },
+                        "fileObject": {
+                            "@id": "553483fc-7727-4665-ad8b-0f3b7bab6aaa"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "2ccd6706-5b05-4113-b632-703b0c6183d8",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "5ea48465-09d6-4bfe-bf65-765a8b4f0db4",
+                    "column": "latitude",
+                    "name": "latitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "45.942"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "latitude"
+                        },
+                        "fileObject": {
+                            "@id": "553483fc-7727-4665-ad8b-0f3b7bab6aaa"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "d5bfd7e6-5388-42cd-80e3-169cb4011f4d",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "1b5651eb-7ba9-4cde-8aa1-5d89093baa1e",
+                    "column": "elevation",
+                    "name": "elevation",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "4520.19"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "elevation"
+                        },
+                        "fileObject": {
+                            "@id": "553483fc-7727-4665-ad8b-0f3b7bab6aaa"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "765a9122-b080-4d14-92d1-0e85a205193a",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "13c1294f-d672-45a5-8cf0-90865b928790",
+                    "dataType": "sc:Integer",
+                    "column": "id",
+                    "name": "id",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "115301479"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "id"
+                        },
+                        "fileObject": {
+                            "@id": "553483fc-7727-4665-ad8b-0f3b7bab6aaa"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "580a3022-3ca4-4628-969c-9bebbc3f4c30",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                }
+            ]
+        },
+        {
+            "@id": "ea0cc542-2f27-4022-be9d-fb0f8b95b818",
+            "examples": "{\"id\": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30], \"level1_code\": [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3], \"level1_label\": [\"Artificial surfaces\", \"Artificial surfaces\", \"Artificial surfaces\", \"Artificial surfaces\", \"Artificial surfaces\", \"Artificial surfaces\", \"Artificial surfaces\", \"Artificial surfaces\", \"Artificial surfaces\", \"Artificial surfaces\", \"Artificial surfaces\", \"Agricultural areas\", \"Agricultural areas\", \"Agricultural areas\", \"Agricultural areas\", \"Agricultural areas\", \"Agricultural areas\", \"Agricultural areas\", \"Agricultural areas\", \"Agricultural areas\", \"Agricultural areas\", \"Agricultural areas\", \"Forest and semi-natural areas\", \"Forest and semi-natural areas\", \"Forest and semi-natural areas\", \"Forest and semi-natural areas\", \"Forest and semi-natural areas\", \"Forest and semi-natural areas\", \"Forest and semi-natural areas\", \"Forest and semi-natural areas\"], \"level2_code\": [11, 11, 12, 12, 12, 12, 13, 13, 13, 14, 14, 21, 21, 21, 22, 22, 22, 23, 24, 24, 24, 24, 31, 31, 31, 32, 32, 32, 32, 33], \"level2_label\": [\"Urban fabric\", \"Urban fabric\", \"Industrial, commercial, transport\", \"Industrial, commercial, transport\", \"Industrial, commercial, transport\", \"Industrial, commercial, transport\", \"Mine, dump, construction\", \"Mine, dump, construction\", \"Mine, dump, construction\", \"Artificial, non-agricultural vegetated areas\", \"Artificial, non-agricultural vegetated areas\", \"Arable land\", \"Arable land\", \"Arable land\", \"Permanent crops\", \"Permanent crops\", \"Permanent crops\", \"Pastures\", \"Heterogeneous agricultural areas\", \"Heterogeneous agricultural areas\", \"Heterogeneous agricultural areas\", \"Heterogeneous agricultural areas\", \"Forests\", \"Forests\", \"Forests\", \"Scrub and/or herbaceous vegetation\", \"Scrub and/or herbaceous vegetation\", \"Scrub and/or herbaceous vegetation\", \"Scrub and/or herbaceous vegetation\", \"Open spaces with little or no vegetation\"], \"level3_code\": [111, 112, 121, 122, 123, 124, 131, 132, 133, 141, 142, 211, 212, 213, 221, 222, 223, 231, 241, 242, 243, 244, 311, 312, 313, 321, 322, 323, 324, 331], \"level3_label\": [\"Continuous urban fabric\", \"Discontinuous urban fabric\", \"Industrial or commercial units\", \"Road and rail networks and associated land\", \"Port areas\", \"Airports\", \"Mineral extraction sites\", \"Dump sites\", \"Construction sites\", \"Green urban areas\", \"Sport and leisure facilities\", \"Non-irrigated arable land\", \"Permanently irrigated land\", \"Rice fields\", \"Vineyards\", \"Fruit trees and berry plantations\", \"Olive groves\", \"Pastures\", \"Annual crops associated with permanent crops\", \"Complex cultivation patterns\", \"Land principally occupied by agriculture, with significant areas of natural vegetation\", \"Agro-forestry areas\", \"Broad-leaved forest\", \"Coniferous forest\", \"Mixed forest\", \"Natural grasslands\", \"Moors and heathland\", \"Sclerophyllous vegetation\", \"Transitional woodland-shrub\", \"Beaches, dunes, sands\"]}",
+            "name": "landcover_type",
+            "@type": "cr:RecordSet",
+            "field": [
+                {
+                    "@id": "ead52adf-b598-456f-85ad-6d37a1e5c338",
+                    "dataType": "sc:Text",
+                    "column": "level2_label",
+                    "name": "level2_label",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "Inland waters",
+                        "Maritime wetlands",
+                        "Urban fabric"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "level2_label"
+                        },
+                        "fileObject": {
+                            "@id": "d964b9d7-8ebd-429a-aa3b-cfd313c34dc7"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "5f7efdc7-29c1-4406-8209-18ce536cc9b1",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "ca0687f6-e095-41b4-a6ad-ee83524f07a5",
+                    "dataType": "sc:Integer",
+                    "column": "id",
+                    "name": "id",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "42",
+                        "29",
+                        "4"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "id"
+                        },
+                        "fileObject": {
+                            "@id": "d964b9d7-8ebd-429a-aa3b-cfd313c34dc7"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "cf01cf7d-ad5a-4d20-b30d-3359b703eb5b",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "2cd00d08-078c-43c6-bdcf-60f9cfc64f95",
+                    "dataType": "sc:Integer",
+                    "column": "level2_code",
+                    "name": "level2_code",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "42",
+                        "51",
+                        "41"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "level2_code"
+                        },
+                        "fileObject": {
+                            "@id": "d964b9d7-8ebd-429a-aa3b-cfd313c34dc7"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "6471bc03-d1e1-4004-bad3-ab082f54642b",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "bc0155c5-340b-47cc-89a7-75f09183c1b4",
+                    "dataType": "sc:Integer",
+                    "column": "level3_code",
+                    "name": "level3_code",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "142",
+                        "121",
+                        "335"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "level3_code"
+                        },
+                        "fileObject": {
+                            "@id": "d964b9d7-8ebd-429a-aa3b-cfd313c34dc7"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "49d27810-ab20-4fa7-909d-d19fad27b4e1",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "14517ed8-d6e1-46e3-a757-845fed0b1e2c",
+                    "dataType": "sc:Integer",
+                    "column": "level1_code",
+                    "name": "level1_code",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "4",
+                        "3",
+                        "1"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "level1_code"
+                        },
+                        "fileObject": {
+                            "@id": "d964b9d7-8ebd-429a-aa3b-cfd313c34dc7"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "bef2b79a-0e93-4fc1-b832-d5cf446f9a8a",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "1aa3713c-e4d3-4e7f-b3bc-386da8f0e1a9",
+                    "dataType": "sc:Text",
+                    "column": "level3_label",
+                    "name": "level3_label",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "Beaches, dunes, sands",
+                        "Airports",
+                        "Inland marshes"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "level3_label"
+                        },
+                        "fileObject": {
+                            "@id": "d964b9d7-8ebd-429a-aa3b-cfd313c34dc7"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "81e3372f-abb1-4bb5-a9fa-618c2dc091ec",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "e149473c-c6b4-46a0-a637-d64a551d1c4d",
+                    "dataType": "sc:Text",
+                    "column": "level1_label",
+                    "name": "level1_label",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "Artificial surfaces",
+                        "Wetlands",
+                        "Water bodies"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "level1_label"
+                        },
+                        "fileObject": {
+                            "@id": "d964b9d7-8ebd-429a-aa3b-cfd313c34dc7"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "9e9b287a-fc45-44b5-a7e3-f994f4b0d183",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                }
+            ]
+        },
+        {
+            "@id": "15afbb78-02b2-4b08-a7b9-41d09e37bfc7",
+            "examples": "{\"time\": [\"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\", \"1991-01-31 00:00:00\"], \"latitude\": [43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6, 43.6], \"longitude\": [21.9, 22.0, 22.1, 22.2, 22.3, 22.4, 22.5, 22.6, 22.7, 22.8, 22.9, 23.0, 23.1, 23.2, 23.3, 23.4, 23.5, 23.6, 23.7, 23.8, 23.9, 24.0, 24.1, 24.2, 24.3, 24.4, 24.5, 24.6, 24.7, 24.8], \"tp\": [4.113665233990149e-05, 4.4074984649894455e-05, 4.701331695988742e-05, 5.2889981579873346e-05, 5.582831388986631e-05, 5.8766646199859274e-05, 6.46433108198452e-05, 9.108830160978187e-05, 0.00012340995701970447, 0.00015573161242962708, 0.00018805326783954968, 0.00023800491710943006, 0.00028795656637931044, 0.0003496615448891627, 0.0004995164926988038, 0.0007492747390482057, 0.0010049096500175797, 0.0012869895517769042, 0.001627836099736088, 0.0020068809677251803, 0.0023888641680242656, 0.002697389060573513, 0.0025387191158339067, 0.0023359741864443923, 0.002127352592434892, 0.0019246076630453773, 0.0018364576937455884, 0.0017512460567557925, 0.0016630960874560036, 0.0015896377797061795], \"id\": [208897, 208898, 208899, 208900, 208901, 208902, 208903, 208904, 208905, 208906, 208907, 208908, 208909, 208910, 208911, 208912, 208913, 208914, 208915, 208916, 208917, 208918, 208919, 208920, 208921, 208922, 208923, 208924, 208925, 208926]}",
+            "name": "meteo_tp",
+            "@type": "cr:RecordSet",
+            "field": [
+                {
+                    "@id": "9ac70dd0-8779-4d4a-9485-b29620e62be1",
+                    "column": "tp",
+                    "name": "tp",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "0.0004436881788089375",
+                        "0.0013545711949067424",
+                        "0.0007874730590781143"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "tp"
+                        },
+                        "fileObject": {
+                            "@id": "fe11a4a0-f8c9-40e2-87d4-f4a3ce78328a"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "67930bfb-7e93-4900-97fb-1a3b3575c417",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "ef5cba12-7f90-49a5-854d-b336d5131167",
+                    "dataType": "sc:Integer",
+                    "column": "id",
+                    "name": "id",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "209865",
+                        "209112",
+                        "208917"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "id"
+                        },
+                        "fileObject": {
+                            "@id": "fe11a4a0-f8c9-40e2-87d4-f4a3ce78328a"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "1319003f-72b2-4d9c-ac77-5f36462a3c5e",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "b8745d62-9982-443a-86fb-8f75b63034b7",
+                    "column": "latitude",
+                    "name": "latitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "43.4",
+                        "43.3",
+                        "43.6"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "latitude"
+                        },
+                        "fileObject": {
+                            "@id": "fe11a4a0-f8c9-40e2-87d4-f4a3ce78328a"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "b62417c3-ae12-401e-bc85-641fe8ae1fa3",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "00a63b5a-88ed-461b-8d8e-7fb27871d31f",
+                    "column": "longitude",
+                    "name": "longitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "20.2",
+                        "17.3",
+                        "22.5"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "longitude"
+                        },
+                        "fileObject": {
+                            "@id": "fe11a4a0-f8c9-40e2-87d4-f4a3ce78328a"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "31ab5f38-f676-49e1-bd2f-3346b3111374",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "e3124e41-3b10-4bd9-a80b-96b68a1c0164",
+                    "column": "time",
+                    "name": "time",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "1991-01-31 00:00:00"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "time"
+                        },
+                        "fileObject": {
+                            "@id": "fe11a4a0-f8c9-40e2-87d4-f4a3ce78328a"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "e1ec7a59-8059-474f-be3b-a3e118ffc7f9",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                }
+            ]
+        },
+        {
+            "@id": "1c2fa89c-c414-4c49-b407-859aac023786",
+            "examples": "{\"time\": [\"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\", \"1998-05-18 00:00:00\"], \"latitude\": [39.4, 39.4, 39.4, 39.4, 39.4, 39.4, 39.4, 39.4, 39.4, 39.4, 39.4, 39.4, 39.4, 39.4, 39.4, 39.4, 39.4, 39.4, 39.4, 39.4, 39.4, 39.3, 39.3, 39.3, 39.3, 39.3, 39.3, 39.3, 39.3, 39.3], \"longitude\": [30.0, 30.1, 30.2, 30.3, 30.4, 30.5, 30.6, 30.7, 30.8, 30.9, 31.0, 31.1, 31.2, 31.3, 31.4, 31.5, 31.6, 31.7, 31.8, 31.9, 32.0, 17.0, 17.1, 20.4, 20.5, 20.6, 20.7, 20.8, 20.9, 21.0], \"ssrd\": [16812768.095219202, 17018221.438603453, 17224166.297163263, 17640971.166038483, 18118723.916683197, 18616137.274350327, 19109618.510612976, 19581964.594326522, 20052344.61733783, 20495199.790517755, 20795024.0476096, 20948376.782384448, 21099763.456457052, 21240828.31184289, 21357317.408450704, 21465942.262249555, 21576041.661575086, 21688598.636778418, 21807545.309264034, 21926000.466574095, 22045438.654235274, 20784702.228922833, 20645603.43423924, 20250425.233088672, 19399120.949018054, 18909571.83415989, 18363989.989287842, 18029268.154731207, 17814476.02301131, 17626717.225947235], \"id\": [2177, 2178, 2179, 2180, 2181, 2182, 2183, 2184, 2185, 2186, 2187, 2188, 2189, 2190, 2191, 2192, 2193, 2194, 2195, 2196, 2197, 2198, 2199, 2200, 2201, 2202, 2203, 2204, 2205, 2206]}",
+            "name": "meteo_ssrd",
+            "@type": "cr:RecordSet",
+            "field": [
+                {
+                    "@id": "e17ae555-7dc8-4d57-a038-e4bccba95db9",
+                    "dataType": "sc:Integer",
+                    "column": "id",
+                    "name": "id",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "2850",
+                        "2468",
+                        "2429"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "id"
+                        },
+                        "fileObject": {
+                            "@id": "30750d7c-39e9-486a-8932-596160ab49a6"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "7157b7d8-a155-4ecd-b914-c97b176a3a96",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "98e5980d-88d9-4e09-a1a2-4dfcab497833",
+                    "column": "longitude",
+                    "name": "longitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "28.8",
+                        "22.5",
+                        "30.5"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "longitude"
+                        },
+                        "fileObject": {
+                            "@id": "30750d7c-39e9-486a-8932-596160ab49a6"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "57a828fc-7bda-414c-9a13-a5c7c2735926",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "a2652660-a8a8-4630-985b-7d139bd08aa9",
+                    "column": "ssrd",
+                    "name": "ssrd",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "20378219.178734377",
+                        "18408717.870263837",
+                        "21211828.916484825"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "ssrd"
+                        },
+                        "fileObject": {
+                            "@id": "30750d7c-39e9-486a-8932-596160ab49a6"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "a3b21079-5b5f-4b01-899b-87bb7b22517b",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "84d056b5-eca4-43e7-8da6-031d81d34983",
+                    "column": "latitude",
+                    "name": "latitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "38.5",
+                        "39.4",
+                        "38.4"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "latitude"
+                        },
+                        "fileObject": {
+                            "@id": "30750d7c-39e9-486a-8932-596160ab49a6"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "f0603f0a-ee19-4cd4-a07b-eb846eee864e",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "a589f34c-dc44-4a1f-aadc-b8a1a08f7292",
+                    "column": "time",
+                    "name": "time",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "1998-05-18 00:00:00"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "time"
+                        },
+                        "fileObject": {
+                            "@id": "30750d7c-39e9-486a-8932-596160ab49a6"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "0583265b-8304-45b8-97bd-dac1edf6c768",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                }
+            ]
+        },
+        {
+            "@id": "447fade5-bfea-4ec2-8bf8-7abbd7a6107e",
+            "examples": "{\"time\": [\"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\", \"1997-11-14 11:00:00\"], \"time_bnds_start\": [\"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\", \"1997-11-14 00:00:00\"], \"time_bnds_end\": [\"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\", \"1997-11-14 23:00:00\"], \"latitude\": [41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1], \"longitude\": [27.9, 28.0, 28.1, 28.2, 28.3, 28.4, 28.5, 28.6, 28.7, 28.8, 28.9, 29.0, 29.1, 29.2, 29.3, 29.4, 29.5, 29.6, 29.7, 29.8, 29.9, 30.0, 30.1, 30.2, 30.3, 30.4, 30.5, 30.6, 30.7, 31.1], \"tmax\": [289.74201417991986, 289.9643549290239, 290.16606612408737, 290.30818082970023, 290.39069904586256, 290.50416159308577, 290.60157893161073, 290.6577371620545, 290.7746379682845, 291.05313694783234, 291.38320981248165, 291.5608531944977, 291.6857766050768, 291.785486116273, 292.0101190380482, 292.3126858306434, 292.5212735437204, 292.55107178844565, 292.37113623375836, 292.1098285492443, 291.91040952685205, 291.7774635119238, 291.707552245453, 291.654832274016, 291.5367853814504, 291.38091763981043, 291.28693856029224, 290.9923943720462, 290.46519465767574, 289.3546369984912], \"id\": [5137, 5138, 5139, 5140, 5141, 5142, 5143, 5144, 5145, 5146, 5147, 5148, 5149, 5150, 5151, 5152, 5153, 5154, 5155, 5156, 5157, 5158, 5159, 5160, 5161, 5162, 5163, 5164, 5165, 5166]}",
+            "name": "meteo_tmax",
+            "@type": "cr:RecordSet",
+            "field": [
+                {
+                    "@id": "219b8dc2-ef56-45b8-b8c9-ba16fe0c6849",
+                    "column": "time_bnds_start",
+                    "name": "time_bnds_start",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "1997-11-14 00:00:00"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "time_bnds_start"
+                        },
+                        "fileObject": {
+                            "@id": "7bcb2da6-714c-4e8f-8b36-819a9810a5e4"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "e5f4cbdd-05b1-4108-bf56-f1a7afe4226d",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "fe343112-80a4-4def-997c-75c16bf38edd",
+                    "column": "tmax",
+                    "name": "tmax",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "290.7345249465389",
+                        "281.55437339848027",
+                        "292.425002291531"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "tmax"
+                        },
+                        "fileObject": {
+                            "@id": "7bcb2da6-714c-4e8f-8b36-819a9810a5e4"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "44e1d409-2531-498e-b2d3-d0ffe9d9f6cf",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "61e605f7-70db-4fa9-8593-874b0d49afe7",
+                    "column": "latitude",
+                    "name": "latitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "40.7",
+                        "40.6",
+                        "40.2"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "latitude"
+                        },
+                        "fileObject": {
+                            "@id": "7bcb2da6-714c-4e8f-8b36-819a9810a5e4"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "6a586658-8ee2-4c73-b9a6-db52227b719b",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "2c9f9224-32e6-4333-811b-93a4785d0d36",
+                    "column": "longitude",
+                    "name": "longitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "28.8",
+                        "20.2",
+                        "17.3"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "longitude"
+                        },
+                        "fileObject": {
+                            "@id": "7bcb2da6-714c-4e8f-8b36-819a9810a5e4"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "4e8d6b25-ab68-40b4-a303-0b999de2f014",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "fcb68411-ca0f-43df-998b-0399b1b52eff",
+                    "dataType": "sc:Integer",
+                    "column": "id",
+                    "name": "id",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "6062",
+                        "6114",
+                        "5434"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "id"
+                        },
+                        "fileObject": {
+                            "@id": "7bcb2da6-714c-4e8f-8b36-819a9810a5e4"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "12442183-9e72-499f-8ec1-0033b350e0d7",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "9584de7c-097a-426f-9e0f-0eb48c980813",
+                    "column": "time",
+                    "name": "time",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "1997-11-14 11:00:00"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "time"
+                        },
+                        "fileObject": {
+                            "@id": "7bcb2da6-714c-4e8f-8b36-819a9810a5e4"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "b9d8c74b-49ab-4214-a97f-e0c9960405dd",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "7536de99-ee4d-480d-91e0-520f0a3ab885",
+                    "column": "time_bnds_end",
+                    "name": "time_bnds_end",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "1997-11-14 23:00:00"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "time_bnds_end"
+                        },
+                        "fileObject": {
+                            "@id": "7bcb2da6-714c-4e8f-8b36-819a9810a5e4"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "60a8ff09-8f04-4e8b-8dc7-72bc27ca1064",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                }
+            ]
+        },
+        {
+            "@id": "64c90850-cd35-4581-9f99-9811663a15d8",
+            "examples": "{\"time\": [\"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\", \"1991-01-25 11:00:00\"], \"time_bnds_start\": [\"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\", \"1991-01-25 00:00:00\"], \"time_bnds_end\": [\"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\", \"1991-01-25 23:00:00\"], \"latitude\": [41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.1, 41.0, 41.0, 41.0, 41.0, 41.0, 41.0, 41.0, 41.0, 41.0, 41.0, 41.0, 41.0, 41.0, 41.0, 41.0, 41.0, 41.0], \"longitude\": [30.5, 30.6, 30.7, 31.1, 31.2, 31.3, 31.4, 31.5, 31.6, 31.7, 31.8, 31.9, 32.0, 17.0, 17.1, 19.5, 19.6, 19.7, 19.8, 19.9, 20.0, 20.1, 20.2, 20.3, 20.4, 20.5, 20.6, 20.7, 20.8, 20.9], \"tmean\": [275.73110872735845, 275.7345469863652, 275.39415934469565, 273.32891176796636, 273.0951101555064, 273.03895192506263, 273.06531191078113, 272.0028898776912, 270.39607683519705, 269.820741494732, 269.9250353512704, 270.16112913640154, 269.4517016946727, 280.27763322063544, 280.58478435857296, 278.7968896750559, 277.5694312096414, 276.59296565172053, 275.74027741804315, 274.87383614833874, 274.33632165694803, 273.0676040834523, 271.78169521492276, 270.74219490854455, 269.49983732076737, 269.3542843561477, 269.5422425151841, 270.173736086093, 269.7863589046643, 268.97951412441046], \"id\": [164353, 164354, 164355, 164356, 164357, 164358, 164359, 164360, 164361, 164362, 164363, 164364, 164365, 164366, 164367, 164368, 164369, 164370, 164371, 164372, 164373, 164374, 164375, 164376, 164377, 164378, 164379, 164380, 164381, 164382]}",
+            "name": "meteo_tmean",
+            "@type": "cr:RecordSet",
+            "field": [
+                {
+                    "@id": "c142d289-dcfb-4c86-8eae-5014b665cbdd",
+                    "column": "longitude",
+                    "name": "longitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "28.8",
+                        "20.2",
+                        "17.3"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "longitude"
+                        },
+                        "fileObject": {
+                            "@id": "e8053384-4d8e-48b5-8d5f-3f9ea7902781"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "453a20d0-3311-4ca4-9c22-ccb0818593e7",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "89b24ff2-d15c-4776-aa13-cf75dd4b3c4f",
+                    "column": "time",
+                    "name": "time",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "1991-01-25 11:00:00"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "time"
+                        },
+                        "fileObject": {
+                            "@id": "e8053384-4d8e-48b5-8d5f-3f9ea7902781"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "de41c57c-f63c-4d25-b069-1f7b037150f6",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "545a4e18-272e-4860-a186-086d1fc52b8d",
+                    "column": "time_bnds_start",
+                    "name": "time_bnds_start",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "1991-01-25 00:00:00"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "time_bnds_start"
+                        },
+                        "fileObject": {
+                            "@id": "e8053384-4d8e-48b5-8d5f-3f9ea7902781"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "1c08cde3-5644-41e9-aa14-83479fa726e1",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "3970cad8-2c93-4dee-bab6-9816566e3ba0",
+                    "column": "time_bnds_end",
+                    "name": "time_bnds_end",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "1991-01-25 23:00:00"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "time_bnds_end"
+                        },
+                        "fileObject": {
+                            "@id": "e8053384-4d8e-48b5-8d5f-3f9ea7902781"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "bb0dc061-3012-4d8c-b084-68f4221f5c73",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "b00ba412-d8e8-4eca-aa8b-4a91ebceb60d",
+                    "column": "tmean",
+                    "name": "tmean",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "269.6728963574411",
+                        "270.32043513704826",
+                        "274.01312531031226"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "tmean"
+                        },
+                        "fileObject": {
+                            "@id": "e8053384-4d8e-48b5-8d5f-3f9ea7902781"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "156c3a54-0f00-4c7f-9824-ff354b4cafb2",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "2ce855f2-04d6-4849-a150-99ecf36132f2",
+                    "dataType": "sc:Integer",
+                    "column": "id",
+                    "name": "id",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "164807",
+                        "165055",
+                        "164598"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "id"
+                        },
+                        "fileObject": {
+                            "@id": "e8053384-4d8e-48b5-8d5f-3f9ea7902781"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "cd3e362f-ecd6-431f-abfb-ce248aa6d767",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "a58bd581-4e14-4e7a-b59c-1a4660abae11",
+                    "column": "latitude",
+                    "name": "latitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "40.7",
+                        "40.6",
+                        "40.2"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "latitude"
+                        },
+                        "fileObject": {
+                            "@id": "e8053384-4d8e-48b5-8d5f-3f9ea7902781"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "bd3fe005-1478-49a5-a965-bcf623e29e26",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                }
+            ]
+        },
+        {
+            "@id": "eef06f7a-1cca-4525-be81-1b21b4cfbdfa",
+            "examples": "{\"id\": [13939457, 13939458, 13939459, 13939460, 13939461, 13939462, 13939463, 13939464, 13939465, 13939466, 13939467, 13939468, 13939469, 13939470, 13939471, 13939472, 13939473, 13939474, 13939475, 13939476, 13939477, 13939478, 13939479, 13939480, 13939481, 13939482, 13939483, 13939484, 13939485, 13939486], \"latitude\": [47.5799, 47.5799, 47.5799, 47.5799, 47.5799, 47.5799, 47.5799, 47.5799, 47.5799, 47.5799, 47.5799, 47.5799, 47.58, 47.58, 47.58, 47.58, 47.58, 47.58, 47.58, 47.58, 47.58, 47.58, 47.58, 47.58, 47.58, 47.58, 47.58, 47.58, 47.58, 47.58], \"longitude\": [8.8005, 8.8008, 8.8011, 8.8015, 8.8018, 8.8021, 8.8025, 8.8028, 8.8031, 8.8034, 8.8038, 8.8041, 8.8044, 8.8048, 8.8051, 8.8054, 8.8058, 8.8061, 8.8064, 8.8068, 8.8071, 8.8074, 8.8078, 8.8081, 8.8084, 8.8088, 8.8091, 8.8094, 8.8098, 8.8101], \"elevation\": [372.63, 372.56, 372.32, 371.93, 371.75, 371.77, 371.86, 371.9, 371.91, 372.76, 374.29, 375.95, 377.65, 379.33, 380.02, 379.19, 378.08, 377.69, 377.78, 377.61, 377.03, 376.24, 375.19, 373.95, 373.1, 372.93, 372.95, 373.01, 373.1, 373.37]}",
+            "name": "meteo_elevation",
+            "@type": "cr:RecordSet",
+            "field": [
+                {
+                    "@id": "14b4b9f5-baf8-41f5-a2b9-48dd1a14997e",
+                    "dataType": "sc:Integer",
+                    "column": "id",
+                    "name": "id",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "13940310",
+                        "13939488",
+                        "13940212"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "id"
+                        },
+                        "fileObject": {
+                            "@id": "301061a0-ffd2-47ce-b9c4-3c2afec9905e"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "b6b3493e-d1f5-4f57-825d-556d843158da",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "01b8bac5-bb33-4fc4-80ab-42398cc6a1bd",
+                    "column": "elevation",
+                    "name": "elevation",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "394.6",
+                        "395.8",
+                        "676.73"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "elevation"
+                        },
+                        "fileObject": {
+                            "@id": "301061a0-ffd2-47ce-b9c4-3c2afec9905e"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "cbde679c-cf76-4ec0-9785-593175817522",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "fe2146ca-b480-4ea0-bfe4-e245be8568e0",
+                    "column": "longitude",
+                    "name": "longitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "9.096",
+                        "8.923",
+                        "8.9104"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "longitude"
+                        },
+                        "fileObject": {
+                            "@id": "301061a0-ffd2-47ce-b9c4-3c2afec9905e"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "384779b6-fff1-4b08-9925-aee4083ffee7",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "c8c51421-548e-4e60-8505-001d6665eb94",
+                    "column": "latitude",
+                    "name": "latitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "47.5805",
+                        "47.5799",
+                        "47.5817"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "latitude"
+                        },
+                        "fileObject": {
+                            "@id": "301061a0-ffd2-47ce-b9c4-3c2afec9905e"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "284cdb76-8e2e-4c73-b3b0-f5e3f41ffab7",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                }
+            ]
+        },
+        {
+            "@id": "59c420dd-06bf-43bf-9ea6-417de16b0a8b",
+            "examples": "{\"time\": [\"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\", \"1991-01-01 11:00:00\"], \"time_bnds_start\": [\"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\", \"1991-01-01 00:00:00\"], \"time_bnds_end\": [\"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\", \"1991-01-01 23:00:00\"], \"latitude\": [38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 37.9, 37.9, 37.9, 37.9, 37.9, 37.9, 37.9, 37.9], \"longitude\": [29.9, 30.0, 30.1, 30.2, 30.3, 30.4, 30.5, 30.6, 30.7, 30.8, 30.9, 31.0, 31.1, 31.2, 31.3, 31.4, 31.5, 31.6, 31.7, 31.8, 31.9, 32.0, 21.1, 21.2, 21.3, 21.4, 21.5, 21.6, 21.7, 21.8], \"windspeedmax\": [1.2927227, 1.2572696, 1.264098, 1.2841513, 1.2896248, 1.21708, 1.0590144, 0.93141973, 0.8593859, 0.8633866, 0.9537891, 1.0237207, 1.0371445, 1.0288156, 1.0763339, 1.1216015, 1.161539, 1.253233, 1.3376436, 1.3741683, 1.4183581, 1.4677048, 3.8001447, 3.3703368, 3.0488281, 2.7390387, 2.0959878, 1.7953968, 1.8185842, 1.8500092], \"id\": [5761, 5762, 5763, 5764, 5765, 5766, 5767, 5768, 5769, 5770, 5771, 5772, 5773, 5774, 5775, 5776, 5777, 5778, 5779, 5780, 5781, 5782, 5783, 5784, 5785, 5786, 5787, 5788, 5789, 5790]}",
+            "name": "meteo_windspeedmax",
+            "@type": "cr:RecordSet",
+            "field": [
+                {
+                    "@id": "74c35a15-0688-412b-b462-1962d227c29d",
+                    "column": "windspeedmax",
+                    "name": "windspeedmax",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "2.576771",
+                        "1.6233058",
+                        "1.9568121"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "windspeedmax"
+                        },
+                        "fileObject": {
+                            "@id": "9db0c79b-1e54-4d06-802b-a8d47e8fb697"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "6f63c24e-e507-42cc-8227-90ab6b16b510",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "8dff754e-fc71-4e2d-94e2-523cc5101419",
+                    "column": "latitude",
+                    "name": "latitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "36.5",
+                        "37.7",
+                        "37.8"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "latitude"
+                        },
+                        "fileObject": {
+                            "@id": "9db0c79b-1e54-4d06-802b-a8d47e8fb697"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "8b10edfd-6276-4003-8343-cdeb5ca77449",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "c3d9ba71-74cf-4144-b839-b0afebf368c1",
+                    "dataType": "sc:Integer",
+                    "column": "id",
+                    "name": "id",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "6062",
+                        "6114",
+                        "6477"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "id"
+                        },
+                        "fileObject": {
+                            "@id": "9db0c79b-1e54-4d06-802b-a8d47e8fb697"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "feba3c04-6307-44fa-bfe1-fe235172a7cf",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "0b514c53-b4a5-4d7c-8884-ace1982b6f38",
+                    "column": "time_bnds_start",
+                    "name": "time_bnds_start",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "1991-01-02 00:00:00",
+                        "1991-01-01 00:00:00"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "time_bnds_start"
+                        },
+                        "fileObject": {
+                            "@id": "9db0c79b-1e54-4d06-802b-a8d47e8fb697"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "20a7f63f-5c6f-4e86-bea4-43a1f48f4a7b",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "4ec52524-4038-4f7c-9e28-ce3ad4235131",
+                    "column": "time",
+                    "name": "time",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "1991-01-02 11:00:00",
+                        "1991-01-01 11:00:00"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "time"
+                        },
+                        "fileObject": {
+                            "@id": "9db0c79b-1e54-4d06-802b-a8d47e8fb697"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "ff8152cc-91cf-4b27-b610-afb537d5e1cf",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "c0fa6805-6f05-4cf7-8ff8-8eea3f1c1381",
+                    "column": "time_bnds_end",
+                    "name": "time_bnds_end",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "1991-01-01 23:00:00",
+                        "1991-01-02 23:00:00"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "time_bnds_end"
+                        },
+                        "fileObject": {
+                            "@id": "9db0c79b-1e54-4d06-802b-a8d47e8fb697"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "2c77a4ff-ccf7-4352-af7b-601f69366eb9",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "0a2fa3bb-22c9-4b5d-8a30-17bab200ff7d",
+                    "column": "longitude",
+                    "name": "longitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "28.8",
+                        "20.2",
+                        "17.3"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "longitude"
+                        },
+                        "fileObject": {
+                            "@id": "9db0c79b-1e54-4d06-802b-a8d47e8fb697"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "12a125c1-9e11-4c4e-9184-193e58014a1a",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                }
+            ]
+        },
+        {
+            "@id": "9e1f687f-6872-48e2-b4af-8ad5606a267a",
+            "examples": "{\"id\": [111660509, 111660510, 111660511, 111660512, 111660513, 111660514, 111660515, 111660516, 111660517, 111660518, 111660519, 111660520, 111660521, 111660522, 111660523, 111660524, 111660525, 111660526, 111660527, 111660528, 111660529, 111660530, 111660531, 111660532, 111660533, 111660534, 111660535, 111660536, 111660537, 111660538], \"latitude\": [45.9989, 45.9989, 45.9989, 45.9989, 45.999, 45.999, 45.999, 45.999, 45.999, 45.999, 45.999, 45.999, 45.999, 45.999, 45.999, 45.999, 45.999, 45.999, 45.999, 45.9991, 45.9991, 45.9991, 45.9991, 45.9991, 45.9991, 45.9991, 45.9991, 45.9991, 45.9991, 45.9991], \"longitude\": [7.8001, 7.8005, 7.8008, 7.8011, 7.8014, 7.8018, 7.8021, 7.8024, 7.8027, 7.803, 7.8034, 7.8037, 7.804, 7.8043, 7.8047, 7.805, 7.8053, 7.8056, 7.8059, 7.8063, 7.8066, 7.8069, 7.8072, 7.8076, 7.8079, 7.8082, 7.8085, 7.8088, 7.8092, 7.8095], \"elevation\": [2700.08, 2695.82, 2693.19, 2690.89, 2689.48, 2689.48, 2691.66, 2694.54, 2697.89, 2700.5, 2702.52, 2704.37, 2704.41, 2703.77, 2702.3, 2700.7, 2699.18, 2699.97, 2701.49, 2704.31, 2707.1, 2709.74, 2712.93, 2715.39, 2717.53, 2719.46, 2721.08, 2723.31, 2726.51, 2728.88]}",
+            "name": "elevation_short",
+            "@type": "cr:RecordSet",
+            "field": [
+                {
+                    "@id": "2d6677a6-5576-4c00-aef5-8e6c80d71486",
+                    "column": "longitude",
+                    "name": "longitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "7.853",
+                        "7.8034",
+                        "7.8127"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "longitude"
+                        },
+                        "fileObject": {
+                            "@id": "1f649935-3888-4671-b105-7a0395df46d5"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "80ab6c75-0030-4496-819e-e3a4e785520f",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "dfdcb697-dc42-4921-8406-ac63b475e6d0",
+                    "column": "latitude",
+                    "name": "latitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "45.9982",
+                        "45.9986",
+                        "45.998"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "latitude"
+                        },
+                        "fileObject": {
+                            "@id": "1f649935-3888-4671-b105-7a0395df46d5"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "46639b4e-ce51-4b3c-b5a6-0826d05b7980",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "70e6873f-5e55-46f7-8ab0-b7ad06efc90e",
+                    "dataType": "sc:Integer",
+                    "column": "id",
+                    "name": "id",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "111674759",
+                        "111688658",
+                        "111674699"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "id"
+                        },
+                        "fileObject": {
+                            "@id": "1f649935-3888-4671-b105-7a0395df46d5"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "a707b7d3-72bb-44a0-a9f9-27e568142aa5",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "2dd3a66f-8892-41ec-9421-cc3df1876d31",
+                    "column": "elevation",
+                    "name": "elevation",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "2727.22",
+                        "2776.37",
+                        "3025.12"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "elevation"
+                        },
+                        "fileObject": {
+                            "@id": "1f649935-3888-4671-b105-7a0395df46d5"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "6acc76d5-8bce-4129-9491-32d994c6d2fa",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                }
+            ]
+        },
+        {
+            "@id": "45ec7175-9f08-48bb-9e44-acfef1a78e38",
+            "examples": "{\"time\": [\"2020-01-01 11:30:00\", \"2020-02-02 11:30:00\", \"2020-02-03 11:30:00\", \"2020-02-04 11:30:00\", \"2020-01-04 11:30:00\", \"2020-01-05 11:30:00\", \"2020-01-06 11:30:00\", \"2020-01-07 11:30:00\", \"2020-01-08 11:30:00\", \"2020-01-09 11:30:00\", \"2020-01-10 11:30:00\", \"2020-01-02 11:30:00\", \"2020-01-11 11:30:00\", \"2020-02-05 11:30:00\", \"2020-01-03 11:30:00\", \"2020-02-06 11:30:00\", \"2020-01-12 11:30:00\", \"2020-03-02 11:30:00\", \"2020-01-13 11:30:00\", \"2020-02-07 11:30:00\", \"2020-03-03 11:30:00\", \"2020-02-08 11:30:00\", \"2020-01-14 11:30:00\", \"2020-03-04 11:30:00\", \"2020-01-15 11:30:00\", \"2020-02-09 11:30:00\", \"2020-03-05 11:30:00\", \"2020-02-10 11:30:00\", \"2020-01-16 11:30:00\", \"2020-03-06 11:30:00\"], \"time_bnds_start\": [\"2020-01-01 00:00:00\", \"2020-02-02 00:00:00\", \"2020-02-03 00:00:00\", \"2020-02-04 00:00:00\", \"2020-01-04 00:00:00\", \"2020-01-05 00:00:00\", \"2020-01-06 00:00:00\", \"2020-01-07 00:00:00\", \"2020-01-08 00:00:00\", \"2020-01-09 00:00:00\", \"2020-01-10 00:00:00\", \"2020-01-02 00:00:00\", \"2020-01-11 00:00:00\", \"2020-02-05 00:00:00\", \"2020-01-03 00:00:00\", \"2020-02-06 00:00:00\", \"2020-01-12 00:00:00\", \"2020-03-02 00:00:00\", \"2020-01-13 00:00:00\", \"2020-02-07 00:00:00\", \"2020-03-03 00:00:00\", \"2020-02-08 00:00:00\", \"2020-01-14 00:00:00\", \"2020-03-04 00:00:00\", \"2020-01-15 00:00:00\", \"2020-02-09 00:00:00\", \"2020-03-05 00:00:00\", \"2020-02-10 00:00:00\", \"2020-01-16 00:00:00\", \"2020-03-06 00:00:00\"], \"time_bnds_end\": [\"2020-01-01 23:00:00\", \"2020-02-02 23:00:00\", \"2020-02-03 23:00:00\", \"2020-02-04 23:00:00\", \"2020-01-04 23:00:00\", \"2020-01-05 23:00:00\", \"2020-01-06 23:00:00\", \"2020-01-07 23:00:00\", \"2020-01-08 23:00:00\", \"2020-01-09 23:00:00\", \"2020-01-10 23:00:00\", \"2020-01-02 23:00:00\", \"2020-01-11 23:00:00\", \"2020-02-05 23:00:00\", \"2020-01-03 23:00:00\", \"2020-02-06 23:00:00\", \"2020-01-12 23:00:00\", \"2020-03-02 23:00:00\", \"2020-01-13 23:00:00\", \"2020-02-07 23:00:00\", \"2020-03-03 23:00:00\", \"2020-02-08 23:00:00\", \"2020-01-14 23:00:00\", \"2020-03-04 23:00:00\", \"2020-01-15 23:00:00\", \"2020-02-09 23:00:00\", \"2020-03-05 23:00:00\", \"2020-02-10 23:00:00\", \"2020-01-16 23:00:00\", \"2020-03-06 23:00:00\"], \"latitude\": [45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9, 45.9], \"longitude\": [7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9, 7.9], \"tmin\": [268.06640625, 264.2509765625, 268.295654296875, 260.913818359375, 261.9560546875, 260.85302734375, 265.630615234375, 264.694580078125, 263.97589111328125, 265.958740234375, 261.13372802734375, 262.366943359375, 258.3352966308594, 261.145263671875, 262.017333984375, 264.08544921875, 263.346435546875, 262.928466796875, 264.595458984375, 263.96630859375, 259.682373046875, 261.62103271484375, 263.6290588378906, 257.1485595703125, 264.234619140625, 261.86474609375, 262.7822265625, 264.548828125, 263.26171875, 262.2197265625], \"id\": [93690459, 93750971, 93752862, 93754753, 93696132, 93698023, 93699914, 93701805, 93703696, 93705587, 93707478, 93692350, 93709369, 93756644, 93694241, 93758535, 93711260, 93805810, 93713151, 93760426, 93807701, 93762317, 93715042, 93809592, 93716933, 93764208, 93811483, 93766099, 93718824, 93813374]}",
+            "name": "temp_2020_highest_point",
+            "@type": "cr:RecordSet",
+            "field": [
+                {
+                    "@id": "2827950c-9a8a-4dfa-9b62-559ecda848b2",
+                    "column": "latitude",
+                    "name": "latitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "45.9"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "latitude"
+                        },
+                        "fileObject": {
+                            "@id": "a03bc426-168d-4f55-a732-5b235250e7b6"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "76ba4eb7-eeea-4c5b-96fe-bba2d111e594",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "1a35ccef-a4b8-48bb-a64e-34b20aa76677",
+                    "dataType": "sc:Integer",
+                    "column": "id",
+                    "name": "id",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "93962763",
+                        "93802028",
+                        "93713151"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "id"
+                        },
+                        "fileObject": {
+                            "@id": "a03bc426-168d-4f55-a732-5b235250e7b6"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "7310fe50-7a2a-4a8b-8e91-1c8242fc5b3e",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "288cc0a8-9322-43cf-b868-8a18634d6294",
+                    "column": "time_bnds_start",
+                    "name": "time_bnds_start",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "2020-11-27 00:00:00",
+                        "2020-05-08 00:00:00",
+                        "2020-04-11 00:00:00"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "time_bnds_start"
+                        },
+                        "fileObject": {
+                            "@id": "a03bc426-168d-4f55-a732-5b235250e7b6"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "6e8dd158-96d8-42cd-a251-4fdafa711ff9",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "b05a2fb4-dd71-44d0-bc31-b88f208629ce",
+                    "column": "time_bnds_end",
+                    "name": "time_bnds_end",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "2020-04-22 23:00:00",
+                        "2020-09-23 23:00:00",
+                        "2020-07-08 23:00:00"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "time_bnds_end"
+                        },
+                        "fileObject": {
+                            "@id": "a03bc426-168d-4f55-a732-5b235250e7b6"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "37d6be96-c869-4f94-a4fb-1988ee808c2a",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "3a371c5b-93d3-421b-b15d-3cf31a30ba2e",
+                    "column": "longitude",
+                    "name": "longitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "7.9"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "longitude"
+                        },
+                        "fileObject": {
+                            "@id": "a03bc426-168d-4f55-a732-5b235250e7b6"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "2e3a03f0-f6d3-466f-b59f-a2d80a2b1c65",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "be9ce316-642d-47ed-bff3-29ede1f16c31",
+                    "column": "tmin",
+                    "name": "tmin",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "280.0703125",
+                        "280.20947265625",
+                        "250.06167602539062"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "tmin"
+                        },
+                        "fileObject": {
+                            "@id": "a03bc426-168d-4f55-a732-5b235250e7b6"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "87cbf3f8-e7b6-4409-878d-4ddb0976f02d",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "4950106e-fa2e-4994-88a1-8c1db0e30b14",
+                    "column": "time",
+                    "name": "time",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "2020-04-01 11:30:00",
+                        "2020-12-21 11:30:00",
+                        "2020-07-29 11:30:00"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "time"
+                        },
+                        "fileObject": {
+                            "@id": "a03bc426-168d-4f55-a732-5b235250e7b6"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "3d15c9ae-f227-4152-87ee-83ba762922af",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                }
+            ]
+        },
+        {
+            "@id": "734320db-9004-4153-8fe0-2f4901fba439",
+            "examples": "{\"latitude\": [27.4, 27.4, 27.4, 27.4, 27.5, 27.5, 27.5, 27.5, 27.5, 27.5, 27.5, 27.5, 27.5, 27.5, 27.5, 27.5, 27.6, 27.6, 27.6, 27.6, 27.6, 27.6, 27.6, 27.6, 27.6, 27.6, 27.6, 27.6, 27.6, 27.6], \"longitude\": [-18.2, -18.1, -18.0, -17.9, -18.4, -18.3, -18.2, -18.1, -18.0, -17.9, -17.8, -15.8, -15.7, -15.6, -15.5, -15.4, -18.4, -18.3, -18.2, -18.1, -18.0, -17.9, -17.8, -17.7, -16.0, -15.9, -15.8, -15.7, -15.6, -15.5], \"ranks\": [[[523, 8]], [[523, 2779]], [[523, 4626]], [[523, 2520]], [[523, 1]], [[523, 4185]], [[523, 8637]], [[523, 10939]], [[523, 10937]], [[523, 10940]], [[523, 6371]], [[523, 1149]], [[523, 3878]], [[523, 5113]], [[523, 3208]], [[523, 69]], [[523, 3937]], [[523, 10927]], [[523, 10930]], [[523, 10928]], [[523, 10642], [333, 153], [332, 97], [112, 34]], [[523, 10929]], [[523, 10927]], [[523, 2638]], [[523, 12]], [[523, 4442]], [[523, 10582]], [[523, 10929]], [[523, 10929]], [[523, 10927]]]}",
+            "name": "landcover_upscaled",
+            "@type": "cr:RecordSet",
+            "field": [
+                {
+                    "@id": "95c3afea-a47c-4063-8aa5-8d434408b1b6",
+                    "column": "longitude",
+                    "name": "longitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "-16.2",
+                        "-18.4",
+                        "33.6"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "longitude"
+                        },
+                        "fileObject": {
+                            "@id": "94f78b79-f636-4384-a452-6c0d4683c057"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "5cb229c9-f2e6-4a73-aaba-1ed528289a07",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "83f0728d-a607-428a-a918-a22f7cf422c5",
+                    "column": "ranks",
+                    "name": "ranks",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "[[523, 4601]]",
+                        "[[523, 10523]]",
+                        "[[523, 10871]]"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "ranks"
+                        },
+                        "fileObject": {
+                            "@id": "94f78b79-f636-4384-a452-6c0d4683c057"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "e02551ca-7187-4c5c-a120-84a656b48023",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "7f0697db-924e-4b80-ab66-a8de62a54810",
+                    "column": "latitude",
+                    "name": "latitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "34.7",
+                        "28.8",
+                        "27.7"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "latitude"
+                        },
+                        "fileObject": {
+                            "@id": "94f78b79-f636-4384-a452-6c0d4683c057"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "3551e101-2979-4202-97c7-d05de4cbc9a3",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                }
+            ]
+        },
+        {
+            "@id": "1c1fe3ff-134f-4448-8147-65690b836d8c",
+            "examples": "{\"time\": [\"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\", \"1993-03-04 11:00:00\"], \"time_bnds_start\": [\"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\", \"1993-03-04 00:00:00\"], \"time_bnds_end\": [\"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\", \"1993-03-04 23:00:00\"], \"latitude\": [38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 38.0, 37.9, 37.9, 37.9, 37.9, 37.9, 37.9], \"longitude\": [29.7, 29.8, 29.9, 30.0, 30.1, 30.2, 30.3, 30.4, 30.5, 30.6, 30.7, 30.8, 30.9, 31.0, 31.1, 31.2, 31.3, 31.4, 31.5, 31.6, 31.7, 31.8, 31.9, 32.0, 21.1, 21.2, 21.3, 21.4, 21.5, 21.6], \"tmin\": [271.2097981334644, 271.60863617824896, 272.0888463528603, 272.33869317401843, 271.889427330468, 271.32096850801645, 271.1926068384306, 270.8854557004931, 270.6447775700196, 270.7135427501549, 270.9943339023739, 272.16907239635145, 271.9444394745762, 269.8127188903828, 267.2443394123305, 267.82082083913116, 269.22363051389067, 269.984631840721, 270.0224526897954, 269.0597401679016, 269.2786426579989, 269.58464770960086, 269.84022496243693, 268.8419837641399, 281.92341319853955, 281.2804587642748, 280.50341222874624, 279.6209257503436, 278.5355819905419, 277.303539179785], \"id\": [5336305, 5336306, 5336307, 5336308, 5336309, 5336310, 5336311, 5336312, 5336313, 5336314, 5336315, 5336316, 5336317, 5336318, 5336319, 5336320, 5336321, 5336322, 5336323, 5336324, 5336325, 5336326, 5336327, 5336328, 5336329, 5336330, 5336331, 5336332, 5336333, 5336334]}",
+            "name": "meteo_tmin",
+            "@type": "cr:RecordSet",
+            "field": [
+                {
+                    "@id": "fa7d8ebf-ba70-4253-8050-9da1bc5caaec",
+                    "column": "time_bnds_start",
+                    "name": "time_bnds_start",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "1993-03-05 00:00:00",
+                        "1993-03-04 00:00:00"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "time_bnds_start"
+                        },
+                        "fileObject": {
+                            "@id": "c423997e-3ced-42a8-91dc-1c887e8c9b02"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "571d1996-c839-43e3-abb6-0b556b9b7e56",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "018ae56e-18a6-4f7e-8570-9e2e78c7ec48",
+                    "column": "time",
+                    "name": "time",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "1993-03-04 11:00:00",
+                        "1993-03-05 11:00:00"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "time"
+                        },
+                        "fileObject": {
+                            "@id": "c423997e-3ced-42a8-91dc-1c887e8c9b02"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "95c8bdd1-0ea2-44db-a4d6-817dde2e5307",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "d107ad48-38bd-4e93-982f-8994f81c0568",
+                    "column": "latitude",
+                    "name": "latitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "36.5",
+                        "37.7",
+                        "37.8"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "latitude"
+                        },
+                        "fileObject": {
+                            "@id": "c423997e-3ced-42a8-91dc-1c887e8c9b02"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "33de966f-e563-4f51-ad65-144f92d9c541",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "5e5c2ab3-3c2b-4fbb-9bd1-835822839764",
+                    "column": "longitude",
+                    "name": "longitude",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "28.8",
+                        "20.2",
+                        "17.3"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "longitude"
+                        },
+                        "fileObject": {
+                            "@id": "c423997e-3ced-42a8-91dc-1c887e8c9b02"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "772667f7-480e-4bae-be92-87dd2dd81df5",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "c6691481-aac7-4d85-bc4a-b8aabdcdd943",
+                    "column": "time_bnds_end",
+                    "name": "time_bnds_end",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "1993-03-05 23:00:00",
+                        "1993-03-04 23:00:00"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "time_bnds_end"
+                        },
+                        "fileObject": {
+                            "@id": "c423997e-3ced-42a8-91dc-1c887e8c9b02"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "79cc30a6-5dba-4be4-9fb3-a15013ebc826",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "50d48002-5481-4291-bc4a-2ba65d4eaedc",
+                    "dataType": "sc:Integer",
+                    "column": "id",
+                    "name": "id",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "5337064",
+                        "5336702",
+                        "5336418"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "id"
+                        },
+                        "fileObject": {
+                            "@id": "c423997e-3ced-42a8-91dc-1c887e8c9b02"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "5c3243e5-e43b-4f1f-8300-6e0b00f9d9a4",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "36374c05-5a98-44f7-92a9-0c205b1c389c",
+                    "column": "tmin",
+                    "name": "tmin",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "268.87522026787195",
+                        "285.28832267982546",
+                        "277.6725789798443"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "tmin"
+                        },
+                        "fileObject": {
+                            "@id": "c423997e-3ced-42a8-91dc-1c887e8c9b02"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "86a26569-128d-4fe8-a678-693d8501453b",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                }
+            ]
+        }
+    ],
+    "country": "GR",
+    "citeAs": "ca",
+    "keywords": [
+        "weather",
+        "weather prediction"
+    ],
+    "description": "A global atmospheric reanalysis dataset produced by the European Centre for Medium‐Range Weather Forecast’s (ECMWF) and has data available from 1950, providing a consistent view of the evolution of land variables. It has an enhanced resolution of 0.1° x 0.1°, while the temporal frequency of the model output is hourly.",
+    "inLanguage": [
+        "el"
+    ],
+    "version": "",
+    "url": "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land?tab=download",
+    "datePublished": "2025-05-24",
+    "archivedAt": "s3://dataset/b573d56a-6e74-4b7b-bbce-e1c4ea847572",
+    "license": "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land?tab=download",
+    "fieldOfScience": [
+        "EARTH AND RELATED ENVIRONMENTAL SCIENCES"
+    ],
+    "name": "Era5land",
+    "conformsTo": "",
+    "headline": "Meteorological data time series by ECWMF",
+    "doi": "10.1000/1234567890",
+    "status": "ready"
+}

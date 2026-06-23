@@ -1,0 +1,90 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "92c5e669-ffa6-48c8-a91b-49663bedc08c",
+    "distribution": [],
+    "recordSet": [],
+    "country": "",
+    "keywords": [
+        "energy",
+        "economics",
+        "renewable energy"
+    ],
+    "description": "The Energy Statistics Database provides comprehensive global data on energy production, trade conversion, and consumption across all major energy sources — both conventional and renewable. It covers primary and secondary energy forms, offering insights into global and national energy systems over time. The dataset enables analysis of long-term trends such as the growth of renewable energy, the decline of coal, and shifts in national energy mixes. It is particularly valuable for studying the global transition toward sustainable energy, comparing economic development through energy use, and understanding the interconnections between energy supply, demand, and trade. Researchers, policymakers, and analysts can use this dataset to explore topics like energy security, decarbonization, and economic competitiveness. With detailed country-level and sectoral information, the Energy Statistics Database serves as a foundational resource for examining how the world’s energy landscape has evolved — from traditional fossil fuels to emerging renewable technologies — and for assessing progress toward cleaner and more efficient energy systems.",
+    "inLanguage": [
+        "en"
+    ],
+    "url": "https://www.kaggle.com/datasets/unitednations/international-energy-statistics/data",
+    "datePublished": "2025-05-24",
+    "license": "UNdata ODL (BY) — Free use with attribution to UNdata",
+    "archivedAt": "s3://dataset/92c5e669-ffa6-48c8-a91b-49663bedc08c",
+    "fieldOfScience": [
+        "EARTH AND RELATED ENVIRONMENTAL SCIENCES"
+    ],
+    "name": "International Energy Statistics",
+    "headline": "International Energy Statistics, global energy trade & production 1990-2014",
+    "status": "loaded"
+}

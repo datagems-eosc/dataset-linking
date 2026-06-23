@@ -1,0 +1,91 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "c4670d24-7161-4e38-b640-49db9248db87",
+    "distribution": [],
+    "recordSet": [],
+    "country": "",
+    "keywords": [
+        "climate policy",
+        "climate mitigation"
+    ],
+    "citeAs": "NewClimate Institute, Wageningen University and Research &amp; PBL Netherlands Environmental Assessment Agency. (2025).   Climate Policy Database. DOI: 10.5281/zenodo.19682932",
+    "description": "The Climate Policy Database is a collaborative effort to track policy adoption and identify global and national policy coverage gaps. We identify, categorise and analyse mitigation-relevant policies to support national ambition raising efforts.",
+    "inLanguage": [
+        "en"
+    ],
+    "url": "https://zenodo.org/records/19682932",
+    "datePublished": "2025-05-24",
+    "license": "CC BY 4.0",
+    "archivedAt": "s3://dataset/c4670d24-7161-4e38-b640-49db9248db87",
+    "fieldOfScience": [
+        "POLITICAL SCIENCE",
+        "EARTH AND RELATED ENVIRONMENTAL SCIENCES"
+    ],
+    "name": "Climate Policy Decisions",
+    "headline": "Dataset for Assessing Mathematics Learning in Higher Education.",
+    "status": "loaded"
+}

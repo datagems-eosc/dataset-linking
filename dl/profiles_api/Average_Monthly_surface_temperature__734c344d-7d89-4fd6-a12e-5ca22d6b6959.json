@@ -1,0 +1,292 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "734c344d-7d89-4fd6-a12e-5ca22d6b6959",
+    "distribution": [
+        {
+            "@id": "37967533-1730-4b38-99d9-a8c32debb404",
+            "contentUrl": "/s3/dataset/734c344d-7d89-4fd6-a12e-5ca22d6b6959/average-monthly-surface-temperature.csv",
+            "sha256": "6ad8b3301e3ed7841be14a940023781bffca4e25b240168192393394c1bf29db",
+            "contentSize": "9879322 B",
+            "name": "average-monthly-surface-temperature.csv",
+            "description": "",
+            "encodingFormat": "text/csv",
+            "@type": "cr:FileObject"
+        }
+    ],
+    "recordSet": [
+        {
+            "@id": "298beec1-2fcc-4a67-a35a-be72ec17d8a9",
+            "examples": "{\"Entity\": [\"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\", \"Afghanistan\"], \"Code\": [\"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\", \"AFG\"], \"year\": [1940, 1940, 1940, 1940, 1940, 1940, 1940, 1940, 1940, 1940, 1940, 1940, 1941, 1941, 1941, 1941, 1941, 1941, 1941, 1941, 1941, 1941, 1941, 1941, 1942, 1942, 1942, 1942, 1942, 1942], \"Day\": [\"1940-01-15\", \"1940-02-15\", \"1940-03-15\", \"1940-04-15\", \"1940-05-15\", \"1940-06-15\", \"1940-07-15\", \"1940-08-15\", \"1940-09-15\", \"1940-10-15\", \"1940-11-15\", \"1940-12-15\", \"1941-01-15\", \"1941-02-15\", \"1941-03-15\", \"1941-04-15\", \"1941-05-15\", \"1941-06-15\", \"1941-07-15\", \"1941-08-15\", \"1941-09-15\", \"1941-10-15\", \"1941-11-15\", \"1941-12-15\", \"1942-01-15\", \"1942-02-15\", \"1942-03-15\", \"1942-04-15\", \"1942-05-15\", \"1942-06-15\"], \"Average surface temperature\": [-2.0324936, -0.73350304, 1.999134, 10.199754, 17.942135, 23.203533, 24.44155, 22.058195, 17.721355, 13.73024, 6.2147493, 1.187696, -2.640101, 2.6997495, 7.0864787, 12.958588, 20.386955, 24.671068, 25.425875, 24.780354, 19.089666, 15.992205, 7.2807693, 2.165464, -0.6649957, 0.67758936, 7.3221564, 13.780135, 20.036175, 23.2653], \"Average surface temperature.1\": [11.327695, 11.327695, 11.327695, 11.327695, 11.327695, 11.327695, 11.327695, 11.327695, 11.327695, 11.327695, 11.327695, 11.327695, 13.324756, 13.324756, 13.324756, 13.324756, 13.324756, 13.324756, 13.324756, 13.324756, 13.324756, 13.324756, 13.324756, 13.324756, 12.885448, 12.885448, 12.885448, 12.885448, 12.885448, 12.885448]}",
+            "name": "average-monthly-surface-temperature",
+            "field": [
+                {
+                    "@id": "1f27734c-6cc4-4ccd-9706-38b2d7821d40",
+                    "column": "Average surface temperature.1",
+                    "name": "Average surface temperature.1",
+                    "sample": [
+                        20.762465,
+                        24.82012,
+                        7.6085563,
+                        26.282145,
+                        3.829768,
+                        17.54146,
+                        11.938218,
+                        -0.009813647,
+                        25.089363,
+                        22.5693
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Average surface temperature.1"
+                        },
+                        "fileObject": {
+                            "@id": "37967533-1730-4b38-99d9-a8c32debb404"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "4f1e99ab-616d-4e13-93e5-1088f8c71cf7",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "204d8e36-5184-410e-8628-15a978df1072",
+                    "column": "Average surface temperature",
+                    "name": "Average surface temperature",
+                    "sample": [
+                        -0.18161407,
+                        13.3056555,
+                        28.31858,
+                        21.088524,
+                        28.677965,
+                        25.169464,
+                        21.972122,
+                        14.049732,
+                        23.933027,
+                        27.980995
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Average surface temperature"
+                        },
+                        "fileObject": {
+                            "@id": "37967533-1730-4b38-99d9-a8c32debb404"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "17d057fc-994f-4d2d-86dd-fc94e96cec02",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "d1c55fb4-f4f0-4afd-9e52-a8597e8c7c48",
+                    "name": "Entity",
+                    "column": "Entity",
+                    "sample": [
+                        "Syria",
+                        "Armenia",
+                        "Belgium",
+                        "Colombia",
+                        "Belgium",
+                        "Jordan",
+                        "Indonesia",
+                        "Spain",
+                        "Puerto Rico",
+                        "Malawi"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Entity"
+                        },
+                        "fileObject": {
+                            "@id": "37967533-1730-4b38-99d9-a8c32debb404"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "d2dc2727-a488-4587-9200-49dbbe9438e1",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "62400a53-3a0f-470e-9255-010833e91c01",
+                    "name": "year",
+                    "column": "year",
+                    "sample": [
+                        1941,
+                        1983,
+                        2019,
+                        2001,
+                        2011,
+                        1972,
+                        1948,
+                        1956,
+                        2007,
+                        1972
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "year"
+                        },
+                        "fileObject": {
+                            "@id": "37967533-1730-4b38-99d9-a8c32debb404"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "44ca4896-7a53-4a57-9b99-2ef6fe58b27e",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "02e9c69c-aa4a-4713-9d21-5cdf7c7dfbee",
+                    "name": "Code",
+                    "column": "Code",
+                    "sample": [
+                        "TTO",
+                        "MNE",
+                        "CZE",
+                        "BHS",
+                        "KEN",
+                        "PER",
+                        "SLE",
+                        "DJI",
+                        "FJI",
+                        "TCD"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Code"
+                        },
+                        "fileObject": {
+                            "@id": "37967533-1730-4b38-99d9-a8c32debb404"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "dffe9418-d2aa-4a2b-a440-730ab58ccdd3",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "258a3515-1583-4ca0-931c-35b2672aa04f",
+                    "name": "Day",
+                    "column": "Day",
+                    "sample": [
+                        "2019-08-15",
+                        "2004-04-15",
+                        "1985-06-15",
+                        "1976-07-15",
+                        "1941-02-15",
+                        "2004-02-15",
+                        "1980-03-15",
+                        "1959-09-15",
+                        "2016-02-15",
+                        "1988-08-15"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Day"
+                        },
+                        "fileObject": {
+                            "@id": "37967533-1730-4b38-99d9-a8c32debb404"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "b2173857-253a-4156-a9cb-88f8c9f10faf",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                }
+            ],
+            "@type": "cr:RecordSet"
+        }
+    ],
+    "country": "",
+    "keywords": [
+        "earth and nature",
+        "surface temperature",
+        "atmospheric science"
+    ],
+    "description": "This Dataset contains details of Average Monthly surface temperature (1940-2024). Current climate change is primarily caused by human emissions of greenhouse gases. This warming can drive large changes in sea level, sea ice and glacier balances, rainfall patterns, and extreme temperatures. This has potentially devastating impacts on human health, farming systems, the stability of societies, and other species.",
+    "inLanguage": [
+        "en"
+    ],
+    "version": "",
+    "url": "https://www.kaggle.com/datasets/samithsachidanandan/average-monthly-surface-temperature-1940-2024",
+    "datePublished": "2025-05-24",
+    "license": "CC0: Public Domain",
+    "archivedAt": "s3://dataset/734c344d-7d89-4fd6-a12e-5ca22d6b6959",
+    "fieldOfScience": [
+        "EARTH AND RELATED ENVIRONMENTAL SCIENCES"
+    ],
+    "name": "Average Monthly surface temperature ",
+    "conformsTo": "",
+    "headline": "Average Monthly surface temperature (1940-2024), the temperature of the air measured 2 meters above.",
+    "status": "ready"
+}

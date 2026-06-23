@@ -1,0 +1,115 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "b590ff14-b5f3-4aa2-950f-6e2e47544633",
+    "distribution": [
+        {
+            "@id": "b00abbaa-4e72-4f4f-b755-232c2d0d5b92",
+            "contentUrl": "/s3/dataset/b590ff14-b5f3-4aa2-950f-6e2e47544633/Concrete_Data.xls",
+            "sha256": "cb6ebf5d0e6473713076950798ad304b3a3b5acda8f386095ecab03c36246fda",
+            "contentSize": "141824 B",
+            "name": "Concrete_Data.xls",
+            "encodingFormat": "application/vnd.ms-excel",
+            "description": "",
+            "@type": "cr:FileObject"
+        },
+        {
+            "@id": "942bc327-c67f-4513-9242-a6cf40c25d06",
+            "contentUrl": "/s3/dataset/b590ff14-b5f3-4aa2-950f-6e2e47544633/Concrete_Readme.txt",
+            "sha256": "f2ba0630ae76353fc90fc26b1ca86555db322920cc6f49758c76e7918fbd8f9c",
+            "contentSize": "3808 B",
+            "name": "Concrete_Readme.txt",
+            "encodingFormat": "text/plain",
+            "description": "",
+            "@type": "cr:FileObject"
+        }
+    ],
+    "recordSet": [],
+    "country": "",
+    "keywords": [
+        "concrete",
+        "compressive strength",
+        "civil engineering",
+        "material science",
+        "regression",
+        "construction materials"
+    ],
+    "description": "This dataset focuses on predicting the compressive strength of concrete, a key property determining its performance in civil engineering applications. The data captures how factors such as cement content, water ratio, aggregate composition, and curing age influence concrete strength, reflecting the highly nonlinear nature of the relationship between ingredients and mechanical performance. It includes 1,030 observations with eight quantitative input variables representing material properties and mix proportions, and one output variable — compressive strength. The dataset contains no missing values and is ideal for regression tasks, model benchmarking, and studies in material science, civil engineering, and applied machine learning for construction materials.",
+    "inLanguage": [
+        "en"
+    ],
+    "version": "",
+    "datePublished": "2026-01-13",
+    "license": "CC-BY 4.0",
+    "archivedAt": "s3://dataset/b590ff14-b5f3-4aa2-950f-6e2e47544633",
+    "fieldOfScience": [
+        "MATERIALS ENGINEERING"
+    ],
+    "name": "Concrete Compressive Strength",
+    "conformsTo": "",
+    "headline": " Concrete is the most important material in civil engineering. The concrete compressive strength is a highly nonlinear function of age and ingredients.",
+    "status": "loaded"
+}

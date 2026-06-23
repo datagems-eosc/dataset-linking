@@ -1,0 +1,446 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "d0cde148-0dc6-48ba-a88b-1b09bace3452",
+    "distribution": [
+        {
+            "@id": "250a25f4-c67e-4898-b006-fb0e47f949e7",
+            "contentUrl": "/s3/dataset/d0cde148-0dc6-48ba-a88b-1b09bace3452/Steel_industry_data.csv",
+            "sha256": "34c3896bb2755de359285343dad57c25b9fec86885371caf71f6ec000de3300a",
+            "contentSize": "2731389 B",
+            "name": "Steel_industry_data.csv",
+            "encodingFormat": "text/csv",
+            "description": "",
+            "@type": "cr:FileObject"
+        }
+    ],
+    "recordSet": [
+        {
+            "@id": "f0209e50-f06d-4049-a5be-8a3d37e11449",
+            "examples": "{\"\\u00ef\\u00bb\\u00bfdate\": [\"01/01/2018 00:15\", \"01/01/2018 00:30\", \"01/01/2018 00:45\", \"01/01/2018 01:00\", \"01/01/2018 01:15\", \"01/01/2018 01:30\", \"01/01/2018 01:45\", \"01/01/2018 02:00\", \"01/01/2018 02:15\", \"01/01/2018 02:30\", \"01/01/2018 02:45\", \"01/01/2018 03:00\", \"01/01/2018 03:15\", \"01/01/2018 03:30\", \"01/01/2018 03:45\", \"01/01/2018 04:00\", \"01/01/2018 04:15\", \"01/01/2018 04:30\", \"01/01/2018 04:45\", \"01/01/2018 05:00\", \"01/01/2018 05:15\", \"01/01/2018 05:30\", \"01/01/2018 05:45\", \"01/01/2018 06:00\", \"01/01/2018 06:15\", \"01/01/2018 06:30\", \"01/01/2018 06:45\", \"01/01/2018 07:00\", \"01/01/2018 07:15\", \"01/01/2018 07:30\"], \"Usage_kWh\": [3.17, 4.0, 3.24, 3.31, 3.82, 3.28, 3.6, 3.6, 3.28, 3.78, 3.46, 3.24, 3.96, 3.31, 3.31, 3.89, 3.28, 3.56, 3.74, 3.31, 3.56, 3.56, 3.28, 3.78, 3.35, 3.24, 3.89, 3.31, 3.28, 3.85], \"Lagging_Current_Reactive.Power_kVarh\": [2.95, 4.46, 3.28, 3.56, 4.5, 3.56, 4.14, 4.28, 3.64, 4.72, 4.03, 3.64, 4.97, 3.74, 3.85, 5.0, 3.82, 4.28, 4.54, 3.6, 4.07, 4.1, 3.49, 4.32, 3.64, 3.35, 4.46, 3.53, 3.49, 4.75], \"Leading_Current_Reactive_Power_kVarh\": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], \"CO2(tCO2)\": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], \"Lagging_Current_Power_Factor\": [73.21, 66.77, 70.28, 68.09, 64.72, 67.76, 65.62, 64.37, 66.94, 62.51, 65.14, 66.49, 62.32, 66.27, 65.19, 61.4, 65.14, 63.95, 63.58, 67.68, 65.84, 65.56, 68.48, 65.85, 67.72, 69.52, 65.73, 68.4, 68.48, 62.97], \"Leading_Current_Power_Factor\": [100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0], \"NSM\": [900, 1800, 2700, 3600, 4500, 5400, 6300, 7200, 8100, 9000, 9900, 10800, 11700, 12600, 13500, 14400, 15300, 16200, 17100, 18000, 18900, 19800, 20700, 21600, 22500, 23400, 24300, 25200, 26100, 27000], \"WeekStatus\": [\"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\", \"Weekday\"], \"Day_of_week\": [\"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\", \"Monday\"], \"Load_Type\": [\"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\", \"Light_Load\"]}",
+            "name": "Steel_industry_data",
+            "field": [
+                {
+                    "@id": "cc8d7ee7-ec9d-4931-a2d4-5c20eda060b1",
+                    "name": "Day_of_week",
+                    "column": "Day_of_week",
+                    "sample": [
+                        "Thursday",
+                        "Thursday",
+                        "Sunday",
+                        "Sunday",
+                        "Saturday",
+                        "Saturday",
+                        "Wednesday",
+                        "Friday",
+                        "Sunday",
+                        "Wednesday"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Day_of_week"
+                        },
+                        "fileObject": {
+                            "@id": "250a25f4-c67e-4898-b006-fb0e47f949e7"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "c65053c0-1395-45c3-89c6-2422ec073bb8",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "1895d8ff-b874-4435-87bb-b2e43e50a95a",
+                    "column": "Lagging_Current_Power_Factor",
+                    "name": "Lagging_Current_Power_Factor",
+                    "sample": [
+                        60.54,
+                        100.0,
+                        49.73,
+                        84.83,
+                        52.79,
+                        56.23,
+                        100.0,
+                        45.63,
+                        50.54,
+                        100.0
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Lagging_Current_Power_Factor"
+                        },
+                        "fileObject": {
+                            "@id": "250a25f4-c67e-4898-b006-fb0e47f949e7"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "79f1c18d-bb24-489a-97a2-35389e67ce29",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "5a6d91d0-5658-47d0-8c73-93d7fbf21d9d",
+                    "name": "﻿date",
+                    "column": "﻿date",
+                    "sample": [
+                        "27/09/2018 20:45",
+                        "03/07/2018 06:30",
+                        "26/02/2018 09:30",
+                        "26/11/2018 22:15",
+                        "14/09/2018 23:00",
+                        "25/06/2018 19:45",
+                        "23/07/2018 10:45",
+                        "13/04/2018 07:15",
+                        "06/03/2018 15:15",
+                        "26/09/2018 22:15"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "﻿date"
+                        },
+                        "fileObject": {
+                            "@id": "250a25f4-c67e-4898-b006-fb0e47f949e7"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "411e0a2e-7e5c-4da3-b1f5-7bb50f13c560",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "b780e51a-ac1c-4326-9a8c-9f1a2cfe0e8d",
+                    "name": "NSM",
+                    "column": "NSM",
+                    "sample": [
+                        34200,
+                        59400,
+                        20700,
+                        31500,
+                        48600,
+                        59400,
+                        56700,
+                        65700,
+                        69300,
+                        64800
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "NSM"
+                        },
+                        "fileObject": {
+                            "@id": "250a25f4-c67e-4898-b006-fb0e47f949e7"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "4bc480cb-0d8e-4afd-a579-e6bf4bf3f506",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "90c74897-31f3-4c43-a18c-b4d2143a2cbf",
+                    "name": "Usage_kWh",
+                    "column": "Usage_kWh",
+                    "sample": [
+                        61.06,
+                        82.19,
+                        2.66,
+                        3.42,
+                        3.89,
+                        2.88,
+                        4.97,
+                        30.82,
+                        2.52,
+                        4.14
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Usage_kWh"
+                        },
+                        "fileObject": {
+                            "@id": "250a25f4-c67e-4898-b006-fb0e47f949e7"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "7504ca44-1ace-4c2d-aa66-38dc9dd8c136",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "d6179a47-ee28-42d9-892e-6f3f0d84b0df",
+                    "column": "Lagging_Current_Reactive.Power_kVarh",
+                    "name": "Lagging_Current_Reactive.Power_kVarh",
+                    "sample": [
+                        23.98,
+                        20.09,
+                        0.0,
+                        27.61,
+                        5.87,
+                        5.87,
+                        27.43,
+                        4.28,
+                        0.0,
+                        2.84
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Lagging_Current_Reactive.Power_kVarh"
+                        },
+                        "fileObject": {
+                            "@id": "250a25f4-c67e-4898-b006-fb0e47f949e7"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "e0da4746-3ea3-42b6-aaf9-fc6d61efa327",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "7e80bb62-073d-4a18-8ffc-ddf08d641a53",
+                    "name": "Load_Type",
+                    "column": "Load_Type",
+                    "sample": [
+                        "Medium_Load",
+                        "Light_Load",
+                        "Medium_Load",
+                        "Maximum_Load",
+                        "Light_Load",
+                        "Medium_Load",
+                        "Maximum_Load",
+                        "Maximum_Load",
+                        "Light_Load",
+                        "Light_Load"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Load_Type"
+                        },
+                        "fileObject": {
+                            "@id": "250a25f4-c67e-4898-b006-fb0e47f949e7"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "c71c8ff2-0e77-4bad-baa7-bb6c63a1ce39",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "9a17b3b0-08ea-40fa-8edb-dd098fe04622",
+                    "column": "Leading_Current_Reactive_Power_kVarh",
+                    "name": "Leading_Current_Reactive_Power_kVarh",
+                    "sample": [
+                        0.0,
+                        0.0,
+                        9.94,
+                        0.0,
+                        17.5,
+                        8.75,
+                        0.0,
+                        0.0,
+                        0.0,
+                        26.53
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Leading_Current_Reactive_Power_kVarh"
+                        },
+                        "fileObject": {
+                            "@id": "250a25f4-c67e-4898-b006-fb0e47f949e7"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "9b9fbcca-4ae2-4632-9745-f708e7be87a6",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "8815d28c-5701-4521-abea-ca1414d72238",
+                    "name": "WeekStatus",
+                    "column": "WeekStatus",
+                    "sample": [
+                        "Weekend",
+                        "Weekend",
+                        "Weekday",
+                        "Weekend",
+                        "Weekday",
+                        "Weekday",
+                        "Weekday",
+                        "Weekend",
+                        "Weekday",
+                        "Weekend"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "WeekStatus"
+                        },
+                        "fileObject": {
+                            "@id": "250a25f4-c67e-4898-b006-fb0e47f949e7"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "7e7bd2f9-9e75-49c2-bcb7-621039850231",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "84d5af42-22a3-44dc-9db4-6f0d47bba48a",
+                    "column": "Leading_Current_Power_Factor",
+                    "name": "Leading_Current_Power_Factor",
+                    "sample": [
+                        100.0,
+                        36.96,
+                        100.0,
+                        95.33,
+                        100.0,
+                        23.34,
+                        100.0,
+                        100.0,
+                        16.88,
+                        100.0
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "Leading_Current_Power_Factor"
+                        },
+                        "fileObject": {
+                            "@id": "250a25f4-c67e-4898-b006-fb0e47f949e7"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "fa919d6c-f6bb-42dc-a345-1532421f6d30",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                },
+                {
+                    "@id": "245ae80c-0dfd-4bb3-9e06-8d0d88ba050d",
+                    "name": "CO2(tCO2)",
+                    "column": "CO2(tCO2)",
+                    "sample": [
+                        0.05,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.01,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "CO2(tCO2)"
+                        },
+                        "fileObject": {
+                            "@id": "250a25f4-c67e-4898-b006-fb0e47f949e7"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "35a414a4-48d9-4523-9153-317a41d58462",
+                        "@type": "dg:ColumnStatistics"
+                    },
+                    "@type": "cr:Field"
+                }
+            ],
+            "@type": "cr:RecordSet"
+        }
+    ],
+    "country": "",
+    "keywords": [
+        "steel industry",
+        "energy consumption",
+        "electricity usage",
+        "smart industry",
+        "South Korea"
+    ],
+    "citeAs": "V E, S., Shin, C., & Cho, Y. (2021). Steel Industry Energy Consumption [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C52G8C.",
+    "description": "The information gathered is from the DAEWOO Steel Co. Ltd in Gwangyang, South Korea. It produces several types of coils, steel plates, and iron plates. The information on electricity consumption is held in a cloud-based system. The information on energy consumption of the industry is stored on the website of the Korea Electric Power Corporation (pccs.kepco.go.kr), and the perspectives on daily, monthly, and annual data are calculated and shown.",
+    "inLanguage": [
+        "en"
+    ],
+    "version": "",
+    "url": "https://archive.ics.uci.edu/dataset/851/steel+industry+energy+consumption",
+    "datePublished": "2025-05-24",
+    "license": "CC-BY 4.0",
+    "archivedAt": "s3://dataset/d0cde148-0dc6-48ba-a88b-1b09bace3452",
+    "fieldOfScience": [
+        "MATERIALS ENGINEERING",
+        "ELECTRICAL ENGINEERING, ELECTRONIC ENGINEERING, INFORMATION ENGINEERING"
+    ],
+    "name": "Steel Industry Energy Consumption",
+    "conformsTo": "",
+    "headline": "The data is collected from a smart small-scale steel industry in South Korea.",
+    "status": "ready"
+}

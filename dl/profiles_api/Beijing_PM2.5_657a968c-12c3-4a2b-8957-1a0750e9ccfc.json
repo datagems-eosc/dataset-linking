@@ -1,0 +1,92 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "657a968c-12c3-4a2b-8957-1a0750e9ccfc",
+    "distribution": [],
+    "recordSet": [],
+    "country": "",
+    "keywords": [
+        "air quality",
+        "climate data",
+        "PM2.5 pollution",
+        "Beijing"
+    ],
+    "citeAs": "Chen, S. (2015). Beijing PM2.5 [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5JS49.",
+    "description": "This dataset contains hourly measurements of PM2.5 air pollution levels recorded by the U.S. Embassy in Beijing, combined with meteorological data from the Beijing Capital International Airport. Covering the period from January 1, 2010, to December 31, 2014, the dataset provides a comprehensive multivariate time-series ideal for studying air quality dynamics and environmental influences on pollution levels. The dataset includes 43,824 instances and 11 features, with variables representing pollutant concentrations, weather conditions, and other environmental indicators. Data types include both integer and real values, and missing entries are marked as “NA.” This resource is particularly useful for regression and predictive modeling tasks, such as forecasting PM2.5 concentrations or assessing the impact of meteorological factors on air pollution. It supports research in climate science, environmental monitoring, and public health. The dataset is associated with the paper “Assessing Beijing’s PM2.5 pollution: severity, weather impact, APEC and winter heating” (Liang et al., 2015, Proceedings of the Royal Society A), which explores temporal pollution patterns, seasonal heating effects, and weather influences on air quality in Beijing.",
+    "inLanguage": [
+        "en"
+    ],
+    "url": "https://archive.ics.uci.edu/dataset/381/beijing+pm2+5+data",
+    "datePublished": "2025-05-24",
+    "license": "CC-BY 4.0",
+    "archivedAt": "s3://dataset/657a968c-12c3-4a2b-8957-1a0750e9ccfc",
+    "fieldOfScience": [
+        "EARTH AND RELATED ENVIRONMENTAL SCIENCES"
+    ],
+    "name": "Beijing PM2.5",
+    "headline": "Hourly PM2.5 Air Quality and Meteorological Data from Beijing (2010–2014)",
+    "status": "loaded"
+}

@@ -1,0 +1,846 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "a36dde9d-7f95-40ff-8a9b-f687d0a72318",
+    "distribution": [
+        {
+            "@id": "bcd4d6a6-1a79-41c6-bc22-58a5d05a4d0d",
+            "contentUrl": "/s3/dataset/a36dde9d-7f95-40ff-8a9b-f687d0a72318/PDF/136.pdf",
+            "sha256": "df25925dfddcfe391de5f15bd913720e06c260218913cc7fd3841ccd4c5d803b",
+            "contentSize": "95044 B",
+            "name": "136.pdf",
+            "description": "",
+            "encodingFormat": "application/pdf",
+            "@type": "cr:FileObject"
+        },
+        {
+            "@id": "e1b26038-41fd-404c-a9b8-96a11f5e0686",
+            "contentUrl": "/s3/dataset/a36dde9d-7f95-40ff-8a9b-f687d0a72318/PDF/137.pdf",
+            "sha256": "1689cac56e4fa1c03c0038ee4bda36f3725d2bcde4b654e2d7cc446137f925f4",
+            "contentSize": "177015 B",
+            "name": "137.pdf",
+            "description": "",
+            "encodingFormat": "application/pdf",
+            "@type": "cr:FileObject"
+        },
+        {
+            "@id": "8c0c400d-6ed0-435e-a06e-86882d3630bb",
+            "contentUrl": "/s3/dataset/a36dde9d-7f95-40ff-8a9b-f687d0a72318/PDF/129.pdf",
+            "sha256": "bdc10b7703709a5b787bb1df7a370c6282722d9626a0bd1e0aa1c960e693f3ca",
+            "contentSize": "86189 B",
+            "name": "129.pdf",
+            "description": "",
+            "encodingFormat": "application/pdf",
+            "@type": "cr:FileObject"
+        },
+        {
+            "@id": "3b516b4d-5318-422f-a605-b86b5796d565",
+            "contentUrl": "/s3/dataset/a36dde9d-7f95-40ff-8a9b-f687d0a72318/IntegrationTechniques.csv",
+            "sha256": "1a555e4db57ee5307e9dd72da7bb984894b9107af354cf172971fbe91f7c6681",
+            "contentSize": "26210 B",
+            "name": "IntegrationTechniques.csv",
+            "encodingFormat": "text/csv",
+            "description": "",
+            "@type": "cr:FileObject"
+        },
+        {
+            "@id": "8aa43a8e-b1e8-4d1b-a409-bb4c5647b67d",
+            "contentUrl": "/s3/dataset/a36dde9d-7f95-40ff-8a9b-f687d0a72318/PDF/135.pdf",
+            "sha256": "ae676f889db4339f8eb441a4606d3ecba55f8b4c37743b239cae7749d9db03d8",
+            "contentSize": "167002 B",
+            "name": "135.pdf",
+            "description": "",
+            "encodingFormat": "application/pdf",
+            "@type": "cr:FileObject"
+        },
+        {
+            "@id": "d398ee10-b20e-4e39-a29c-ce16e2f31de4",
+            "contentUrl": "/s3/dataset/a36dde9d-7f95-40ff-8a9b-f687d0a72318/Keywords.csv",
+            "sha256": "20dfaeff27e8029519efbab965fc4930ff7e5dcf61461e8e011462b670500631",
+            "contentSize": "253 B",
+            "name": "Keywords.csv",
+            "description": "",
+            "encodingFormat": "text/csv",
+            "@type": "cr:FileObject"
+        },
+        {
+            "@id": "f48a5b4f-9c4b-40a0-8b1a-603b312ff639",
+            "contentUrl": "/s3/dataset/a36dde9d-7f95-40ff-8a9b-f687d0a72318/PDF/138.pdf",
+            "sha256": "48a6b5a0b198fae5af622914e3c266c3f3de19d17533b092dc598e1c5ad665c0",
+            "contentSize": "243991 B",
+            "name": "138.pdf",
+            "description": "",
+            "encodingFormat": "application/pdf",
+            "@type": "cr:FileObject"
+        },
+        {
+            "@id": "ef2c7086-ab5c-4e6e-aae8-863505df9ab7",
+            "contentUrl": "/s3/dataset/a36dde9d-7f95-40ff-8a9b-f687d0a72318/PDF/134.pdf",
+            "sha256": "60f74e1b6d01d219ce74fe1d95029d4f2d1e8701c6169d98906e7aa3b08c2606",
+            "contentSize": "38248 B",
+            "name": "134.pdf",
+            "description": "",
+            "encodingFormat": "application/pdf",
+            "@type": "cr:FileObject"
+        },
+        {
+            "@id": "654c28ff-084d-4311-b587-1f23cf2d247a",
+            "contentUrl": "/s3/dataset/a36dde9d-7f95-40ff-8a9b-f687d0a72318/txt/MANIFEST.TXT",
+            "sha256": "8cb2ce8be599692b0cc421a079989e89d4e1d716cf7763ded13416eb0ddfc30b",
+            "contentSize": "602 B",
+            "name": "MANIFEST.TXT",
+            "description": "",
+            "encodingFormat": "text/plain",
+            "@type": "cr:FileObject"
+        },
+        {
+            "@id": "41b1ef0e-060b-448d-8e2a-a7becfedbb83",
+            "contentUrl": "/s3/dataset/a36dde9d-7f95-40ff-8a9b-f687d0a72318/PDF/130.pdf",
+            "sha256": "52c0d484ad386c674cb1a3ec3c9b9ddcdddc1b74a948b671818a7ef2d0bf7340",
+            "contentSize": "67346 B",
+            "name": "130.pdf",
+            "description": "",
+            "encodingFormat": "application/pdf",
+            "@type": "cr:FileObject"
+        },
+        {
+            "@id": "c7dd7236-2a90-4c1a-9fa7-6b53ea95cd2d",
+            "contentUrl": "/s3/dataset/a36dde9d-7f95-40ff-8a9b-f687d0a72318/PDF/131.pdf",
+            "sha256": "073dc4933c2ab022718dd23b138e266e20d2306c3a8563e9f8f50dc5cd878984",
+            "contentSize": "404904 B",
+            "name": "131.pdf",
+            "description": "",
+            "encodingFormat": "application/pdf",
+            "@type": "cr:FileObject"
+        },
+        {
+            "@id": "8921a241-8916-415a-be57-fe6da11ab299",
+            "contentUrl": "/s3/dataset/a36dde9d-7f95-40ff-8a9b-f687d0a72318/Videos.csv",
+            "sha256": "9f6261a2e499420debade7cf21bd541b0ccaffbd75368f98c68310bb3911f4c8",
+            "contentSize": "274 B",
+            "name": "Videos.csv",
+            "description": "",
+            "encodingFormat": "text/csv",
+            "@type": "cr:FileObject"
+        },
+        {
+            "@id": "688a613f-c82c-41c5-a336-18074af1e1f0",
+            "contentUrl": "/s3/dataset/a36dde9d-7f95-40ff-8a9b-f687d0a72318/PDF/132.pdf",
+            "sha256": "c0ecba7bfe7a1bff2cdaac629744b794b537b60fee8f6b9f6ac3251be3dc2682",
+            "contentSize": "64697 B",
+            "name": "132.pdf",
+            "description": "",
+            "encodingFormat": "application/pdf",
+            "@type": "cr:FileObject"
+        },
+        {
+            "@id": "e44f31cd-61e4-45c5-bfbf-7726ecef289e",
+            "contentUrl": "/s3/dataset/a36dde9d-7f95-40ff-8a9b-f687d0a72318/PDF/133.pdf",
+            "sha256": "51c19a875acb30ea79e8168c9d71f89be6835b4bb179aa6eead1eb984f6684a1",
+            "contentSize": "70364 B",
+            "name": "133.pdf",
+            "description": "",
+            "encodingFormat": "application/pdf",
+            "@type": "cr:FileObject"
+        },
+        {
+            "@id": "6cfbbc1b-e3e9-4f74-81b1-d06a1f03d1ec",
+            "contentUrl": "/s3/dataset/a36dde9d-7f95-40ff-8a9b-f687d0a72318/txt/readme.txt",
+            "sha256": "d533a13342fdd97200f45d7a679324fa874ca19e532ce41ac61c53e0addb27a1",
+            "contentSize": "1752 B",
+            "name": "readme.txt",
+            "description": "",
+            "encodingFormat": "text/plain",
+            "@type": "cr:FileObject"
+        }
+    ],
+    "recordSet": [
+        {
+            "@id": "6870120a-e01c-45ca-90ad-0d1caf16ebcb",
+            "name": "138.pdf",
+            "@type": "cr:RecordSet",
+            "field": []
+        },
+        {
+            "@id": "bb548b0d-8cd7-4baa-8c18-ef8ced2b55fd",
+            "name": "137.pdf",
+            "@type": "cr:RecordSet",
+            "field": []
+        },
+        {
+            "@id": "0a5a2abd-9c8c-44a6-82ef-ce05e486a78c",
+            "examples": "{\"id\": [192, 309, 311, 315, 388, 389, 390, 391, 392, 393, 394, 395, 396, 397, 398, 399, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413], \"topic\": [\"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\", \"integration\"], \"subtopic\": [\"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\", \"integration techniques\"], \"question\": [\" Find $\\\\displaystyle \\\\int \\\\sqrt{1-x^2}\\\\: dx$ \", \"Find $\\\\displaystyle\\\\int x^3+ \\\\operatorname{e}^{3x} dx$.\", \"Find $\\\\displaystyle\\\\int \\\\frac{\\\\sin\\\\left(2x\\\\right)}{\\\\sqrt{1+\\\\sin^2\\\\left(x\\\\right)}}dx$.\", \"Find $\\\\displaystyle \\\\int x^4\\\\ln(x)\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int \\\\dfrac{x^2+1}{x^2+x}\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int \\\\dfrac{x^3-x+1}{x^2-x}\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int \\\\dfrac{{\\\\operatorname{e}^{2x}}}{{\\\\operatorname{e}^{4x}}+1}\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int \\\\dfrac{{\\\\operatorname{e}^{4x}}}{{\\\\operatorname{e}^{4x}}+1}\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int \\\\operatorname{e}^{\\\\sqrt x }\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int\\\\dfrac{1}{x\\\\ln \\\\left(x^2\\\\right)}\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int\\\\dfrac{\\\\ln^3\\\\left(2x+2\\\\right)}{x+1}\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int\\\\tan^3\\\\left(3x\\\\right)\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int \\\\sin^2(x)\\\\cos^3(x)\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int x\\\\cos(x^2)\\\\sin^3(x^2)\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int \\\\dfrac{1}{2\\\\sqrt{x}}\\\\sec^2(\\\\sqrt{x})\\\\tan(\\\\sqrt{x})\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int \\\\dfrac{1}{2\\\\sqrt{x}}- \\\\dfrac{1}{2\\\\sqrt{x}}\\\\sec^2(\\\\sqrt{x})+ \\\\sec^2(3x)\\\\tan^3(3x)\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int \\\\dfrac{1}{\\\\sqrt{x}}\\\\operatorname{cosec}^2(\\\\sqrt{x})\\\\cot^4(\\\\sqrt{x})\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int \\\\sqrt[3]{1+7x}\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int x\\\\arctan\\\\left(x\\\\right)\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int \\\\dfrac{x+2}{x\\\\left(x^2+1\\\\right)}\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int \\\\dfrac{x-4}{x^3-x}\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int \\\\dfrac{x^4-4}{x^3-3x}\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int \\\\dfrac{x^3-x+1}{x}\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int \\\\sin\\\\left(x\\\\right)\\\\operatorname{e}^x\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int \\\\cos\\\\left(3x\\\\right)\\\\operatorname{e}^{4x}\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int \\\\dfrac{x^2+3x+7}{(x^2+4)(x^2+3)}\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int \\\\dfrac{x^2+3x}{(x-4)^2(x-1)}\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int \\\\left(4x^3+3x^2\\\\right)\\\\ln \\\\left(x+1\\\\right)\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int\\\\sin^{4}\\\\left(x\\\\right)\\\\, dx$.\", \"Find $\\\\displaystyle\\\\int\\\\left(2x^2+x+1\\\\right)x^{-2}\\\\, dx$.\"], \"correct\": [\"$\\\\displaystyle \\\\frac{1}{2}\\\\arcsin{(x)}+\\\\frac{x}{2}\\\\sqrt{1-x^2}+c$\", \"$\\\\displaystyle\\\\dfrac{x^4}{4}+\\\\dfrac{\\\\operatorname{e}^{3x}} {3} + c$\\r\\n\", \"$2\\\\sqrt{1+\\\\sin^2\\\\left(x\\\\right)}+c$\\r\\n\", \"$\\\\displaystyle\\\\dfrac{x^5}{5}\\\\ln(x)-\\\\dfrac{x^5}{25}+c$\\r\\n\", \"$\\\\displaystyle x+\\\\ln|x|-2\\\\ln|x+1|+ c$\\r\\n\", \"$\\\\displaystyle \\\\frac{x^2}{2}+x-\\\\ln|x|+\\\\ln|x-1|+ c$\", \"$\\\\displaystyle \\\\dfrac{1}{2}\\\\arctan(\\\\operatorname{e}^{2x})+c$\", \"$\\\\displaystyle \\\\dfrac{1}{4}\\\\ln(\\\\operatorname{e}^{4x}+1)+c$\\r\\n\", \"$\\\\displaystyle2\\\\operatorname{e}^{\\\\sqrt x } (\\\\sqrt x -1)+c$ \", \"$\\\\displaystyle \\\\dfrac{1}{2}\\\\ln\\\\left|\\\\ln \\\\left(x^2\\\\right)\\\\right|+c$\", \"$\\\\displaystyle \\\\dfrac{1}{4}\\\\ln ^4\\\\left(2\\\\left(x+1\\\\right)\\\\right)+c$\", \"$\\\\displaystyle -\\\\dfrac{1}{3}\\\\ln \\\\left|\\\\sec \\\\left(3x\\\\right)\\\\right|+\\\\dfrac{\\\\sec ^2\\\\left(3x\\\\right)}{6}+c$ \", \"$\\\\displaystyle\\\\dfrac{\\\\sin^3(x)}{3}-\\\\dfrac{\\\\sin^5(x)}{5}+c$\", \"$\\\\displaystyle\\\\dfrac{1}{8}\\\\sin^4(x^2)+c$\", \"$\\\\displaystyle\\\\dfrac{\\\\tan^2(\\\\sqrt{x})}{2}+c$\", \"$\\\\displaystyle\\\\sqrt{x}-\\\\tan\\\\left(\\\\sqrt{x}\\\\right)+\\\\dfrac{1}{12}\\\\tan^4(3x)    +c$\", \"$\\\\displaystyle-\\\\dfrac{2\\\\cot^5(\\\\sqrt{x})}{5}+c$\", \"$\\\\dfrac{3}{28}\\\\left(1+7x\\\\right)^{\\\\frac{4}{3}}+c$\", \"$\\\\displaystyle\\\\dfrac{1}{2}x^2\\\\arctan \\\\left(x\\\\right)-\\\\dfrac{1}{2}\\\\left(-\\\\arctan \\\\left(x\\\\right)+x\\\\right)+c$\", \"$\\\\arctan \\\\left(x\\\\right)+2\\\\ln \\\\left|x\\\\right|-\\\\ln \\\\left|x^2+1\\\\right| +c$\", \"$\\\\displaystyle -\\\\dfrac{1}{2}\\\\ln \\\\left|x+1\\\\right|+\\\\dfrac{1}{2}\\\\ln \\\\left|x-1\\\\right|-2\\\\left(\\\\ln \\\\left|x^2-1\\\\right|-2\\\\ln \\\\left(x\\\\right)\\\\right)+c$\", \" $\\\\displaystyle \\\\dfrac{x^2}{2}+\\\\dfrac{5}{6}\\\\ln \\\\left|x-\\\\sqrt{3}\\\\right|+\\\\dfrac{5}{6}\\\\ln \\\\left|x+\\\\sqrt{3}\\\\right|+\\\\dfrac{4}{3}\\\\ln \\\\left(x\\\\right)+c$\", \"$\\\\displaystyle \\\\dfrac{x^3}{3}-x+\\\\ln \\\\left|x\\\\right|+c$\", \"$\\\\displaystyle -\\\\dfrac{\\\\operatorname{e}^x\\\\cos \\\\left(x\\\\right)}{2}+\\\\dfrac{\\\\operatorname{e}^x\\\\sin \\\\left(x\\\\right)}{2}+c$\", \"$\\\\displaystyle\\\\dfrac{3\\\\operatorname{e}^{4x}\\\\sin \\\\left(3x\\\\right)}{25}+\\\\dfrac{4\\\\operatorname{e}^{4x}\\\\cos \\\\left(3x\\\\right)}{25}+c$\", \"$\\\\displaystyle-\\\\dfrac{3}{2}\\\\ln(x^2+4)-\\\\dfrac{3}{2}\\\\arctan\\\\left(\\\\dfrac{x}{2}\\\\right)+\\\\dfrac{3}{2}\\\\ln(x^2+3)+\\\\dfrac{4}{\\\\sqrt{3}}\\\\arctan\\\\left(\\\\dfrac{x}{\\\\sqrt{3}}\\\\right)+c$\", \"$\\\\displaystyle\\\\dfrac{5}{9}\\\\ln|x-4|-\\\\dfrac{28}{3(x-4)}+\\\\dfrac{4}{9}\\\\ln|x-1|+c$\", \"$\\\\displaystyle  \\\\ln \\\\left(x+1\\\\right)\\\\left(x^4+x^3\\\\right)-\\\\dfrac{x^4}{4}+c$\", \"$\\\\displaystyle-\\\\dfrac{\\\\sin^{3}(x)\\\\cos(x)}{4}+\\\\dfrac{3}{8}\\\\left(x-\\\\sin(x)\\\\cos(x)\\\\right)+c$\", \"$\\\\displaystyle 2x+\\\\ln \\\\left|x\\\\right|-\\\\dfrac{1}{x}+c$\"], \"incorrect1\": [\"$\\\\arcsin{(1-x^2)}+c$\\r\\n\", \"$\\\\displaystyle x^4 +\\\\operatorname{e}^{3x}+c$\\r\\n\", \"$x+c$\\r\\n\", \"$\\\\displaystyle \\\\dfrac{x^3}{3}\\\\dfrac{\\\\ln^2(x)} {2} + c$\\r\\n\", \"$\\\\displaystyle x+c$\\r\\n\", \"$\\\\displaystyle \\\\dfrac{1}{x}\\\\ln|x^2 -x|+c$\\r\\n\", \"$\\\\displaystyle \\\\arctan(\\\\operatorname{e}^{2x})+c$\\r\\n\", \"$\\\\displaystyle \\\\arctan(\\\\operatorname{e}^{2x})+c$\", \"$\\\\displaystyle \\\\operatorname{e}^{\\\\sqrt x }+c$\\r\\n\", \"$\\\\displaystyle \\\\ln\\\\left|\\\\ln \\\\left(x\\\\right)\\\\right|+c$\\r\\n\", \"$\\\\displaystyle \\\\dfrac{1}{8}\\\\ln ^4\\\\left(2\\\\left(x+1\\\\right)\\\\right)+c$\\r\\n\", \"$\\\\displaystyle \\\\dfrac{\\\\tan^4\\\\left(3x\\\\right)}{12}+c$\\r\\n\", \"$\\\\displaystyle\\\\dfrac{\\\\sin^3(x)}{3}\\\\dfrac{\\\\cos^4(x)}{4}+c$\\r\\n\", \"$\\\\displaystyle\\\\dfrac{\\\\sin^3(x)}{3}-\\\\dfrac{\\\\sin^5(x)}{5}+c$\\r\\n\", \"$\\\\displaystyle\\\\tan|\\\\sqrt{x}|+c$\\r\\n\", \"$\\\\displaystyle\\\\dfrac{\\\\tan^2(\\\\sqrt{x})}{2}+c$.\\r\\n\", \"$\\\\displaystyle\\\\dfrac{2\\\\cot^5(\\\\sqrt{x})}{5}+c$\\r\\n\", \"$\\\\dfrac{3}{4}\\\\left(1+x\\\\right)^{\\\\frac{4}{3}}+c$\\r\\n\", \"$\\\\displaystyle\\\\dfrac{1}{2}x^2\\\\arctan \\\\left(x\\\\right)+\\\\dfrac{1}{2}\\\\left(-\\\\arctan \\\\left(x\\\\right)+x\\\\right)+c$\\r\\n\", \"$\\\\arctan \\\\left(x\\\\right)-\\\\ln \\\\left|x\\\\right|-\\\\ln \\\\left|x^2+1\\\\right| +c$\\r\\n\", \"$\\\\displaystyle -\\\\ln \\\\left|x+1\\\\right|+\\\\ln \\\\left|x-1\\\\right|-\\\\left(\\\\ln \\\\left|x^2-1\\\\right|-\\\\ln \\\\left(x\\\\right)\\\\right)+c$\\r\\n\", \"$\\\\displaystyle x^2+\\\\dfrac{5}{6}\\\\ln \\\\left|(x-\\\\sqrt{3})(x+\\\\sqrt{3})\\\\right|+\\\\dfrac{4}{3}\\\\ln \\\\left(x\\\\right)+c$\\r\\n\", \"$\\\\displaystyle -\\\\ln \\\\left|x+1\\\\right|+\\\\ln \\\\left|x-1\\\\right|-\\\\left(\\\\ln \\\\left|x^2-1\\\\right|-\\\\ln \\\\left(x\\\\right)\\\\right)+c$\\r\\n\", \"$\\\\displaystyle -\\\\cos\\\\left(x\\\\right)\\\\operatorname{e}^x+c$\\r\\n\", \"$\\\\displaystyle -\\\\cos\\\\left(x\\\\right)\\\\operatorname{e}^x+c$\\r\\n\", \"$\\\\displaystyle \\\\dfrac{x^2}{2}-\\\\ln|x^2-3|+\\\\dfrac{4}{3}\\\\ln \\\\left(x\\\\right)+c$\\r\\n\", \"$\\\\displaystyle \\\\dfrac{1}{2}-\\\\ln^2|x-4|+\\\\dfrac{4}{3}\\\\ln \\\\left(x-1\\\\right)+c$\\r\\n\", \"$\\\\displaystyle \\\\left(x+1\\\\right)\\\\left(x^4+x^3\\\\right)-\\\\ln|x+1|+\\\\dfrac{1}{3}\\\\ln \\\\left(x-1\\\\right)+c$\\r\\n\", \"$\\\\displaystyle-\\\\dfrac{\\\\sin^{3}(x)\\\\cos(x)}{4}+\\\\dfrac{3}{4}\\\\left(x-\\\\sin(x)\\\\cos(x)\\\\right)+c$\\r\\n\", \"$\\\\displaystyle 2+x^{-1}-\\\\ln|x|+c$\\r\\n\"], \"incorrect2\": [\"$\\\\sqrt{1-x^2}+c$\\r\\n\", \"$\\\\displaystyle 3x^2 + 3\\\\operatorname{e}^{3x} + c$\\r\\n\", \"$\\\\cos(2x)\\\\sqrt{1+\\\\sin^2\\\\left(x\\\\right)}+c$\\r\\n\", \"$\\\\displaystyle \\\\dfrac{x^5}{5}\\\\left( x\\\\ln(x)-x\\\\right)+ c$\\r\\n\", \"$\\\\displaystyle \\\\ln|x|+ c$\\r\\n\", \"$\\\\displaystyle x+ c$\\r\\n\", \"$\\\\displaystyle 2\\\\arctan(\\\\operatorname{e}^{2x})+c$\\r\\n\", \"$\\\\displaystyle \\\\ln(\\\\operatorname{e}^{4x}+1)+c$\", \"$\\\\displaystyle \\\\operatorname{e}^{x}+c$\\r\\n\", \"$\\\\displaystyle \\\\dfrac{1}{\\\\ln^2\\\\left(x^2\\\\right)}+c$\\r\\n\", \"$\\\\displaystyle \\\\dfrac{2\\\\ln^4\\\\left(2x+2\\\\right)}{(x+1)^2}+c$\\r\\n\", \"$\\\\displaystyle \\\\dfrac{2\\\\ln^4\\\\left(2x+2\\\\right)}{(x+1)^2}+c$\\r\\n\", \"$\\\\displaystyle 3\\\\sin(x)\\\\dfrac{\\\\cos^2(x)}{5}+c$\\r\\n\", \"$\\\\displaystyle 3\\\\sin(x)\\\\dfrac{\\\\cos^2(x)}{4}+c$\\r\\n\", \"$\\\\displaystyle\\\\ln|\\\\tan{\\\\sqrt{x}}-\\\\sec(\\\\sqrt{x})|+c$\\r\\n\", \"$\\\\displaystyle\\\\sqrt{x}-2\\\\tan\\\\left(\\\\dfrac{x}{2}\\\\right)+ \\\\dfrac{\\\\sec ^4\\\\left(3x\\\\right)}{4}-\\\\dfrac{\\\\sec ^2\\\\left(3x\\\\right)}{2}+c$\\r\\n\", \"$\\\\displaystyle-\\\\dfrac{\\\\cot^5(\\\\sqrt{x})}{5}+c$\\r\\n\", \"$\\\\dfrac{3}{4}\\\\left(1+7x\\\\right)^{\\\\frac{4}{3}}+c$\\r\\n\", \"$0$\\r\\n\", \"$x +2\\\\ln \\\\left|x\\\\right|-\\\\ln \\\\left|x^2+1\\\\right|  +c$\\r\\n\", \"$\\\\displaystyle -\\\\ln \\\\left|x+2\\\\right|+\\\\ln \\\\left|x-2\\\\right|-\\\\left(\\\\ln \\\\left|x^2-2\\\\right|-\\\\ln \\\\left(2x\\\\right)\\\\right)+c$\\r\\n\", \"$\\\\displaystyle \\\\dfrac{x^2}{2}-\\\\ln|x^2-3|+\\\\dfrac{4}{3}\\\\ln \\\\left(x\\\\right)+c$\\r\\n\", \"$\\\\displaystyle -\\\\ln \\\\left|x+2\\\\right|+\\\\ln \\\\left|x-2\\\\right|-\\\\left(\\\\ln \\\\left|x^2-2\\\\right|-\\\\ln \\\\left(2x\\\\right)\\\\right)+c$\\r\\n\", \"$\\\\displaystyle \\\\dfrac{\\\\operatorname{e}^x\\\\cos \\\\left(x\\\\right)}{2}-\\\\dfrac{\\\\operatorname{e}^x\\\\sin \\\\left(x\\\\right)}{2}+c$\\r\\n\", \"$\\\\displaystyle \\\\dfrac{\\\\operatorname{e}^x\\\\cos \\\\left(x\\\\right)}{2}-\\\\dfrac{\\\\operatorname{e}^x\\\\sin \\\\left(x\\\\right)}{2}+c$\\r\\n\", \"$\\\\displaystyle -\\\\dfrac{1}{2}\\\\ln \\\\left|x+2\\\\right|+\\\\dfrac{1}{2}\\\\ln \\\\left|x-2\\\\right|-2\\\\left(\\\\ln \\\\left|x^2+3\\\\right|-2\\\\ln \\\\left(x\\\\right)\\\\right)+c$\\r\\n\", \"$\\\\displaystyle -\\\\dfrac{1}{2}\\\\ln \\\\left|x-4\\\\right|+\\\\dfrac{1}{2}\\\\ln \\\\left|x-1\\\\right|+c$\\r\\n\", \"$\\\\displaystyle -\\\\dfrac{1}{2}\\\\ln \\\\left|x-4\\\\right|+\\\\dfrac{1}{2}\\\\ln \\\\left|x-1\\\\right|+c$\\r\\n\", \"$\\\\displaystyle\\\\dfrac{\\\\sin^{3}(x)\\\\cos(x)}{4}-\\\\dfrac{3}{8}\\\\left(x-\\\\sin(x)\\\\cos(x)\\\\right)+c$\\r\\n\", \"$\\\\displaystyle\\\\dfrac{x^4}{4}+\\\\dfrac{x^3}{3}-x+c$\\r\\n\"], \"incorrect3\": [\"$x+c$\", \"$\\\\displaystyle 3x^2 + \\\\frac{\\\\operatorname{e}^{3x+1}}{3x+1}+c$\", \"$\\\\displaystyle \\\\dfrac{\\\\sqrt{1+\\\\sin^2\\\\left(x\\\\right)}}{\\\\cos(2x)}+c$\", \"$\\\\displaystyle \\\\dfrac{x^6}{6}\\\\dfrac{\\\\left( \\\\ln(x)\\\\right)^2}{2}+ c$\", \"$\\\\displaystyle \\\\dfrac{x}{2}+ c$\", \"$\\\\displaystyle \\\\dfrac{x^2}{2}+x+ c$\", \"$\\\\displaystyle \\\\dfrac{1}{4}\\\\arctan(\\\\operatorname{e}^{2x})+c$\", \"$\\\\displaystyle \\\\dfrac{1}{4}\\\\arctan(\\\\operatorname{e}^{4x})+c$\", \"$\\\\displaystyle \\\\dfrac{1}{\\\\sqrt x}\\\\operatorname{e}^{\\\\sqrt x }+c$\", \"$\\\\displaystyle \\\\dfrac{1}{2}\\\\ln^2\\\\left(x^2\\\\right)+c$\", \"$\\\\displaystyle \\\\dfrac{1}{2}\\\\ln^2\\\\left(2x+2\\\\right)+c$\", \"$\\\\displaystyle \\\\dfrac{1}{2}\\\\sec(3x)\\\\ln^2\\\\left(3x\\\\right)+c$\", \"\\\\item $\\\\displaystyle \\\\cos(x)+\\\\sin(x)$\", \"$\\\\displaystyle \\\\cos(x)+\\\\sin(x)$\", \"$\\\\displaystyle\\\\dfrac{\\\\tan^2(x)}{2}+c$\", \"$\\\\displaystyle\\\\dfrac{\\\\tan^4(x)}{4}+c$\", \"$\\\\displaystyle\\\\dfrac{\\\\cot^5(\\\\sqrt{x})}{5}+c$\", \"$\\\\left(1+7x\\\\right)^{\\\\frac{4}{3}}+c$\", \"$\\\\displaystyle x^2\\\\arctan \\\\left(x\\\\right)-\\\\left(-\\\\arctan \\\\left(x\\\\right)+x\\\\right)+c$\", \"$x-\\\\ln \\\\left|x\\\\right|-\\\\ln \\\\left|x^2+1\\\\right| +c$\", \"$\\\\displaystyle -\\\\dfrac{1}{2}\\\\ln \\\\left|x+1\\\\right|+\\\\dfrac{1}{2}\\\\ln \\\\left|x-1\\\\right|-2\\\\ln \\\\left(x\\\\right)+c$\", \"$\\\\displaystyle -\\\\dfrac{1}{2}\\\\ln \\\\left|x+1\\\\right|+\\\\dfrac{1}{2}\\\\ln \\\\left|x-1\\\\right|-2\\\\ln \\\\left(x\\\\right)+c$ \", \"$\\\\displaystyle -\\\\dfrac{1}{2}\\\\ln \\\\left|x+1\\\\right|+\\\\dfrac{1}{2}\\\\ln \\\\left|x-1\\\\right|-2\\\\ln \\\\left(x\\\\right)+c$\", \"$\\\\displaystyle \\\\dfrac{\\\\operatorname{e}^x\\\\cos \\\\left(x\\\\right)}{5}-\\\\dfrac{\\\\operatorname{e}^x\\\\sin \\\\left(x\\\\right)}{15}+c$ \", \"$\\\\displaystyle \\\\dfrac{\\\\operatorname{e}^x\\\\cos \\\\left(x\\\\right)}{5}-\\\\dfrac{\\\\operatorname{e}^x\\\\sin \\\\left(x\\\\right)}{15}+c$ \", \"$\\\\arctan \\\\left(x\\\\right)+2\\\\ln \\\\left|x\\\\right|-\\\\ln \\\\left|x^2+1\\\\right| +c$\", \"$\\\\displaystyle -\\\\dfrac{1}{2}\\\\ln \\\\left|\\\\sqrt{x+1}\\\\right|+\\\\dfrac{1}{2}\\\\ln \\\\left|x-1\\\\right|+c$\", \"$\\\\displaystyle -\\\\dfrac{1}{2}\\\\ln \\\\left|x+2\\\\right|+\\\\dfrac{1}{2}\\\\ln \\\\left|x-2\\\\right|-2\\\\left(\\\\ln \\\\left|x^2+3\\\\right|-2\\\\ln \\\\left(x\\\\right)\\\\right)+c$\", \"$\\\\displaystyle\\\\dfrac{\\\\sin^{3}(x)\\\\cos(x)}{4}-\\\\dfrac{3}{4}\\\\left(x-\\\\sin(x)\\\\cos(x)\\\\right)+c$\", \"$\\\\displaystyle\\\\dfrac{2x^5}{5}+\\\\dfrac{x^4}{4}+\\\\dfrac{1}{x^3}+c$\"], \"keywords\": [\"104,106,107\", \"103,107\", \"103,107\", \"102,105\", \"103,105,107\", \"103,105,107\", \"101,103,107\", \"103,107\", \"101,102\", \"103,107\", \"101,103,107\", \"101,106\", \"103,106\", \"101,103,107\", \"101,103,107\", \"101,103\", \"101,103,107\", \"103,107\", \"102,107\", \"103,105,107\", \"105,107\", \"103,105,107\", \"103,107\", \"101,102,107\", \"101,102,107\", \"105,107\", \"103,105,107\", \"102,107\", \"103,106\", \"103,107\"], \"video_material\": [\"539,541,542,619,630,687,753\", \"539,541,542,630,753\", \"539,541,542,630,753\", \"485,545,620,621\", \"539,541,542,545,620,621,630,753\", \"539,541,542,545,620,621,630,753\", \"539,540,541,542,630,753\", \"539,541,542,630,753\", \"485,540\", \"539,541,542,630,753\", \"539,540,541,542,630,753\", \"540,687\", \"539,541,542,630,687\", \"539,540,541,542,630,753\", \"539,540,541,542,630,753\", \"539,540,541,542,630\", \"539,540,541,542,630,753\", \"539,541,542,630,753\", \"485,539,541,542,630,753\", \"539,541,542,545,620,621,630,753\", \"539,541,542,545,620,621,630,753\", \"539,541,542,545,620,621,630,753\", \"539,541,542,630,753\", \"485,539,540,541,542,630,753\", \"485,539,540,541,542,630,753\", \"539,541,542,545,620,621,630,753\", \"539,541,542,545,620,621,630,753\", \"485,539,541,542,630,753\", \"539,541,542,630,687\", \"539,541,542,630,753\"], \"pdf_material\": [\"130,133,134,138\", \"130,135,137\", \"130,135,137\", \"129,131,137\", \"130,131,135,137\", \"130,131,135,137\", \"130,132,135,136,137\", \"130,135,137\", \"129,132,136,137\", \"130,135,137\", \"130,132,135,136,137\", \"132,134,136,137\", \"130,134,135,137\", \"130,132,135,136,137\", \"130,132,135,136,137\", \"130,132,135,136,137\", \"130,132,135,136,137\", \"130,135,137\", \"129,130,137\", \"130,131,135,137\", \"130,13\", \"130,131,135,137\", \"130,135,137\", \"129,130,132,136,137\", \"129,130,132,136,137\", \"130,13\", \"130,131,135,137\", \"129,130,137\", \"130,134,135,137\", \"130,135,137\"]}",
+            "name": "IntegrationTechniques",
+            "@type": "cr:RecordSet",
+            "field": [
+                {
+                    "@id": "6f186922-1365-44c5-8524-7be4fff87c59",
+                    "dataType": "sc:Text",
+                    "column": "incorrect2",
+                    "name": "incorrect2",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "$\\displaystyle x+ c$\r\n",
+                        "$\\displaystyle \\dfrac{2\\ln^4\\left(2x+2\\right)}{(x+1)^2}+c$\r\n",
+                        "$\\displaystyle \\operatorname{e}^{x}+c$\r\n",
+                        "$\\displaystyle\\dfrac{x^5}{5}\\ln(x)-\\dfrac{x^5}{25}+c$\r\n",
+                        "$x +2\\ln \\left|x\\right|-\\ln \\left|x^2+1\\right|  +c$\r\n",
+                        "$\\displaystyle x\\ln^2\\left(x\\right)-x^2-\\ln\\left(x\\right)+c$\r\n",
+                        "$\\displaystyle 3x^2 + 3\\operatorname{e}^{3x} + c$\r\n",
+                        "$\\displaystyle 2\\arctan(\\operatorname{e}^{2x})+c$\r\n",
+                        "$\\displaystyle \\frac{x^2}{2}+5\\ln|x|-x^2e^x+2xe^x-2e^x+C$",
+                        "$\\displaystyle -\\dfrac{x}{\\ln \\left(2\\right)}-\\dfrac{1}{\\ln ^2\\left(2\\right)}\\cdot \\:2^{-x}+c$\r\n"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "incorrect2"
+                        },
+                        "fileObject": {
+                            "@id": "3b516b4d-5318-422f-a605-b86b5796d565"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "7271d138-9c94-4417-8ae7-5cae1fd6e873",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "a1494e51-71a3-4cf9-bde5-46bc3f88c4b3",
+                    "dataType": "sc:Text",
+                    "column": "video_material",
+                    "name": "video_material",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "539,541,542,545,620,621,630",
+                        "485,545,620,621",
+                        "540,619,753",
+                        "485,540",
+                        "539,540,541,542,630",
+                        "539,541,542,619,630,687,753",
+                        "539,541,542,630,753",
+                        "485,539,540,541,542,545,620,621,630",
+                        "539,540,541,542,630,753",
+                        "539,541,542,545,620,621,630,753"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "video_material"
+                        },
+                        "fileObject": {
+                            "@id": "3b516b4d-5318-422f-a605-b86b5796d565"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "8bac5af4-90fe-4709-a3fb-c286d694a6b1",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "311d3817-783a-4687-88f7-1f0ebe318595",
+                    "dataType": "sc:Text",
+                    "column": "incorrect3",
+                    "name": "incorrect3",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "$\\displaystyle \\dfrac{1}{4}\\arctan(\\operatorname{e}^{4x})+c$",
+                        "$\\dfrac{x^2}{2}+\\dfrac{x^3}{3}x^3+C$",
+                        "$\\displaystyle \\dfrac{\\operatorname{e}^x\\cos \\left(x\\right)}{5}-\\dfrac{\\operatorname{e}^x\\sin \\left(x\\right)}{15}+c$ ",
+                        "$\\displaystyle\\dfrac{\\tan^4(x)}{4}+c$",
+                        "$\\displaystyle \\dfrac{\\operatorname{e}^x\\cos \\left(x\\right)}{5}-\\dfrac{\\operatorname{e}^x\\sin \\left(x\\right)}{15}+c$ ",
+                        "$\\displaystyle\\dfrac{\\sin^{3}(x)\\cos(x)}{4}-\\dfrac{3}{4}\\left(x-\\sin(x)\\cos(x)\\right)+c$",
+                        "$\\displaystyle -\\frac{x^2}{2}\\ln(x)+\\frac{x^2}{4}+ C$",
+                        "$\\displaystyle\\dfrac{\\cot^5(\\sqrt{x})}{5}+c$",
+                        " $\\displaystyle\\dfrac{\\ln^2\\left(x\\right)}{2}-\\ln\\left(x\\right)+c$",
+                        "$\\displaystyle \\dfrac{1}{2}\\ln^2\\left(2x+2\\right)+c$"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "incorrect3"
+                        },
+                        "fileObject": {
+                            "@id": "3b516b4d-5318-422f-a605-b86b5796d565"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "0ec77b99-a8b6-484c-b89a-f5b9ba8fb57f",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "07ccd00c-3b85-4ee1-9152-b9f6504e45a7",
+                    "dataType": "sc:Text",
+                    "column": "topic",
+                    "name": "topic",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "integration",
+                        "integration",
+                        "integration",
+                        "integration",
+                        "integration",
+                        "integration",
+                        "integration",
+                        "integration",
+                        "integration",
+                        "integration"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "topic"
+                        },
+                        "fileObject": {
+                            "@id": "3b516b4d-5318-422f-a605-b86b5796d565"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "cdd6145e-3c06-410c-8353-8c25d9ab35b0",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "d146dea0-f5b4-4510-9030-c195666ceeec",
+                    "dataType": "sc:Integer",
+                    "column": "id",
+                    "name": "id",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        1774,
+                        398,
+                        719,
+                        723,
+                        396,
+                        403,
+                        402,
+                        405,
+                        1796,
+                        1965
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "id"
+                        },
+                        "fileObject": {
+                            "@id": "3b516b4d-5318-422f-a605-b86b5796d565"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "785c1db0-1b44-415d-a82f-4b36f28fb9a3",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "5660d38b-0956-495c-a7bc-f4af6a788268",
+                    "dataType": "sc:Text",
+                    "column": "incorrect1",
+                    "name": "incorrect1",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "$\\displaystyle \\dfrac{\\tan^4\\left(3x\\right)}{12}+c$\r\n",
+                        "$\\displaystyle\\frac{1}{4}(2x-3)^4-\\operatorname{e}^{4x-2}+\\ln|x^2+3|+c$",
+                        "$\\displaystyle \\ln \\left|x+3\\right|+C$",
+                        "$\\displaystyle -\\ln \\left|x+1\\right|+\\ln \\left|x-1\\right|-\\left(\\ln \\left|x^2-1\\right|-\\ln \\left(x\\right)\\right)+c$\r\n",
+                        "$\\displaystyle x\\arcsin \\left(\\sqrt{x}\\right)-\\dfrac{1}{2}\\arcsin \\left(\\sqrt{x}\\right)+\\dfrac{1}{4}\\sin \\left(2\\arcsin \\left(\\sqrt{x}\\right)\\right)+c$\r\n",
+                        "$\\displaystyle \\dfrac{1}{8}\\ln ^4\\left(2\\left(x+1\\right)\\right)+c$\r\n",
+                        "$\\displaystyle x^2+5\\ln|x|+x^2e^x-2xe^x+2e^x+C$",
+                        "$\\arctan \\left(x\\right)-\\ln \\left|x\\right|-\\ln \\left|x^2+1\\right| +c$\r\n",
+                        "$\\dfrac{3}{4}\\left(1+x\\right)^{\\frac{4}{3}}+c$\r\n",
+                        "$\\displaystyle 2\\ln \\left|x^2+1\\right|+\\arctan \\left(x\\right)+C$"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "incorrect1"
+                        },
+                        "fileObject": {
+                            "@id": "3b516b4d-5318-422f-a605-b86b5796d565"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "2f55cac9-93bc-41e0-a7d4-22850a13f6fd",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "0d916178-5786-44ef-b22b-9cba89b8e3ac",
+                    "dataType": "sc:Text",
+                    "column": "question",
+                    "name": "question",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "Find $\\displaystyle \\int 2x+2x^2-\\dfrac{1}{x}\\, dx$",
+                        "Find $\\displaystyle \\int e^x \\sin(2x) dx$.",
+                        "Find $\\displaystyle\\int x\\arctan \\left(\\sqrt{x^2-1}\\right)\\, dx$",
+                        "Find $\\displaystyle\\int \\operatorname{e}^x\\ln \\left(1+\\operatorname{e}^x\\right)\\, dx$.",
+                        "Find $\\displaystyle \\int x\\ln(x) dx$.",
+                        "Find $\\displaystyle\\int \\dfrac{1}{2\\sqrt{x}}\\sec^2(\\sqrt{x})\\tan(\\sqrt{x})\\, dx$.",
+                        "Find $\\displaystyle \\int \\sqrt[3]{1+7x}dx$.",
+                        "Find $\\displaystyle\\int \\frac{x^2+5}{x}+x^2e^x dx$.",
+                        "Find $\\displaystyle\\int\\sin\\left(\\ln \\left(x\\right)\\right)\\, dx$.",
+                        "Find $\\displaystyle\\int \\cos\\left(3x\\right)\\operatorname{e}^{4x}\\, dx$."
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "question"
+                        },
+                        "fileObject": {
+                            "@id": "3b516b4d-5318-422f-a605-b86b5796d565"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "996bf96d-e2d0-4d50-99f4-7c5e40f6427e",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "edb120f0-217f-4f1b-95d9-a3c98c4c0bc1",
+                    "dataType": "sc:Text",
+                    "column": "subtopic",
+                    "name": "subtopic",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "integration techniques",
+                        "integration techniques",
+                        "integration techniques",
+                        "integration techniques",
+                        "integration techniques",
+                        "integration techniques",
+                        "integration techniques",
+                        "integration techniques",
+                        "integration techniques",
+                        "integration techniques"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "subtopic"
+                        },
+                        "fileObject": {
+                            "@id": "3b516b4d-5318-422f-a605-b86b5796d565"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "4b17e69f-28e4-42bd-9abb-9d5fda58ad8a",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "61b54df3-6210-4f06-bd77-3b2641865608",
+                    "dataType": "sc:Text",
+                    "column": "pdf_material",
+                    "name": "pdf_material",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "129,131,137",
+                        "130,135,137",
+                        "129,132,136,137",
+                        "130,131,135,137",
+                        "132,133,136,137,138",
+                        "130,135,137",
+                        "130,131,135,137",
+                        "130,135,137,138",
+                        "130,131,135,137",
+                        "130,132,135,136,137"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "pdf_material"
+                        },
+                        "fileObject": {
+                            "@id": "3b516b4d-5318-422f-a605-b86b5796d565"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "48e74a30-460b-490b-9b72-21395a02dd9a",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "a2ee55ba-3996-407c-b373-fc41f280cf5d",
+                    "dataType": "sc:Text",
+                    "column": "keywords",
+                    "name": "keywords",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "101,103,107",
+                        "101,103,106",
+                        "101,102",
+                        "101,102",
+                        "103,105,107",
+                        "103,105,107",
+                        "101,103",
+                        "102,103",
+                        "102,105",
+                        "101,102,107"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "keywords"
+                        },
+                        "fileObject": {
+                            "@id": "3b516b4d-5318-422f-a605-b86b5796d565"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "f789535d-2d10-4ed0-9a32-287fb92f1cab",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "85ae315c-0c4f-43c5-bef7-80de944bb693",
+                    "dataType": "sc:Text",
+                    "column": "correct",
+                    "name": "correct",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "$\\arctan \\left(x\\right)+2\\ln \\left|x\\right|-\\ln \\left|x^2+1\\right| +c$",
+                        "$\\displaystyle \\frac{x^2}{2}\\ln(x)-\\frac{x^2}{4}+ C$",
+                        "$\\displaystyle 2x+\\ln \\left|x\\right|-\\dfrac{1}{x}+c$",
+                        "$\\displaystyle -\\dfrac{\\ln(x)}{2x^2}-\\dfrac{1}{4x^2}+c$\r\n",
+                        "$\\displaystyle -\\dfrac{\\operatorname{e}^x\\cos \\left(x\\right)}{2}+\\dfrac{\\operatorname{e}^x\\sin \\left(x\\right)}{2}+c$",
+                        "$\\displaystyle \\dfrac{1}{3}\\sin \\left(3x\\right)\\left(2x+1\\right)+\\dfrac{2}{9}\\cos \\left(3x\\right)+c$",
+                        "$\\displaystyle \\frac{x^2}{2}+5\\ln|x|+x^2e^x-2xe^x+2e^x+C$",
+                        "$\\sqrt{x^2+4} + c$",
+                        "$\\displaystyle-\\dfrac{3}{2}\\ln(x^2+4)-\\dfrac{3}{2}\\arctan\\left(\\dfrac{x}{2}\\right)+\\dfrac{3}{2}\\ln(x^2+3)+\\dfrac{4}{\\sqrt{3}}\\arctan\\left(\\dfrac{x}{\\sqrt{3}}\\right)+c$",
+                        "$\\displaystyle \\dfrac{1}{2}\\arctan(\\operatorname{e}^{2x})+c$"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "correct"
+                        },
+                        "fileObject": {
+                            "@id": "3b516b4d-5318-422f-a605-b86b5796d565"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "5ed0eb84-9e03-4d14-895b-cd437b813218",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                }
+            ]
+        },
+        {
+            "@id": "31ab0acc-edab-4340-81ea-532cb6a7bfd1",
+            "name": "129.pdf",
+            "@type": "cr:RecordSet",
+            "field": []
+        },
+        {
+            "@id": "8b944031-c040-43da-b923-fd886a76d3c4",
+            "name": "131.pdf",
+            "@type": "cr:RecordSet",
+            "field": []
+        },
+        {
+            "@id": "a975968a-a181-4be2-af66-e4c45d6f5749",
+            "name": "/s3/dataset/a36dde9d-7f95-40ff-8a9b-f687d0a72318/txt/readme",
+            "@type": "cr:RecordSet",
+            "field": []
+        },
+        {
+            "@id": "e188d18a-9285-420c-b2ba-8c810eeef608",
+            "name": "136.pdf",
+            "@type": "cr:RecordSet",
+            "field": []
+        },
+        {
+            "@id": "c6ed8100-9aeb-401e-b809-20fb14542c38",
+            "examples": "{\"id\": [485, 539, 540, 541, 542, 619, 620, 621, 630, 687, 753], \"link\": [\"TyPRUjJ-Png\", \"yp5OGSMNmqI\", \"BMUYs5sIrZU\", \"4x8t8ze-0O8\", \"gyfDSkGrYuo\", \"N1fYhOKV0kA\", \"fgPviiv_oZs\", \"qMX4vRhXBOE\", \"e1nxhJQyLYI\", \"RjvYKVmV2EQ\", \"yp_o5cVXrz4\"], \"keywords\": [\"102\", \"103, 107\", \"101\", \"103, 107\", \"103, 107\", \"104\", \"105\", \"105\", \"103, 107\", \"106\", \"104, 107\"]}",
+            "name": "Videos",
+            "@type": "cr:RecordSet",
+            "field": [
+                {
+                    "@id": "f7805bd1-0b6a-4fc2-b73a-ad552a2d330a",
+                    "dataType": "sc:Integer",
+                    "column": "id",
+                    "name": "id",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        687,
+                        542,
+                        620,
+                        630,
+                        540,
+                        753,
+                        541,
+                        619,
+                        485,
+                        539
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "id"
+                        },
+                        "fileObject": {
+                            "@id": "8921a241-8916-415a-be57-fe6da11ab299"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "7082a0ea-b03f-4df4-961e-3f4c52673e88",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "c8b485f8-5ea8-4e83-a573-cecfd6e53073",
+                    "dataType": "sc:Integer",
+                    "column": "keywords",
+                    "name": "keywords",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "103, 107",
+                        "105",
+                        "102",
+                        "105",
+                        "101",
+                        "103, 107",
+                        "103, 107",
+                        "103, 107",
+                        "104, 107",
+                        "106"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "keywords"
+                        },
+                        "fileObject": {
+                            "@id": "8921a241-8916-415a-be57-fe6da11ab299"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "04607cd8-1d15-4519-8108-d684091113c0",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "d04b6d57-ead5-4055-96bf-efb431715da2",
+                    "dataType": "sc:Text",
+                    "column": "link",
+                    "name": "link",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "fgPviiv_oZs",
+                        "qMX4vRhXBOE",
+                        "BMUYs5sIrZU",
+                        "4x8t8ze-0O8",
+                        "TyPRUjJ-Png",
+                        "RjvYKVmV2EQ",
+                        "yp5OGSMNmqI",
+                        "e1nxhJQyLYI",
+                        "gyfDSkGrYuo",
+                        "N1fYhOKV0kA"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "link"
+                        },
+                        "fileObject": {
+                            "@id": "8921a241-8916-415a-be57-fe6da11ab299"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "a557e959-515a-4ff3-add9-d6914aeae3ec",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                }
+            ]
+        },
+        {
+            "@id": "4fcce73a-0283-4eb4-a6be-1f7335ff79d8",
+            "name": "135.pdf",
+            "@type": "cr:RecordSet",
+            "field": []
+        },
+        {
+            "@id": "546bcb4f-12d0-44fd-8745-ff1f2732fa7d",
+            "examples": "{\"ID\": [101, 102, 103, 104, 105, 106, 107, 437, 438], \"name\": [\"Substitution\", \"Integration by parts\", \"Direct inspection\", \"Trigonometric substitution\", \"Rational functions\", \"Power of trigonometric functions\", \"Simple integration\", \"Trigonometric functions\", \"Trigonometric identities\"]}",
+            "name": "Keywords",
+            "@type": "cr:RecordSet",
+            "field": [
+                {
+                    "@id": "8d607374-753c-4d04-8881-eca4c1522035",
+                    "dataType": "sc:Integer",
+                    "column": "ID",
+                    "name": "ID",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        101,
+                        102,
+                        103,
+                        104,
+                        105,
+                        106,
+                        107,
+                        437,
+                        438
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "ID"
+                        },
+                        "fileObject": {
+                            "@id": "d398ee10-b20e-4e39-a29c-ce16e2f31de4"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "44432d30-5a31-4b76-a6d5-eb3612d6c179",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                },
+                {
+                    "@id": "a30570d2-37ea-4859-92ba-c6bfa177ed09",
+                    "dataType": "sc:Text",
+                    "column": "name",
+                    "name": "name",
+                    "description": "",
+                    "@type": "cr:Field",
+                    "sample": [
+                        "Substitution",
+                        "Integration by parts",
+                        "Direct inspection",
+                        "Trigonometric substitution",
+                        "Rational functions",
+                        "Power of trigonometric functions",
+                        "Simple integration",
+                        "Trigonometric functions",
+                        "Trigonometric identities"
+                    ],
+                    "source": {
+                        "extract": {
+                            "column": "name"
+                        },
+                        "fileObject": {
+                            "@id": "d398ee10-b20e-4e39-a29c-ce16e2f31de4"
+                        }
+                    },
+                    "statistics": {
+                        "@id": "ec537f03-d6fa-4188-927c-9460fad4f879",
+                        "@type": "dg:ColumnStatistics"
+                    }
+                }
+            ]
+        },
+        {
+            "@id": "189c427e-778a-471b-8ec7-0a7a5b638363",
+            "name": "130.pdf",
+            "@type": "cr:RecordSet",
+            "field": []
+        },
+        {
+            "@id": "1c752e61-a653-45fc-9464-34f1590bfc3d",
+            "name": "134.pdf",
+            "@type": "cr:RecordSet",
+            "field": []
+        },
+        {
+            "@id": "30a4f8d1-1b0b-4606-87ab-ce173631823b",
+            "name": "132.pdf",
+            "@type": "cr:RecordSet",
+            "field": []
+        },
+        {
+            "@id": "5874c563-b130-44b3-ba26-8b904eb2a9d9",
+            "name": "133.pdf",
+            "@type": "cr:RecordSet",
+            "field": []
+        }
+    ],
+    "country": "PT",
+    "citeAs": "ca",
+    "keywords": [
+        "math",
+        "student",
+        "higher education"
+    ],
+    "description": "MathE is a mathematical platform developed under the MathE project (mathe.ipb.pt) for higher education. The dataset associated with the Integration topic and the Integration techniques subtopic has 61 questions, the correct answer and two incorrect answers with common errors made by students, keywords associated and material association. The database is organised as follows: Question ID, topic name; subtopic name; question; Correct answer, Incorrect answer 1, incorrect answer 2, keywords, Videos, Material.",
+    "inLanguage": [
+        "en"
+    ],
+    "version": "",
+    "url": "https://doi.org/10.34620/dadosipb/3TUVJX",
+    "datePublished": "2025-05-24",
+    "archivedAt": "s3://dataset/a36dde9d-7f95-40ff-8a9b-f687d0a72318",
+    "license": "CC0 1.0",
+    "fieldOfScience": [
+        "MATHEMATICS"
+    ],
+    "name": "Integration Techniques Questions MathE Database",
+    "conformsTo": "",
+    "headline": "Integration Techniques Questions MathE Database.",
+    "doi": "10.1000/1234567890",
+    "status": "ready"
+}
