@@ -16,7 +16,11 @@ from dl.reports import build_croissant_report
 from dl.similarity import compute_similarities
 from dl.utils import normalize_weights
 
-app = FastAPI(title="Profile Similarity API", version="1.0")
+app = FastAPI(
+    title="Profile Similarity API", 
+    version="1.0",
+    root_path="/dl"
+)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
