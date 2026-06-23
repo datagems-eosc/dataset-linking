@@ -27,4 +27,4 @@ COPY templates /app/templates
 # Sync the project
 RUN uv sync --frozen
 
-CMD ["uv", "run", "uvicorn", "dl.main:app", "--host", "0.0.0.0", "--port", "5000"]
+CMD ["uv", "run", "uvicorn", "dl.fastapi_app:app", "--host", "0.0.0.0", "--port", "8000"]
