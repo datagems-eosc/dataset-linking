@@ -46,18 +46,21 @@ def _normalize_folder_path(folder: str) -> str:
     return (folder or "").strip().replace("\\", "/")
 
 
-def _run_report_job(job_id: str, folder: str, kw: float, desc: float, head: float, th: float) -> None:
+def _run_report_job(job_id: str, folder:Optional[str], kw: float, desc: float, head: float, th: float) -> None:
     try:
         JOBS[job_id]["status"] = "in_progress"
         JOBS[job_id]["progress"] = 5
         JOBS[job_id]["message"] = "Starting report job..."
 
-        folder = _normalize_folder_path(folder)
+        if folder:
+            folder = _normalize_folder_path(folder)
 
         JOBS[job_id]["progress"] = 20
         JOBS[job_id]["message"] = "Computing similarities..."
 
-        error, similarities, from_cache = compute_similarities(folder, kw, desc, head, threshold=th)
+        use_api = (folder is None)
+
+        error, similarities, from_cache = compute_similarities(folder, kw, desc, head, threshold=th, use_api=use_api)
         if error:
             JOBS[job_id]["status"] = "failed"
             JOBS[job_id]["progress"] = 100
@@ -457,13 +460,17 @@ def api_select_similarities(req: SelectProfilesRequest):
 # ---------------------------------------------------------------------- #
 @app.post("/api/jobs/report")
 def api_job_start_report(
-    background_tasks: BackgroundTasks,
-    folder: str = Query(...),
-    kw: float = Query(0.6, ge=0),
-    desc: float = Query(0.3, ge=0),
-    head: float = Query(0.1, ge=0),
-    th: float = Query(30.0, ge=0, le=100),
+        background_tasks: BackgroundTasks,
+        # Rendi folder facoltativo con default None
+        folder: Optional[str] = Query(None, description="Path or leave empty for API mode"),
+        kw: float = Query(0.6, ge=0),
+        desc: float = Query(0.3, ge=0),
+        head: float = Query(0.1, ge=0),
+        th: float = Query(30.0, ge=0, le=100),
 ):
+    if folder and (folder.strip() == "" or folder.strip().lower() == "none"):
+        folder = None
+
     kw, desc, head, normalized = normalize_weights(kw, desc, head)
 
     job_id = str(uuid.uuid4())
@@ -483,7 +490,6 @@ def api_job_start_report(
         },
         "result": None,
     }
-
     background_tasks.add_task(_run_report_job, job_id, folder, kw, desc, head, th)
     return {"job_id": job_id, "status": "queued"}
 
