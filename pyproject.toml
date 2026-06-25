@@ -13,5 +13,7 @@ dependencies = [
     "sentence-transformers>=5.2.2",
     "torch>=2.10.0",
     "uvicorn>=0.40.0",
-    "requests>=2.32.0", 
+    "requests>=2.32.0",
+    "pandas>=3.0.3",
+    "openpyxl>=3.1.5",
 ]

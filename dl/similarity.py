@@ -143,7 +143,7 @@ def compute_similarities(
         use_api: bool = True
 ) -> Tuple[Optional[str], List[Dict[str, Any]], Optional[bool]]:
     weights = (kw_weight, desc_weight, head_weight)
-    folder = Path(folder_path) if folder_path else (Path.home() / "Desktop" / "Profiles")
+    folder = Path(folder_path) if folder_path else Path("/s3/cache")
 
     current_ids = []
     datasets_raw = []
@@ -252,6 +252,8 @@ def compute_similarities(
             "unique_to_2": ", ".join(sorted(kw2 - kw1)),
             "passes_threshold": combined >= threshold
         })
+
+        print(f"✅ Processed pair: {id1[:5]} vs {id2[:5]}")
 
     # --- 5. Save Smart Cache ---
     try:

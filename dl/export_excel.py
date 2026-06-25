@@ -39,7 +39,7 @@ def export_to_excel_from_api(output_name="Similarity_Report.xlsx"):
     # 3. Run similarity engine
     error, similarities, _ = sim.compute_similarities(
         folder_path=str(temp_folder),
-        kw_weight=0.3, desc_weight=0.6c, head_weight=0.1,
+        kw_weight=0.33, desc_weight=0.33, head_weight=0.33,
         threshold=0, use_api=False
     )
 
