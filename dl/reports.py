@@ -86,7 +86,8 @@ def build_croissant_report(folder_path, weights, similarities, file_data=None):
                 kw.strip()
                 for kw in s.get("unique_to_2", "").split(",")
                 if kw.strip()
-            ]
+            ],
+            "description_top_chunks": s.get("description_top_chunks", [])
         }
         report["links"].append(link)
 

@@ -8,7 +8,7 @@ from urllib.parse import unquote_plus
 
 from flask import Flask, render_template, request, send_file, make_response
 
-from dl.similarity import compute_similarities, fetch_profiles_from_api
+from dl.similarity import compute_similarities
 from dl.reports import build_croissant_report
 from dl.refine import refine_similarity, build_refinement_profile
 from dl.utils import get_weights_and_threshold
@@ -115,12 +115,7 @@ def save_results():
 
     # --- Fetch metadata for report ---
     file_data = {}
-    if use_api:
-        try:
-            file_data = fetch_profiles_from_api()
-        except Exception as e:
-            print(f"⚠️ Metadata fetch failed: {e}")
-    else:
+    if not use_api:
         # From local files
         folder_display = folder_path or (Path.home() / "Desktop" / "Profiles")
         for file in Path(folder_display).glob("*.json"):
@@ -214,7 +209,10 @@ def save_single():
                 "headline_similarity": match["headline_similarity"],
                 "combined_similarity": match["combined_similarity"]
             },
-            "common_keywords": [kw.strip() for kw in match["common_keywords"].split(",") if kw.strip()]
+            "common_keywords": [kw.strip() for kw in match["common_keywords"].split(",") if kw.strip()],
+            "unique_to_1": [kw.strip() for kw in match.get("unique_to_1", "").split(",") if kw.strip()],
+            "unique_to_2": [kw.strip() for kw in match.get("unique_to_2", "").split(",") if kw.strip()],
+            "description_top_chunks": match.get("description_top_chunks", [])
         }]
     }
 
