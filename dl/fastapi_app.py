@@ -46,7 +46,15 @@ def _normalize_folder_path(folder: str) -> str:
     return (folder or "").strip().replace("\\", "/")
 
 
-def _run_report_job(job_id: str, folder:Optional[str], kw: float, desc: float, head: float, th: float) -> None:
+def _run_report_job(
+        job_id: str,
+        folder: Optional[str],
+        kw: float,
+        desc: float,
+        head: float,
+        th: float,
+        include_chunks: bool = False
+) -> None:
     try:
         JOBS[job_id]["status"] = "in_progress"
         JOBS[job_id]["progress"] = 5
@@ -67,7 +75,7 @@ def _run_report_job(job_id: str, folder:Optional[str], kw: float, desc: float, h
             head,
             threshold=th,
             use_api=use_api,
-            include_description_chunks=True
+            include_description_chunks=include_chunks
         )
         if error:
             JOBS[job_id]["status"] = "failed"
@@ -84,6 +92,7 @@ def _run_report_job(job_id: str, folder:Optional[str], kw: float, desc: float, h
             "headline": head,
             "normalized": JOBS[job_id]["params"]["normalized"],
             "threshold": th,
+            "include_description_chunks": include_chunks,
         }
 
         report = build_croissant_report(folder, weights, similarities)
@@ -154,11 +163,12 @@ def api_compute_similarities(
     desc: float = Query(0.3, ge=0, description="Weight for description similarity"),
     head: float = Query(0.1, ge=0, description="Weight for headline similarity"),
     th: float = Query(30.0, ge=0, le=100, description="Threshold percentage"),
+    include_chunks: bool = Query(False, description="Include expensive description chunk evidence"),
 ):
     kw, desc, head, normalized = normalize_weights(kw, desc, head)
 
     error, similarities, from_cache = compute_similarities(
-        folder, kw, desc, head, threshold=th, include_description_chunks=True
+        folder, kw, desc, head, threshold=th, include_description_chunks=include_chunks
     )
     if error:
         raise HTTPException(status_code=400, detail=error)
@@ -172,6 +182,7 @@ def api_compute_similarities(
             "description": desc,
             "headline": head,
             "normalized": normalized,
+            "include_chunks": include_chunks,
         },
     }
 
@@ -273,11 +284,12 @@ def api_download_report(
     desc: float = Query(0.3, ge=0),
     head: float = Query(0.1, ge=0),
     th: float = Query(30.0, ge=0, le=100),
+    include_chunks: bool = Query(False, description="Include expensive description chunk evidence"),
 ):
     kw, desc, head, normalized = normalize_weights(kw, desc, head)
 
     error, similarities, _ = compute_similarities(
-        folder, kw, desc, head, threshold=th, include_description_chunks=True
+        folder, kw, desc, head, threshold=th, include_description_chunks=include_chunks
     )
     if error:
         raise HTTPException(status_code=400, detail=error)
@@ -288,6 +300,7 @@ def api_download_report(
         "headline": head,
         "normalized": normalized,
         "threshold": th,
+        "include_description_chunks": include_chunks,
     }
 
     report = build_croissant_report(folder, weights, similarities)
@@ -495,6 +508,7 @@ def api_job_start_report(
         desc: float = Query(0.3, ge=0),
         head: float = Query(0.1, ge=0),
         th: float = Query(30.0, ge=0, le=100),
+        include_chunks: bool = Query(False, description="Include expensive description chunk evidence"),
 ):
     if folder and (folder.strip() == "" or folder.strip().lower() == "none"):
         folder = None
@@ -515,10 +529,11 @@ def api_job_start_report(
             "head": head,
             "th": th,
             "normalized": normalized,
+            "include_chunks": include_chunks,
         },
         "result": None,
     }
-    background_tasks.add_task(_run_report_job, job_id, folder, kw, desc, head, th)
+    background_tasks.add_task(_run_report_job, job_id, folder, kw, desc, head, th, include_chunks)
     return {"job_id": job_id, "status": "queued"}
 
 
