@@ -8,7 +8,7 @@ from urllib.parse import unquote_plus
 
 from flask import Flask, render_template, request, send_file, make_response
 
-from dl.similarity import compute_similarities
+from dl.similarity import compute_similarities, build_description_top_chunks_for_pair
 from dl.reports import build_croissant_report
 from dl.refine import refine_similarity, build_refinement_profile
 from dl.utils import get_weights_and_threshold
@@ -184,6 +184,13 @@ def save_single():
     if not match:
         return f"❌ Pair {dataprofile1} / {dataprofile2} not found.", 404
 
+    description_top_chunks = match.get("description_top_chunks") or build_description_top_chunks_for_pair(
+        folder_path if folder_path else None,
+        match.get("id1"),
+        match.get("id2"),
+        use_api=use_api
+    )
+
     output_data = {
         "@context": "http://mlcommons.org/croissant/",
         "@type": "DatasetSimilarityReport",
@@ -212,7 +219,7 @@ def save_single():
             "common_keywords": [kw.strip() for kw in match["common_keywords"].split(",") if kw.strip()],
             "unique_to_1": [kw.strip() for kw in match.get("unique_to_1", "").split(",") if kw.strip()],
             "unique_to_2": [kw.strip() for kw in match.get("unique_to_2", "").split(",") if kw.strip()],
-            "description_top_chunks": match.get("description_top_chunks", [])
+            "description_top_chunks": description_top_chunks
         }]
     }
 

@@ -1,5 +1,6 @@
 import hashlib
 import json
+import pickle
 import re
 import requests
 import sys
@@ -8,11 +9,16 @@ from pathlib import Path
 from itertools import combinations
 from typing import Optional, Tuple, List, Dict, Any
 from sentence_transformers import SentenceTransformer, util
+import torch
 from dl.utils import normalize_keywords
 
 # --- GLOBALS ---
 _model_short: Optional[SentenceTransformer] = None
 _model_long: Optional[SentenceTransformer] = None
+
+MODEL_SHORT_NAME = "all-MiniLM-L6-v2"
+MODEL_LONG_NAME = "all-mpnet-base-v2"
+EMBEDDING_CACHE_VERSION = "profile_embeddings_v1"
 
 # --- TERMINAL ENCODING FIX ---
 if sys.stdout.encoding != 'utf-8':
@@ -34,20 +40,22 @@ def _ensure_models():
         print("Wait... Loading AI models...")
         # Lazy import inside to avoid overhead if not needed
         from sentence_transformers import SentenceTransformer
-        _model_short = SentenceTransformer("all-MiniLM-L6-v2")
-        _model_long = SentenceTransformer("all-mpnet-base-v2")
+        _model_short = SentenceTransformer(MODEL_SHORT_NAME)
+        _model_long = SentenceTransformer(MODEL_LONG_NAME)
 
 
 def get_iteration_fingerprint(
         dataset_ids: List[str],
         weights: Tuple[float, float, float],
-        source_signature: str = ""
+        source_signature: str = "",
+        include_description_chunks: bool = False
 ) -> str:
     """Creates a unique hash based on IDs and weights."""
     dataset_ids.sort()
     ids_string = ",".join(dataset_ids)
     weights_string = f"{weights[0]:.2f}-{weights[1]:.2f}-{weights[2]:.2f}"
-    full_string = f"{ids_string}|{weights_string}|{source_signature}|description_chunks_v1|dedupe_ready_v1"
+    chunk_mode = "all_description_chunks_v1" if include_description_chunks else "description_chunks_threshold_v2"
+    full_string = f"{ids_string}|{weights_string}|{source_signature}|{chunk_mode}|dedupe_ready_v1"
     return hashlib.md5(full_string.encode()).hexdigest()
 
 
@@ -61,6 +69,79 @@ def _file_fingerprint(path: Path) -> str:
     digest.update(path.name.encode("utf-8"))
     digest.update(path.read_bytes())
     return digest.hexdigest()
+
+
+def _text_fingerprint(text: Any) -> str:
+    return hashlib.sha256(str(text or "").encode("utf-8")).hexdigest()
+
+
+def _embedding_cache_path(folder: Path, source_type: str) -> Path:
+    return folder / f"embedding_cache_{source_type}.pkl"
+
+
+def _load_embedding_cache(cache_path: Path) -> Dict[str, Any]:
+    if not cache_path.exists():
+        return {"version": EMBEDDING_CACHE_VERSION, "entries": {}}
+
+    try:
+        with open(cache_path, "rb") as f:
+            cache = pickle.load(f)
+        if cache.get("version") != EMBEDDING_CACHE_VERSION or not isinstance(cache.get("entries"), dict):
+            return {"version": EMBEDDING_CACHE_VERSION, "entries": {}}
+        return cache
+    except Exception as e:
+        print(f"⚠️ Embedding cache read error, rebuilding: {e}")
+        return {"version": EMBEDDING_CACHE_VERSION, "entries": {}}
+
+
+def _save_embedding_cache(cache_path: Path, cache: Dict[str, Any]) -> None:
+    try:
+        cache_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(cache_path, "wb") as f:
+            pickle.dump(cache, f)
+        print(f"💾 Embedding cache saved: {cache_path.name}")
+    except Exception as e:
+        print(f"⚠️ Embedding cache save failed: {e}")
+
+
+def _encode_texts_with_cache(
+        profile_ids: List[str],
+        texts: List[str],
+        model: SentenceTransformer,
+        model_name: str,
+        field_name: str,
+        cache: Dict[str, Any]
+) -> Dict[str, torch.Tensor]:
+    entries = cache.setdefault("entries", {})
+    embeddings = {}
+    missing_ids = []
+    missing_texts = []
+
+    for profile_id, text in zip(profile_ids, texts):
+        text_hash = _text_fingerprint(text)
+        cache_key = f"{field_name}:{model_name}:{profile_id}"
+        cached = entries.get(cache_key)
+        if cached and cached.get("text_hash") == text_hash:
+            embeddings[profile_id] = torch.tensor(cached["embedding"])
+            continue
+
+        missing_ids.append(profile_id)
+        missing_texts.append(text or "")
+
+    if missing_texts:
+        print(f"🔢 Encoding {len(missing_texts)} {field_name} embedding(s)...")
+        encoded = model.encode(missing_texts, convert_to_tensor=True)
+        for idx, profile_id in enumerate(missing_ids):
+            embedding = encoded[idx].detach().cpu()
+            text = missing_texts[idx]
+            cache_key = f"{field_name}:{model_name}:{profile_id}"
+            entries[cache_key] = {
+                "text_hash": _text_fingerprint(text),
+                "embedding": embedding.tolist()
+            }
+            embeddings[profile_id] = embedding
+
+    return embeddings
 
 
 def _dataset_payload(data: Dict[str, Any]) -> Dict[str, Any]:
@@ -132,12 +213,16 @@ def _split_chunks(text: str) -> List[str]:
     if not text or len(str(text)) < 20:
         return []
 
-    chunks = re.split(r"[,.:;]| and | or | but ", str(text))
-    return [
+    clean_text = re.sub(r"\s+", " ", str(text)).strip()
+    chunks = re.split(r"[,.:;]| and | or | but ", clean_text)
+    clean_chunks = [
         chunk.strip()
         for chunk in chunks
         if len(chunk.strip().split()) >= 3 and len(chunk.strip()) > 20
     ]
+    if not clean_chunks and len(clean_text.split()) >= 3:
+        return [clean_text]
+    return clean_chunks
 
 
 def _top_description_chunks(text1: str, text2: str, limit: int = 3) -> List[Dict[str, Any]]:
@@ -247,6 +332,47 @@ def fetch_profiles_from_api() -> Dict[str, Dict[str, Any]]:
     return fetch_details_from_list(token, datasets_raw)
 
 
+def build_description_top_chunks_for_pair(
+        folder_path: Optional[str],
+        id1: str,
+        id2: str,
+        use_api: bool = True
+) -> List[Dict[str, Any]]:
+    _ensure_models()
+
+    if use_api:
+        token = get_access_token()
+        headers = {'Authorization': f'Bearer {token}', 'accept': 'application/json'}
+        res1 = requests.get(f"{DETAIL_URL}{id1}?format=croissant", headers=headers, timeout=25, verify=False)
+        res2 = requests.get(f"{DETAIL_URL}{id2}?format=croissant", headers=headers, timeout=25, verify=False)
+        res1.raise_for_status()
+        res2.raise_for_status()
+        dp1 = _dataset_payload(fix_encoding(res1.json()))
+        dp2 = _dataset_payload(fix_encoding(res2.json()))
+        return _top_description_chunks(dp1.get("description", ""), dp2.get("description", ""))
+
+    folder = Path(folder_path) if folder_path else None
+    if not folder or not folder.exists():
+        return []
+
+    dp1 = dp2 = None
+    for file in folder.glob("*.json"):
+        try:
+            with open(file, "r", encoding="utf-8") as f:
+                data = _dataset_payload(json.load(f))
+            current_id = data.get("@id", file.name)
+            if current_id == id1:
+                dp1 = data
+            if current_id == id2:
+                dp2 = data
+        except Exception:
+            continue
+
+    if not dp1 or not dp2:
+        return []
+    return _top_description_chunks(dp1.get("description", ""), dp2.get("description", ""))
+
+
 # --- CORE LOGIC ---
 
 def compute_similarities(
@@ -255,10 +381,12 @@ def compute_similarities(
         desc_weight: float = 0.3,
         head_weight: float = 0.1,
         threshold: float = 30.0,
-        use_api: bool = True
+        use_api: bool = True,
+        include_description_chunks: bool = False
 ) -> Tuple[Optional[str], List[Dict[str, Any]], Optional[bool]]:
     weights = (kw_weight, desc_weight, head_weight)
     folder = Path(folder_path) if folder_path else Path("/s3/cache")
+    source_type = "api" if use_api else "local"
 
     current_ids = []
     datasets_raw = []
@@ -286,8 +414,7 @@ def compute_similarities(
         ])
 
     # --- 2. Smart Cache Check with Fingerprint ---
-    fingerprint = get_iteration_fingerprint(current_ids, weights, source_signature)
-    source_type = "api" if use_api else "local"
+    fingerprint = get_iteration_fingerprint(current_ids, weights, source_signature, include_description_chunks)
     cache_path = folder / f"cache_{source_type}_{fingerprint}.json"
 
     if cache_path.exists():
@@ -346,6 +473,27 @@ def compute_similarities(
     # --- 4. Similarity Computation ---
     _ensure_models()
 
+    profile_ids = list(file_data.keys())
+    embedding_cache_path = _embedding_cache_path(folder, source_type)
+    embedding_cache = _load_embedding_cache(embedding_cache_path)
+    desc_embeddings = _encode_texts_with_cache(
+        profile_ids,
+        [file_data[profile_id]["description"] for profile_id in profile_ids],
+        _model_long,
+        MODEL_LONG_NAME,
+        "description",
+        embedding_cache
+    )
+    head_embeddings = _encode_texts_with_cache(
+        profile_ids,
+        [file_data[profile_id]["headline"] for profile_id in profile_ids],
+        _model_short,
+        MODEL_SHORT_NAME,
+        "headline",
+        embedding_cache
+    )
+    _save_embedding_cache(embedding_cache_path, embedding_cache)
+
     similarities = []
     for id1, id2 in combinations(file_data.keys(), 2):
         f1, f2 = file_data[id1], file_data[id2]
@@ -355,16 +503,13 @@ def compute_similarities(
         union = kw1 | kw2
         kw_sim = (len(common) / len(union) * 100) if union else 0
 
-        emb_desc1 = _model_long.encode(f1["description"], convert_to_tensor=True)
-        emb_desc2 = _model_long.encode(f2["description"], convert_to_tensor=True)
-        emb_head1 = _model_short.encode(f1["headline"], convert_to_tensor=True)
-        emb_head2 = _model_short.encode(f2["headline"], convert_to_tensor=True)
-
-        desc_sim = max(0.0, min(1.0, util.cos_sim(emb_desc1, emb_desc2).item()))
-        head_sim = max(0.0, min(1.0, util.cos_sim(emb_head1, emb_head2).item()))
+        desc_sim = max(0.0, min(1.0, util.cos_sim(desc_embeddings[id1], desc_embeddings[id2]).item()))
+        head_sim = max(0.0, min(1.0, util.cos_sim(head_embeddings[id1], head_embeddings[id2]).item()))
 
         combined = (kw_weight * (kw_sim / 100) + desc_weight * desc_sim + head_weight * head_sim) * 100
-        description_top_chunks = _top_description_chunks(f1["description"], f2["description"])
+        description_top_chunks = []
+        if include_description_chunks or combined >= threshold:
+            description_top_chunks = _top_description_chunks(f1["description"], f2["description"])
 
         similarities.append({
             #"dataprofile1": f"{f1['name']} ({id1[:5]})",

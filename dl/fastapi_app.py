@@ -13,7 +13,7 @@ from pydantic import BaseModel, Field
 
 from dl.refine import refine_similarity, build_refinement_profile
 from dl.reports import build_croissant_report
-from dl.similarity import compute_similarities
+from dl.similarity import compute_similarities, build_description_top_chunks_for_pair
 from dl.utils import normalize_weights
 
 app = FastAPI(
@@ -60,7 +60,15 @@ def _run_report_job(job_id: str, folder:Optional[str], kw: float, desc: float, h
 
         use_api = (folder is None)
 
-        error, similarities, from_cache = compute_similarities(folder, kw, desc, head, threshold=th, use_api=use_api)
+        error, similarities, from_cache = compute_similarities(
+            folder,
+            kw,
+            desc,
+            head,
+            threshold=th,
+            use_api=use_api,
+            include_description_chunks=True
+        )
         if error:
             JOBS[job_id]["status"] = "failed"
             JOBS[job_id]["progress"] = 100
@@ -150,7 +158,7 @@ def api_compute_similarities(
     kw, desc, head, normalized = normalize_weights(kw, desc, head)
 
     error, similarities, from_cache = compute_similarities(
-        folder, kw, desc, head, threshold=th
+        folder, kw, desc, head, threshold=th, include_description_chunks=True
     )
     if error:
         raise HTTPException(status_code=400, detail=error)
@@ -199,6 +207,15 @@ def api_single_similarity(
     )
     if not match:
         raise HTTPException(status_code=404, detail=f"Pair {d1}/{d2} not found.")
+
+    if not match.get("description_top_chunks"):
+        match = dict(match)
+        match["description_top_chunks"] = build_description_top_chunks_for_pair(
+            folder,
+            match.get("id1"),
+            match.get("id2"),
+            use_api=False
+        )
 
     return {
         "match": match,
@@ -259,7 +276,9 @@ def api_download_report(
 ):
     kw, desc, head, normalized = normalize_weights(kw, desc, head)
 
-    error, similarities, _ = compute_similarities(folder, kw, desc, head, threshold=th)
+    error, similarities, _ = compute_similarities(
+        folder, kw, desc, head, threshold=th, include_description_chunks=True
+    )
     if error:
         raise HTTPException(status_code=400, detail=error)
 
@@ -305,6 +324,15 @@ def api_download_pair(
     )
     if not match:
         raise HTTPException(status_code=404, detail=f"Pair {d1}/{d2} not found.")
+
+    if not match.get("description_top_chunks"):
+        match = dict(match)
+        match["description_top_chunks"] = build_description_top_chunks_for_pair(
+            folder,
+            match.get("id1"),
+            match.get("id2"),
+            use_api=False
+        )
 
     # Minimal Croissant-like pair report (same structure as your Flask /save_single)
     output = {
