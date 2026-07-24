@@ -39,21 +39,36 @@ def normalize_keywords(keywords):
     """
     Clean and normalize keyword lists.
     Keep only strings, strip spaces, lowercase, and remove empty entries.
-    For hierarchical keywords like "parent>child>leaf", keep only the final leaf.
+    For hierarchical keywords like "parent>child>leaf", keep all levels.
     Example:
-        ["  Sales ", "Analytics", " ", None, "SALES", 123, "Data "]
-        --> {'analytics', 'sales', 'data'}
+        ["  Sales ", "Education>Math>Algebra", " ", None, "SALES", 123]
+        --> {'sales', 'education', 'math', 'algebra'}
     """
+    return set(_keyword_terms(keywords))
+
+
+def keywords_to_text(keywords):
+    """Build a single text string for SBERT keyword similarity."""
+    return " ".join(_keyword_terms(keywords))
+
+
+def _keyword_terms(keywords):
     if not keywords:
-        return set()
+        return []
     if isinstance(keywords, str):
         keywords = [keywords]
 
-    return {
-        k.split(">")[-1].strip().lower()
-        for k in keywords
-        if isinstance(k, str) and k.split(">")[-1].strip()
-    }
+    terms = []
+    seen = set()
+    for keyword in keywords:
+        if not isinstance(keyword, str):
+            continue
+        for part in keyword.split(">"):
+            term = part.strip().lower()
+            if term and term not in seen:
+                terms.append(term)
+                seen.add(term)
+    return terms
 
 def get_DLRepository_path(folder, kw, desc, head):
     """Return the cache file path for a given folder and weight combination."""

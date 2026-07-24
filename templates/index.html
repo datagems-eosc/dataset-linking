@@ -77,6 +77,7 @@
     <div class="success-box">
         Requested weights: KW {{ "%.1f%%"|format(kw * 100) }}, DESC {{ "%.1f%%"|format(desc * 100) }}, HEAD {{ "%.1f%%"|format(head * 100) }}.
         Effective weights may vary per pair: keywords are used when at least one profile has keywords, while description/headline are used only when both profiles have usable text; available weights are then renormalized to 100%.
+        In this temporary branch, KW Sim. is SBERT similarity over all keyword hierarchy terms joined into one text string.
     </div>
     <table id="results-table">
         <thead>

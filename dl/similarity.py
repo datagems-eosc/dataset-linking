@@ -10,7 +10,7 @@ from itertools import combinations
 from typing import Optional, Tuple, List, Dict, Any
 from sentence_transformers import SentenceTransformer, util
 import torch
-from dl.utils import normalize_keywords
+from dl.utils import normalize_keywords, keywords_to_text
 
 # --- GLOBALS ---
 _model_short: Optional[SentenceTransformer] = None
@@ -55,7 +55,7 @@ def get_iteration_fingerprint(
     ids_string = ",".join(dataset_ids)
     weights_string = f"{weights[0]:.2f}-{weights[1]:.2f}-{weights[2]:.2f}"
     chunk_mode = "all_description_chunks_v1" if include_description_chunks else "no_description_chunks_v1"
-    full_string = f"{ids_string}|{weights_string}|{source_signature}|{chunk_mode}|dedupe_ready_v1|pairwise_effective_weights_v3|keyword_leaf_v1"
+    full_string = f"{ids_string}|{weights_string}|{source_signature}|{chunk_mode}|dedupe_ready_v1|pairwise_effective_weights_v3|keyword_sbert_hierarchy_v1|headline_name_fallback_v1"
     return hashlib.md5(full_string.encode()).hexdigest()
 
 
@@ -311,15 +311,18 @@ def fetch_details_from_list(token: str, datasets_raw: List[Dict[str, Any]]) -> D
             if not inner_dataset: continue
             if not _is_ready_dataset(inner_dataset): continue
 
-            keywords = normalize_keywords(inner_dataset.get('keywords', [])) if isinstance(inner_dataset.get('keywords'), list) else set()
+            raw_keywords = inner_dataset.get('keywords', [])
+            keywords = normalize_keywords(raw_keywords)
+            headline = inner_dataset.get('headline') or inner_dataset.get('name') or ds_name or ''
 
             # COSTRUZIONE DEL DIZIONARIO (Assicurati di non sovrascrivere!)
             file_data[ds_id] = {
                 "name": ds_name,
                 "status": str(inner_dataset.get('status', 'ready')), # Default 'ready' se manca
                 "keywords": keywords,
+                "keyword_text": keywords_to_text(raw_keywords),
                 "description": inner_dataset.get('description', ''),
-                "headline": inner_dataset.get('headline', ''),
+                "headline": headline,
                 "id": inner_dataset.get("@id", ds_id),
                 "__completeness_score": _profile_completeness_score(inner_dataset, keywords)
             }
@@ -450,18 +453,21 @@ def compute_similarities(
 
                 data = _dataset_payload(data)
 
-                keywords = normalize_keywords(data.get('keywords', []))
+                raw_keywords = data.get('keywords', [])
+                keywords = normalize_keywords(raw_keywords)
 
                 # Usiamo l'ID interno se esiste, altrimenti l'INTERO nome del file
                 # In questo modo id1 sarà "Era5land_3166e649-54c1-4ebf-904e-de9a46cb1b18.json"
                 ds_id = data.get("@id", file.name)
 
+                name = data.get('name', file.stem.split('_')[0])
                 file_data[ds_id] = {
-                    "name": data.get('name', file.stem.split('_')[0]),
+                    "name": name,
                     # Prende "Era5land" dal nome file se manca nel JSON
                     "keywords": keywords,
+                    "keyword_text": keywords_to_text(raw_keywords),
                     "description": data.get('description', ''),
-                    "headline": data.get('headline', ''),
+                    "headline": data.get('headline') or name or '',
                     "id": ds_id,
                     "__completeness_score": _profile_completeness_score(data, keywords)
                 }
@@ -480,6 +486,14 @@ def compute_similarities(
     profile_ids = list(file_data.keys())
     embedding_cache_path = _embedding_cache_path(folder, source_type)
     embedding_cache = _load_embedding_cache(embedding_cache_path)
+    keyword_embeddings = _encode_texts_with_cache(
+        profile_ids,
+        [file_data[profile_id].get("keyword_text", "") for profile_id in profile_ids],
+        _model_short,
+        MODEL_SHORT_NAME,
+        "keywords_sbert",
+        embedding_cache
+    )
     desc_embeddings = _encode_texts_with_cache(
         profile_ids,
         [file_data[profile_id]["description"] for profile_id in profile_ids],
@@ -505,12 +519,12 @@ def compute_similarities(
         kw1, kw2 = f1["keywords"], f2["keywords"]
         common = kw1 & kw2
         union = kw1 | kw2
-        kw_sim = (len(common) / len(union) * 100) if union else 0
+        keywords_used = bool(union)
+        kw_sim = max(0.0, min(1.0, util.cos_sim(keyword_embeddings[id1], keyword_embeddings[id2]).item())) if keywords_used else 0.0
 
         desc_sim = max(0.0, min(1.0, util.cos_sim(desc_embeddings[id1], desc_embeddings[id2]).item()))
         head_sim = max(0.0, min(1.0, util.cos_sim(head_embeddings[id1], head_embeddings[id2]).item()))
 
-        keywords_used = bool(union)
         description_used = _has_text(f1.get("description")) and _has_text(f2.get("description"))
         headline_used = _has_text(f1.get("headline")) and _has_text(f2.get("headline"))
 
@@ -530,7 +544,7 @@ def compute_similarities(
             effective_head_weight = 0.0
 
         combined = (
-            effective_kw_weight * (kw_sim / 100)
+            effective_kw_weight * kw_sim
             + effective_desc_weight * desc_sim
             + effective_head_weight * head_sim
         ) * 100
@@ -545,7 +559,7 @@ def compute_similarities(
             "dataprofile2": f"{f2['name']}",
             "id1": id1,
             "id2": id2,
-            "keywords_similarity": round(kw_sim, 2),
+            "keywords_similarity": round(kw_sim * 100, 2),
             "description_similarity": round(desc_sim * 100, 2),
             "headline_similarity": round(head_sim * 100, 2),
             "combined_similarity": round(combined, 2),

@@ -101,6 +101,7 @@
         <p><strong>Comparisons produced:</strong> {{ comparisons|length }}</p>
         <p><strong>Requested link weights:</strong> KW {{ "%.1f%%"|format(report.weights.keywords * 100) }}, DESC {{ "%.1f%%"|format(report.weights.description * 100) }}, HEAD {{ "%.1f%%"|format(report.weights.headline * 100) }}.</p>
         <p><strong>Effective link weights:</strong> shown per compared link in the table. Keywords contribute when at least one profile has keywords, while description/headline contribute only when both profiles have usable text; available weights are renormalized to 100%.</p>
+        <p><strong>Temporary keyword scoring:</strong> original DataLinkingBase keyword similarity is SBERT similarity over all keyword hierarchy terms joined into one text string.</p>
         {% if report.selection.includes_refinement_evidence %}
         <p><strong>Shared profile evidence:</strong> files and columns of profiles shared by two relations are shown separately from refinement overlap.</p>
         <p><strong>Refinement overlap:</strong> shared files, columns and samples are intersections between the evidence of the two compared relations.</p>
