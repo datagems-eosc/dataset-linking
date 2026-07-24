@@ -1,11 +1,12 @@
 # dl/utils.py
 from pathlib import Path
-from flask import request
 
 CACHE_DIR = Path(__file__).parent / 'DLRepository'
 CACHE_DIR.mkdir(exist_ok=True)
 
 def get_float_arg(name: str, default: float) -> float:
+    from flask import request
+
     raw = request.args.get(name, default)
     try:
         return float(raw)
@@ -38,14 +39,20 @@ def normalize_keywords(keywords):
     """
     Clean and normalize keyword lists.
     Keep only strings, strip spaces, lowercase, and remove empty entries.
+    For hierarchical keywords like "parent>child>leaf", keep only the final leaf.
     Example:
         ["  Sales ", "Analytics", " ", None, "SALES", 123, "Data "]
         --> {'analytics', 'sales', 'data'}
     """
+    if not keywords:
+        return set()
+    if isinstance(keywords, str):
+        keywords = [keywords]
+
     return {
-        k.strip().lower()
+        k.split(">")[-1].strip().lower()
         for k in keywords
-        if isinstance(k, str) and k.strip()
+        if isinstance(k, str) and k.split(">")[-1].strip()
     }
 
 def get_DLRepository_path(folder, kw, desc, head):

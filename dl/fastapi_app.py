@@ -393,6 +393,9 @@ def api_download_pair(
                 "description_similarity": match["description_similarity"],
                 "headline_similarity": match["headline_similarity"],
                 "combined_similarity": match["combined_similarity"],
+                "headline_used_in_score": match.get("headline_used_in_score", True),
+                "field_usage": match.get("field_usage"),
+                "effective_weights": match.get("effective_weights"),
             },
             "common_keywords": [
                 k.strip()

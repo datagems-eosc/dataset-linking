@@ -10,6 +10,7 @@ from flask import Flask, render_template, request, send_file, make_response
 
 from dl.similarity import compute_similarities, build_description_top_chunks_for_pair
 from dl.reports import build_croissant_report
+from dl.link_comparison import compare_datalinkingbase_links
 from dl.refine import refine_similarity, build_refinement_profile
 from dl.utils import get_weights_and_threshold
 
@@ -42,6 +43,111 @@ def get_requested_folder():
     if not raw:
         return ""
     return str(Path(raw))
+
+
+def _dataset_payload(data):
+    if isinstance(data, dict) and isinstance(data.get("dataset"), dict):
+        return data["dataset"]
+    return data if isinstance(data, dict) else {}
+
+
+def _load_profile(profile_id, folder_path, use_api, profile_cache):
+    if profile_id in profile_cache:
+        return profile_cache[profile_id]
+
+    profile = None
+    if use_api:
+        token = get_access_token()
+        headers = {'Authorization': f'Bearer {token}', 'accept': 'application/json'}
+        response = requests.get(f"{DETAIL_URL}{profile_id}?format=croissant", headers=headers, timeout=25, verify=False)
+        response.raise_for_status()
+        profile = _dataset_payload(fix_encoding(response.json()))
+    else:
+        folder = Path(folder_path)
+        for file_path in folder.glob("*.json"):
+            try:
+                with open(file_path, "r", encoding="utf-8") as f:
+                    data = _dataset_payload(json.load(f))
+                current_id = data.get("@id", file_path.name)
+                if current_id == profile_id:
+                    profile = data
+                    break
+            except Exception:
+                continue
+
+    if profile:
+        profile_cache[profile_id] = profile
+    return profile
+
+
+def _build_refinement_evidence_for_link(link, folder_path, use_api, profile_cache):
+    dp1 = _load_profile(link.get("dataprofile1ref"), folder_path, use_api, profile_cache)
+    dp2 = _load_profile(link.get("dataprofile2ref"), folder_path, use_api, profile_cache)
+    if not dp1 or not dp2:
+        return {}
+
+    txt_cmp = compare_txt_files(extract_txt_documents(dp1), extract_txt_documents(dp2))
+    csv_cmp = compare_csv_schemas_with_samples(
+        extract_csv_tables_with_samples(dp1),
+        extract_csv_tables_with_samples(dp2)
+    )
+
+    matching_samples = set()
+    for item in csv_cmp.get("per_column_sample_overlap", []) or []:
+        matching_samples.update(str(sample) for sample in item.get("common_samples", []) or [])
+
+    return {
+        "matching_files": txt_cmp.get("common_document_names", []),
+        "matching_columns": csv_cmp.get("common_columns", []),
+        "matching_samples": sorted(matching_samples),
+    }
+
+
+def _profile_evidence(profile):
+    files = []
+    columns = []
+    samples = set()
+
+    for distribution in profile.get("distribution", []) or []:
+        if not isinstance(distribution, dict):
+            continue
+        name = str(distribution.get("name") or "").strip()
+        if name:
+            files.append(name)
+
+    for record_set in profile.get("recordSet", []) or []:
+        if not isinstance(record_set, dict):
+            continue
+        for field in record_set.get("field", []) or []:
+            if not isinstance(field, dict):
+                continue
+            column_name = str(field.get("name") or field.get("column") or "").strip()
+            if column_name:
+                columns.append(column_name)
+            for sample in field.get("sample", []) or []:
+                if str(sample).strip():
+                    samples.add(str(sample).strip())
+
+    return {
+        "files": sorted(set(files)),
+        "columns": sorted(set(columns)),
+        "samples": sorted(samples),
+    }
+
+
+def _attach_profile_evidence(link, folder_path, use_api, profile_cache):
+    evidence = {}
+    for profile_id in [link.get("dataprofile1ref"), link.get("dataprofile2ref")]:
+        profile = _load_profile(profile_id, folder_path, use_api, profile_cache)
+        if profile:
+            evidence[profile_id] = _profile_evidence(profile)
+    link["profile_evidence"] = evidence
+
+
+def _download_url_for_current_request():
+    query_string = request.query_string.decode("utf-8")
+    separator = "&" if query_string else ""
+    return f"{request.path}?{query_string}{separator}format=json"
 
 
 # ---------------------------------------------------------------------------- #
@@ -154,6 +260,135 @@ def save_results():
     return response
 
 
+@app.route("/compare_links")
+def compare_links():
+    folder_path = get_requested_folder()
+    use_api = True if not folder_path else False
+
+    kw_weight, desc_weight, head_weight, th, normalized = get_weights_and_threshold()
+    relation_threshold = request.args.get("relation_th", 0.0)
+    top_n = request.args.get("top_n", "").strip()
+    selected_pairs_raw = request.args.get("selected_pairs", "").strip()
+    output_format = request.args.get("format", "html").strip().lower()
+
+    try:
+        relation_threshold = float(relation_threshold)
+    except (TypeError, ValueError):
+        relation_threshold = 0.0
+
+    try:
+        top_n_value = int(top_n) if top_n else None
+    except ValueError:
+        top_n_value = None
+
+    selected_pairs = []
+    if selected_pairs_raw:
+        try:
+            loaded_pairs = json.loads(selected_pairs_raw)
+            if isinstance(loaded_pairs, list):
+                selected_pairs = [
+                    tuple(pair)
+                    for pair in loaded_pairs
+                    if isinstance(pair, list) and len(pair) == 2
+                ]
+        except json.JSONDecodeError:
+            selected_pairs = []
+
+    error, similarities, from_cache = compute_similarities(
+        folder_path=folder_path if folder_path else None,
+        kw_weight=kw_weight,
+        desc_weight=desc_weight,
+        head_weight=head_weight,
+        threshold=th,
+        use_api=use_api
+    )
+
+    if error:
+        return f"❌ Cannot compare links: {error}", 400
+
+    above_threshold = [s for s in similarities if s.get("passes_threshold")]
+    if selected_pairs:
+        selected_pair_keys = {frozenset(pair) for pair in selected_pairs}
+        above_threshold = [
+            s for s in above_threshold
+            if frozenset([str(s.get("id1")), str(s.get("id2"))]) in selected_pair_keys
+        ]
+    weights = {
+        "keywords": kw_weight,
+        "description": desc_weight,
+        "headline": head_weight,
+        "normalized": normalized,
+        "threshold": th,
+    }
+
+    source_label = folder_path if folder_path else "API_Datagems"
+    base_report = build_croissant_report(source_label, weights, above_threshold, {})
+    profile_cache = {}
+    for link in base_report["links"]:
+        _attach_profile_evidence(
+            link,
+            folder_path if folder_path else None,
+            use_api,
+            profile_cache
+        )
+        link["refinement_evidence"] = _build_refinement_evidence_for_link(
+            link,
+            folder_path if folder_path else None,
+            use_api,
+            profile_cache
+        )
+
+    comparisons = compare_datalinkingbase_links(
+        base_report["links"],
+        relation_threshold=relation_threshold,
+        top_n=top_n_value
+    )
+
+    selection = {
+        "mode": "selected_links" if selected_pairs else "all_above_threshold",
+        "minimum_combined_similarity": th,
+        "links_considered": len(base_report["links"]),
+    }
+    selection["includes_refinement_evidence"] = True
+    if selected_pairs:
+        selection["selected_pairs"] = len(selected_pairs)
+    if top_n_value:
+        selection["top_n"] = top_n_value
+    if relation_threshold > 0:
+        selection["minimum_relation_similarity"] = relation_threshold
+
+    output_data = {
+        "@context": "http://mlcommons.org/croissant/",
+        "@type": "DataLinkingBaseComparisonReport",
+        "source": source_label,
+        "from_cache": from_cache,
+        "selection": selection,
+        "weights": weights,
+        "comparisons": comparisons,
+    }
+
+    if output_format != "json":
+        return render_template(
+            "link_comparisons.html",
+            report=output_data,
+            comparisons=comparisons,
+            download_url=_download_url_for_current_request(),
+            folder=folder_path or "",
+        )
+
+    buffer = io.BytesIO()
+    buffer.write(json.dumps(output_data, indent=4, ensure_ascii=False).encode("utf-8"))
+    buffer.seek(0)
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"link_comparisons_{timestamp}.json"
+    response = make_response(send_file(
+        buffer, mimetype="application/json", as_attachment=True, download_name=filename
+    ))
+    response.set_cookie("downloadComplete", "1", max_age=10)
+    return response
+
+
 @app.route("/save_single")
 def save_single():
     dataprofile1 = request.args.get("d1")
@@ -214,7 +449,10 @@ def save_single():
                 "keywords_similarity": match["keywords_similarity"],
                 "description_similarity": match["description_similarity"],
                 "headline_similarity": match["headline_similarity"],
-                "combined_similarity": match["combined_similarity"]
+                "combined_similarity": match["combined_similarity"],
+                "headline_used_in_score": match.get("headline_used_in_score", True),
+                "field_usage": match.get("field_usage"),
+                "effective_weights": match.get("effective_weights")
             },
             "common_keywords": [kw.strip() for kw in match["common_keywords"].split(",") if kw.strip()],
             "unique_to_1": [kw.strip() for kw in match.get("unique_to_1", "").split(",") if kw.strip()],
@@ -224,7 +462,7 @@ def save_single():
     }
 
     buffer = io.BytesIO()
-    # ensure_ascii=False per gestire correttamente i caratteri speciali
+    # Keep non-ASCII metadata readable in downloaded JSON.
     buffer.write(json.dumps(output_data, indent=4, ensure_ascii=False).encode("utf-8"))
     buffer.seek(0)
 

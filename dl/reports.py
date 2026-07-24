@@ -70,7 +70,10 @@ def build_croissant_report(folder_path, weights, similarities, file_data=None):
                 "keywords_similarity": s["keywords_similarity"],
                 "description_similarity": s["description_similarity"],
                 "headline_similarity": s["headline_similarity"],
-                "combined_similarity": s["combined_similarity"]
+                "combined_similarity": s["combined_similarity"],
+                "headline_used_in_score": s.get("headline_used_in_score", True),
+                "field_usage": s.get("field_usage"),
+                "effective_weights": s.get("effective_weights")
             },
             "common_keywords": [
                 kw.strip()

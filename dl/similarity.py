@@ -54,8 +54,8 @@ def get_iteration_fingerprint(
     dataset_ids.sort()
     ids_string = ",".join(dataset_ids)
     weights_string = f"{weights[0]:.2f}-{weights[1]:.2f}-{weights[2]:.2f}"
-    chunk_mode = "all_description_chunks_v1" if include_description_chunks else "description_chunks_threshold_v2"
-    full_string = f"{ids_string}|{weights_string}|{source_signature}|{chunk_mode}|dedupe_ready_v1"
+    chunk_mode = "all_description_chunks_v1" if include_description_chunks else "no_description_chunks_v1"
+    full_string = f"{ids_string}|{weights_string}|{source_signature}|{chunk_mode}|dedupe_ready_v1|pairwise_effective_weights_v3|keyword_leaf_v1"
     return hashlib.md5(full_string.encode()).hexdigest()
 
 
@@ -73,6 +73,10 @@ def _file_fingerprint(path: Path) -> str:
 
 def _text_fingerprint(text: Any) -> str:
     return hashlib.sha256(str(text or "").encode("utf-8")).hexdigest()
+
+
+def _has_text(value: Any) -> bool:
+    return bool(str(value or "").strip())
 
 
 def _embedding_cache_path(folder: Path, source_type: str) -> Path:
@@ -314,8 +318,8 @@ def fetch_details_from_list(token: str, datasets_raw: List[Dict[str, Any]]) -> D
                 "name": ds_name,
                 "status": str(inner_dataset.get('status', 'ready')), # Default 'ready' se manca
                 "keywords": keywords,
-                "description": inner_dataset.get('description', 'N/A'),
-                "headline": inner_dataset.get('name', 'N/A'),
+                "description": inner_dataset.get('description', ''),
+                "headline": inner_dataset.get('headline', ''),
                 "id": inner_dataset.get("@id", ds_id),
                 "__completeness_score": _profile_completeness_score(inner_dataset, keywords)
             }
@@ -506,9 +510,32 @@ def compute_similarities(
         desc_sim = max(0.0, min(1.0, util.cos_sim(desc_embeddings[id1], desc_embeddings[id2]).item()))
         head_sim = max(0.0, min(1.0, util.cos_sim(head_embeddings[id1], head_embeddings[id2]).item()))
 
-        combined = (kw_weight * (kw_sim / 100) + desc_weight * desc_sim + head_weight * head_sim) * 100
+        keywords_used = bool(union)
+        description_used = _has_text(f1.get("description")) and _has_text(f2.get("description"))
+        headline_used = _has_text(f1.get("headline")) and _has_text(f2.get("headline"))
+
+        active_weights = {
+            "keywords": kw_weight if keywords_used else 0.0,
+            "description": desc_weight if description_used else 0.0,
+            "headline": head_weight if headline_used else 0.0,
+        }
+        active_total = sum(active_weights.values())
+        if active_total > 0:
+            effective_kw_weight = active_weights["keywords"] / active_total
+            effective_desc_weight = active_weights["description"] / active_total
+            effective_head_weight = active_weights["headline"] / active_total
+        else:
+            effective_kw_weight = 0.0
+            effective_desc_weight = 0.0
+            effective_head_weight = 0.0
+
+        combined = (
+            effective_kw_weight * (kw_sim / 100)
+            + effective_desc_weight * desc_sim
+            + effective_head_weight * head_sim
+        ) * 100
         description_top_chunks = []
-        if include_description_chunks or combined >= threshold:
+        if include_description_chunks:
             description_top_chunks = _top_description_chunks(f1["description"], f2["description"])
 
         similarities.append({
@@ -522,6 +549,17 @@ def compute_similarities(
             "description_similarity": round(desc_sim * 100, 2),
             "headline_similarity": round(head_sim * 100, 2),
             "combined_similarity": round(combined, 2),
+            "headline_used_in_score": headline_used,
+            "field_usage": {
+                "keywords": keywords_used,
+                "description": description_used,
+                "headline": headline_used,
+            },
+            "effective_weights": {
+                "keywords": round(effective_kw_weight, 4),
+                "description": round(effective_desc_weight, 4),
+                "headline": round(effective_head_weight, 4),
+            },
             "common_keywords": ", ".join(sorted(common)),
             "common_count": len(common),
             "unique_to_1": ", ".join(sorted(kw1 - kw2)),
