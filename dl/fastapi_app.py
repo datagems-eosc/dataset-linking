@@ -4,6 +4,7 @@ import json
 import uuid
 import traceback
 from datetime import datetime
+from pathlib import Path
 from typing import List, Optional, Dict, Any
 
 from fastapi import FastAPI, Query, HTTPException, BackgroundTasks
@@ -46,6 +47,74 @@ def _normalize_folder_path(folder: str) -> str:
     return (folder or "").strip().replace("\\", "/")
 
 
+def _profile_filename_lookup(folder: str) -> Dict[str, str]:
+    lookup = {}
+    for file_path in Path(folder).glob("*.json"):
+        lookup[file_path.name] = file_path.name
+        lookup[file_path.stem] = file_path.name
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            if isinstance(data, dict) and isinstance(data.get("dataset"), dict):
+                data = data["dataset"]
+            if isinstance(data, dict):
+                if data.get("@id"):
+                    lookup[str(data.get("@id"))] = file_path.name
+                if data.get("name"):
+                    lookup[str(data.get("name"))] = file_path.name
+        except Exception:
+            continue
+    return lookup
+
+
+def _attach_graphs_to_similarities(
+        folder: Optional[str],
+        similarities: List[Dict[str, Any]],
+        kw: float,
+        desc: float,
+        head: float,
+        th: float,
+        only_above_threshold: bool = True,
+) -> Dict[str, int]:
+    lookup = _profile_filename_lookup(folder) if folder else {}
+    generated = 0
+    failed = 0
+    skipped = 0
+
+    for item in similarities:
+        if only_above_threshold and not item.get("passes_threshold"):
+            skipped += 1
+            continue
+
+        d1 = lookup.get(str(item.get("id1"))) or lookup.get(str(item.get("dataprofile1"))) or str(item.get("id1"))
+        d2 = lookup.get(str(item.get("id2"))) or lookup.get(str(item.get("dataprofile2"))) or str(item.get("id2"))
+
+        try:
+            report = refine_similarity(
+                folder,
+                d1,
+                d2,
+                item.get("keywords_similarity", 0),
+                item.get("description_similarity", 0),
+                item.get("headline_similarity", 0),
+                item.get("combined_similarity", 0),
+                kw,
+                desc,
+                head,
+            )
+            if isinstance(report, dict) and report.get("error"):
+                item["graph_error"] = report["error"]
+                failed += 1
+                continue
+            item["graph"] = report.get("graph")
+            generated += 1
+        except Exception as exc:
+            item["graph_error"] = str(exc)
+            failed += 1
+
+    return {"generated": generated, "failed": failed, "skipped": skipped}
+
+
 def _run_report_job(
         job_id: str,
         folder: Optional[str],
@@ -53,7 +122,9 @@ def _run_report_job(
         desc: float,
         head: float,
         th: float,
-        include_chunks: bool = False
+        include_chunks: bool = False,
+        include_graphs: bool = False,
+        graphs_only_above_threshold: bool = True,
 ) -> None:
     try:
         JOBS[job_id]["status"] = "in_progress"
@@ -83,6 +154,20 @@ def _run_report_job(
             JOBS[job_id]["message"] = error
             return
 
+        graph_summary = None
+        if include_graphs:
+            JOBS[job_id]["progress"] = 70
+            JOBS[job_id]["message"] = "Generating pair graphs..."
+            graph_summary = _attach_graphs_to_similarities(
+                folder,
+                similarities,
+                kw,
+                desc,
+                head,
+                th,
+                only_above_threshold=graphs_only_above_threshold,
+            )
+
         JOBS[job_id]["progress"] = 85
         JOBS[job_id]["message"] = "Building report..."
 
@@ -93,10 +178,13 @@ def _run_report_job(
             "normalized": JOBS[job_id]["params"]["normalized"],
             "threshold": th,
             "include_description_chunks": include_chunks,
+            "include_graphs": include_graphs,
+            "graphs_only_above_threshold": graphs_only_above_threshold,
         }
 
         report = build_croissant_report(folder, weights, similarities)
         report["from_cache"] = from_cache
+        report["graphs"] = graph_summary
 
         JOBS[job_id]["status"] = "completed"
         JOBS[job_id]["progress"] = 100
@@ -164,6 +252,8 @@ def api_compute_similarities(
     head: float = Query(0.1, ge=0, description="Weight for headline similarity"),
     th: float = Query(30.0, ge=0, le=100, description="Threshold percentage"),
     include_chunks: bool = Query(False, description="Include expensive description chunk evidence"),
+    include_graphs: bool = Query(False, description="Generate PGJSON graph for each pair"),
+    graphs_only_above_threshold: bool = Query(True, description="Generate graphs only for pairs above threshold"),
 ):
     kw, desc, head, normalized = normalize_weights(kw, desc, head)
 
@@ -173,16 +263,31 @@ def api_compute_similarities(
     if error:
         raise HTTPException(status_code=400, detail=error)
 
+    graph_summary = None
+    if include_graphs:
+        graph_summary = _attach_graphs_to_similarities(
+            folder,
+            similarities,
+            kw,
+            desc,
+            head,
+            th,
+            only_above_threshold=graphs_only_above_threshold,
+        )
+
     return {
         "results": similarities,
         "from_cache": from_cache,
         "threshold": th,
+        "graphs": graph_summary,
         "weights": {
             "keywords": kw,
             "description": desc,
             "headline": head,
             "normalized": normalized,
             "include_chunks": include_chunks,
+            "include_graphs": include_graphs,
+            "graphs_only_above_threshold": graphs_only_above_threshold,
         },
     }
 
@@ -252,6 +357,8 @@ def api_build_report(
     desc: float = Query(0.3, ge=0),
     head: float = Query(0.1, ge=0),
     th: float = Query(30.0, ge=0, le=100),
+    include_graphs: bool = Query(False, description="Generate PGJSON graph for each pair"),
+    graphs_only_above_threshold: bool = Query(True, description="Generate graphs only for pairs above threshold"),
 ):
     kw, desc, head, normalized = normalize_weights(kw, desc, head)
 
@@ -261,16 +368,31 @@ def api_build_report(
     if error:
         raise HTTPException(status_code=400, detail=error)
 
+    graph_summary = None
+    if include_graphs:
+        graph_summary = _attach_graphs_to_similarities(
+            folder,
+            similarities,
+            kw,
+            desc,
+            head,
+            th,
+            only_above_threshold=graphs_only_above_threshold,
+        )
+
     weights = {
         "keywords": kw,
         "description": desc,
         "headline": head,
         "normalized": normalized,
         "threshold": th,
+        "include_graphs": include_graphs,
+        "graphs_only_above_threshold": graphs_only_above_threshold,
     }
 
     report = build_croissant_report(folder, weights, similarities)  # file_data optional
     report["from_cache"] = from_cache
+    report["graphs"] = graph_summary
     return report
 
 
@@ -285,6 +407,8 @@ def api_download_report(
     head: float = Query(0.1, ge=0),
     th: float = Query(30.0, ge=0, le=100),
     include_chunks: bool = Query(False, description="Include expensive description chunk evidence"),
+    include_graphs: bool = Query(False, description="Generate PGJSON graph for each pair"),
+    graphs_only_above_threshold: bool = Query(True, description="Generate graphs only for pairs above threshold"),
 ):
     kw, desc, head, normalized = normalize_weights(kw, desc, head)
 
@@ -294,6 +418,18 @@ def api_download_report(
     if error:
         raise HTTPException(status_code=400, detail=error)
 
+    graph_summary = None
+    if include_graphs:
+        graph_summary = _attach_graphs_to_similarities(
+            folder,
+            similarities,
+            kw,
+            desc,
+            head,
+            th,
+            only_above_threshold=graphs_only_above_threshold,
+        )
+
     weights = {
         "keywords": kw,
         "description": desc,
@@ -301,9 +437,12 @@ def api_download_report(
         "normalized": normalized,
         "threshold": th,
         "include_description_chunks": include_chunks,
+        "include_graphs": include_graphs,
+        "graphs_only_above_threshold": graphs_only_above_threshold,
     }
 
     report = build_croissant_report(folder, weights, similarities)
+    report["graphs"] = graph_summary
     filename = f"similarity_{_timestamp()}.json"
     return _json_download(report, filename)
 
@@ -512,6 +651,8 @@ def api_job_start_report(
         head: float = Query(0.1, ge=0),
         th: float = Query(30.0, ge=0, le=100),
         include_chunks: bool = Query(False, description="Include expensive description chunk evidence"),
+        include_graphs: bool = Query(False, description="Generate PGJSON graph for each pair"),
+        graphs_only_above_threshold: bool = Query(True, description="Generate graphs only for pairs above threshold"),
 ):
     if folder and (folder.strip() == "" or folder.strip().lower() == "none"):
         folder = None
@@ -533,10 +674,23 @@ def api_job_start_report(
             "th": th,
             "normalized": normalized,
             "include_chunks": include_chunks,
+            "include_graphs": include_graphs,
+            "graphs_only_above_threshold": graphs_only_above_threshold,
         },
         "result": None,
     }
-    background_tasks.add_task(_run_report_job, job_id, folder, kw, desc, head, th, include_chunks)
+    background_tasks.add_task(
+        _run_report_job,
+        job_id,
+        folder,
+        kw,
+        desc,
+        head,
+        th,
+        include_chunks,
+        include_graphs,
+        graphs_only_above_threshold,
+    )
     return {"job_id": job_id, "status": "queued"}
 
 

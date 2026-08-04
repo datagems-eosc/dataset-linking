@@ -173,13 +173,19 @@ def build_graph_json(report: Dict, dp1: Dict, dp2: Dict) -> Dict:
     nodes = []
     edges = []
     root_id = str(uuid.uuid4())
+    generated_at = datetime.now(timezone.utc).isoformat()
 
-    # 1. Root node (UUID)
+    def format_score(value, default=0.0):
+        try:
+            return round(float(value), 2)
+        except (TypeError, ValueError):
+            return default
+
     nodes.append({
         "id": root_id, "labels": ["BasicDLElement"],
         "properties": {
-            "date": datetime.now().strftime("%Y-%m-%d"),
-            "combinedSimilarity": str(report.get("combined_similarity", 0)),
+            "date": generated_at,
+            "similarityScore": format_score(report.get("combined_similarity", 0)),
             "usesMetrics": "avg"
         }
     })
@@ -225,6 +231,8 @@ def build_graph_json(report: Dict, dp1: Dict, dp2: Dict) -> Dict:
     common_kw_display = []
     seen_lower = set()
     for k in (list(raw_kw1) + list(raw_kw2)):
+        if not isinstance(k, str):
+            continue
         kl = k.lower().strip()
         if kl in common_set_lower and kl not in seen_lower:
             common_kw_display.append(k)
@@ -241,51 +249,98 @@ def build_graph_json(report: Dict, dp1: Dict, dp2: Dict) -> Dict:
                 "dg:keywords": list(profile.get("keywords", []))
             }
         })
-        edges.append({"from": root_id, "to": ds_id, "labels": ["hasTargetDataset"]})
+        edges.append({"from": root_id, "to": ds_id, "labels": ["HAS_TARGET"]})
 
-    # 3. Evidences nodes
+    # 3. Property comparison nodes
     metrics = [
         ("keywords", report.get("kw_sim", 0), report.get("kw_w", 0.6), "JaccardSimilarity", common_kw_display),
         ("descriptions", report.get("desc_sim", 0), report.get("desc_w", 0.3), "all-mpnet-base-v2", desc_evidence),
         ("headlines", report.get("headline_similarity", report.get("head_sim", 0)), report.get("head_w", 0.1),
-         "all-mpnet-base-v2", "[[Title Match]]")
+         "all-mpnet-base-v2", None)
     ]
+
+    description_comp_id = None
 
     for prop, val, weight_val, metric_name, evidence in metrics:
         comp_id = str(uuid.uuid4())
+        comp_properties = {
+            "targetProperty": prop,
+            "similarityScore": format_score(val),
+            "usesMetrics": metric_name
+        }
+        if prop == "keywords":
+            comp_properties["relevantWords"] = evidence
+
         nodes.append({
-            "id": comp_id, "labels": ["PropertyComparison", "TextualComparison"],
-            "properties": {
-                "targetProperty": prop,
-                "metricValue": str(val),
-                "relevantWords" if prop == "keywords" else "relevantChunks": evidence,
-                "usesMetrics": metric_name
-            }
+            "id": comp_id, "labels": ["PropertyComparison"],
+            "properties": comp_properties
         })
         edges.append({
             "from": root_id, "to": comp_id,
-            "labels": ["hasComparison"],
-            "properties": {"weight": str(weight_val)}
+            "labels": ["HAS_COMPARISON"],
+            "properties": {"weight": format_score(weight_val)}
         })
 
-        if prop == "keywords":
-            u_kw1 = [k for k in raw_kw1 if k.lower().strip() not in common_set_lower]
-            u_kw2 = [k for k in raw_kw2 if k.lower().strip() not in common_set_lower]
-            edges.append({"from": comp_id, "to": ds1_id, "labels": ["hasTargetDataset"], "properties": {"uniqueKeywords": u_kw1}})
-            edges.append({"from": comp_id, "to": ds2_id, "labels": ["hasTargetDataset"], "properties": {"uniqueKeywords": u_kw2}})
-        else:
-            edges.append({"from": comp_id, "to": ds1_id, "labels": ["hasTargetDataset"]})
-            edges.append({"from": comp_id, "to": ds2_id, "labels": ["hasTargetDataset"]})
+        edges.append({"from": comp_id, "to": ds1_id, "labels": ["HAS_TARGET"]})
+        edges.append({"from": comp_id, "to": ds2_id, "labels": ["HAS_TARGET"]})
+
+        if prop == "descriptions":
+            description_comp_id = comp_id
+
+    if description_comp_id:
+        for item in desc_evidence:
+            evidence_id = str(uuid.uuid4())
+            nodes.append({
+                "id": evidence_id,
+                "labels": ["TextEvidence"],
+                "properties": {"similarityScore": format_score(float(str(item.get("similarity", "0")).rstrip("%")))}
+            })
+            edges.append({
+                "from": description_comp_id,
+                "to": evidence_id,
+                "labels": ["HAS_EVIDENCE"],
+                "properties": {"rank": int(item.get("rank", 0))}
+            })
+            edges.append({
+                "from": evidence_id,
+                "to": ds1_id,
+                "labels": ["HAS_TARGET"],
+                "properties": {"chunk": item.get("chunk1", "")}
+            })
+            edges.append({
+                "from": evidence_id,
+                "to": ds2_id,
+                "labels": ["HAS_TARGET"],
+                "properties": {"chunk": item.get("chunk2", "")}
+            })
 
     # 4. File matching
     dist1_map = {normalize_name(d.get("name")): d for d in dp1.get("distribution", []) if d.get("name")}
     dist2_map = {normalize_name(d.get("name")): d for d in dp2.get("distribution", []) if d.get("name")}
     linked_ids = set()
+    common_documents = report.get("txt_comparison", {}).get("common_document_names", [])
+    file_link_id = None
 
-    for fname in report.get("txt_comparison", {}).get("common_document_names", []):
+    def ensure_file_link() -> str:
+        nonlocal file_link_id
+        if file_link_id:
+            return file_link_id
+        file_link_id = str(uuid.uuid4())
+        nodes.append({
+            "id": file_link_id,
+            "labels": ["FileObjectLinkingElement"],
+            "properties": {
+                "date": generated_at,
+                "similarityScore": 100.0,
+                "usesMetrics": "avg"
+            }
+        })
+        edges.append({"from": root_id, "to": file_link_id, "labels": ["HAS_DETAIL"]})
+        return file_link_id
+
+    for fname in common_documents:
         fn = normalize_name(fname)
         m1, m2 = dist1_map.get(fn, {}), dist2_map.get(fn, {})
-        # ID file o UUID se manca
         f1_id, f2_id = m1.get("@id", str(uuid.uuid4())), m2.get("@id", str(uuid.uuid4()))
 
         for fid, meta, parent in [(f1_id, m1, ds1_id), (f2_id, m2, ds2_id)]:
@@ -296,34 +351,70 @@ def build_graph_json(report: Dict, dp1: Dict, dp2: Dict) -> Dict:
                         "name": meta.get("name", fname),
                         "type": "cr:FileObject",
                         "sc:encodingFormat": meta.get("encodingFormat", "application/pdf"),
-                        "sc:contentUrl": meta.get("contentUrl", "") # <--- RIPRISTINATO
+                        "sc:contentUrl": meta.get("contentUrl", "")
                     }
                 })
                 edges.append({"from": parent, "to": fid, "labels": ["distribution"]})
                 linked_ids.add(fid)
-        edges.append({"from": f1_id, "to": f2_id, "labels": ["similarTo"], "properties": {"samples": [fname]}})
 
-    # 5. CSV matching
+        link_id = ensure_file_link()
+        file_comp_id = str(uuid.uuid4())
+        nodes.append({
+            "id": file_comp_id,
+            "labels": ["FileObjectComparison"],
+            "properties": {
+                "targetProperty": "filename",
+                "similarityScore": 100.0
+            }
+        })
+        edges.append({
+            "from": link_id,
+            "to": file_comp_id,
+            "labels": ["HAS_COMPARISON"],
+            "properties": {"weight": 1.0}
+        })
+        edges.append({"from": file_comp_id, "to": f1_id, "labels": ["HAS_TARGET"]})
+        edges.append({"from": file_comp_id, "to": f2_id, "labels": ["HAS_TARGET"]})
+
+    # 5. CSV/table matching: only file objects with the same normalized name are
+    # represented here. Sample overlaps are too noisy for FO-level evidence.
     csv_ext1, csv_ext2 = extract_csv_tables_with_samples(dp1), extract_csv_tables_with_samples(dp2)
-    for t1 in csv_ext1["tables"]:
-        s1 = set().union(*(col["samples"] for col in t1["columns"].values()))
-        for t2 in csv_ext2["tables"]:
-            s2 = set().union(*(col["samples"] for col in t2["columns"].values()))
-            inter = list(s1 & s2)
-            if inter:
-                for td, parent in [(t1, ds1_id), (t2, ds2_id)]:
-                    if td["id"] not in linked_ids:
-                        nodes.append({
-                            "id": td["id"], "labels": ["cr:FileObject"],
-                            "properties": {
-                                "name": td["name"],
-                                "sc:encodingFormat": td["format"],
-                                "sc:contentUrl": td.get("url", "") # <--- RIPRISTINATO
-                            }
-                        })
-                        edges.append({"from": parent, "to": td["id"], "labels": ["distribution"]})
-                        linked_ids.add(td["id"])
-                edges.append({"from": t1["id"], "to": t2["id"], "labels": ["similarTo"], "properties": {"samples": inter[:10]}})
+    tables1 = {normalize_name(t["name"]): t for t in csv_ext1["tables"] if t.get("name")}
+    tables2 = {normalize_name(t["name"]): t for t in csv_ext2["tables"] if t.get("name")}
+    for table_key in sorted(set(tables1) & set(tables2)):
+        t1, t2 = tables1[table_key], tables2[table_key]
+        for td, parent in [(t1, ds1_id), (t2, ds2_id)]:
+            if td["id"] not in linked_ids:
+                nodes.append({
+                    "id": td["id"], "labels": ["cr:FileObject"],
+                    "properties": {
+                        "name": td["name"],
+                        "type": "cr:FileObject",
+                        "sc:encodingFormat": td["format"],
+                        "sc:contentUrl": td.get("url", "")
+                    }
+                })
+                edges.append({"from": parent, "to": td["id"], "labels": ["distribution"]})
+                linked_ids.add(td["id"])
+
+        link_id = ensure_file_link()
+        file_comp_id = str(uuid.uuid4())
+        nodes.append({
+            "id": file_comp_id,
+            "labels": ["FileObjectComparison"],
+            "properties": {
+                "targetProperty": "filename",
+                "similarityScore": 100.0
+            }
+        })
+        edges.append({
+            "from": link_id,
+            "to": file_comp_id,
+            "labels": ["HAS_COMPARISON"],
+            "properties": {"weight": 1.0}
+        })
+        edges.append({"from": file_comp_id, "to": t1["id"], "labels": ["HAS_TARGET"]})
+        edges.append({"from": file_comp_id, "to": t2["id"], "labels": ["HAS_TARGET"]})
 
     return {"nodes": nodes, "edges": edges}
 

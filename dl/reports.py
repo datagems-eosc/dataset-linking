@@ -92,6 +92,10 @@ def build_croissant_report(folder_path, weights, similarities, file_data=None):
             ],
             "description_top_chunks": s.get("description_top_chunks", [])
         }
+        if s.get("graph"):
+            link["graph"] = s.get("graph")
+        if s.get("graph_error"):
+            link["graph_error"] = s.get("graph_error")
         report["links"].append(link)
 
     return report
