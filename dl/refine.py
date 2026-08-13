@@ -363,7 +363,7 @@ def build_graph_json(report: Dict, dp1: Dict, dp2: Dict) -> Dict:
             "id": file_comp_id,
             "labels": ["FileObjectComparison"],
             "properties": {
-                "targetProperty": "filename",
+                "targetProperty": "name",
                 "similarityScore": 100.0
             }
         })
@@ -403,7 +403,7 @@ def build_graph_json(report: Dict, dp1: Dict, dp2: Dict) -> Dict:
             "id": file_comp_id,
             "labels": ["FileObjectComparison"],
             "properties": {
-                "targetProperty": "filename",
+                "targetProperty": "name",
                 "similarityScore": 100.0
             }
         })
@@ -495,14 +495,31 @@ def refine_similarity(folder_path: Optional[str], dataprofile1: str, dataprofile
 
 
 def build_refinement_profile(report: Dict[str, Any]) -> Dict[str, Any]:
+    graph = report.get("graph") or {}
+    graph_nodes = {node.get("id"): node for node in graph.get("nodes", []) or []}
+    file_table_names = set()
+
+    for node in graph.get("nodes", []) or []:
+        if "FileObjectComparison" not in (node.get("labels") or []):
+            continue
+        comparison_id = node.get("id")
+        for edge in graph.get("edges", []) or []:
+            if edge.get("from") != comparison_id or "HAS_TARGET" not in (edge.get("labels") or []):
+                continue
+            target_node = graph_nodes.get(edge.get("to")) or {}
+            properties = target_node.get("properties") or {}
+            name = str(properties.get("name") or "").strip()
+            if name:
+                file_table_names.add(name)
+
     return {
         "@type": "RefinementReport",
         "generatedAtTime": datetime.now(timezone.utc).isoformat(),
-        "graph": report.get("graph"),
+        "graph": graph,
         "results": {
-            "matching_files": report["txt_comparison"]["common_document_names"],
+            "matching_file_table_names": sorted(file_table_names),
             "matching_keywords": report["txt_comparison"]["common_document_keywords"],
-            "matching_columns": report["csv_comparison"]["common_columns"],
+            "matching_csv_table_column_names": report["csv_comparison"]["common_columns"],
             "data_overlaps": report["csv_comparison"]["per_column_sample_overlap"]
         }
     }

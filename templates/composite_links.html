@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Composite DataLinking Elements</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .composite-summary {
+            margin: 16px;
+            padding: 12px 16px;
+            border: 1px solid #d8dee4;
+            border-radius: 6px;
+            background: #f6f8fa;
+        }
+        .composite-actions {
+            margin: 16px;
+            display: flex;
+            gap: 8px;
+        }
+        .composite-table-wrapper {
+            margin: 16px;
+            max-height: 70vh;
+            overflow: auto;
+            border: 1px solid #d8dee4;
+            box-shadow: 0 1px 3px rgba(27, 31, 36, 0.08);
+        }
+        .composite-table {
+            min-width: 1400px;
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+        }
+        .composite-table thead th {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            background: #f0f0f0;
+            box-shadow: inset 0 -1px 0 #d8dee4;
+        }
+        .composite-table th,
+        .composite-table td {
+            vertical-align: top;
+            overflow-wrap: anywhere;
+            line-height: 1.25;
+        }
+        .composite-table td {
+            max-height: 180px;
+        }
+        .composite-table th:nth-child(1) {
+            width: 6%;
+        }
+        .composite-table th:nth-child(2) {
+            width: 18%;
+        }
+        .composite-table th:nth-child(3),
+        .composite-table th:nth-child(4),
+        .composite-table th:nth-child(5),
+        .composite-table th:nth-child(6) {
+            width: 8%;
+        }
+        .composite-table th:nth-child(7) {
+            width: 16%;
+        }
+        .composite-table th:nth-child(8),
+        .composite-table th:nth-child(9) {
+            width: 18%;
+        }
+        .small-list {
+            max-width: 420px;
+            white-space: normal;
+        }
+        .compact-list {
+            margin: 0;
+            padding-left: 16px;
+        }
+        .compact-list li {
+            margin: 0 0 3px;
+        }
+        .more-items {
+            color: #57606a;
+            font-style: italic;
+        }
+        .muted {
+            color: #57606a;
+        }
+        .levels {
+            margin: 16px;
+            display: grid;
+            gap: 12px;
+        }
+        .level-card {
+            border: 1px solid #d8dee4;
+            border-radius: 6px;
+            background: #fff;
+            padding: 12px 14px;
+        }
+        .level-card h2 {
+            margin: 0 0 6px;
+            font-size: 18px;
+        }
+        .level-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .level-item {
+            border: 1px solid #eaeef2;
+            border-radius: 6px;
+            padding: 10px;
+            background: #f6f8fa;
+        }
+        .level-item-title {
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+        .level-evidence {
+            margin-top: 6px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <div class="header-top">
+            <img src="{{ url_for('static', filename='images/logoUnivr.png') }}" alt="University Logo" class="logo">
+            <h1>Composite DataLinking Elements</h1>
+            <img src="{{ url_for('static', filename='images/logoDataGems.png') }}" alt="Project Logo" class="logo">
+        </div>
+    </header>
+
+    <div class="composite-summary">
+        <p><strong>Source:</strong> {{ report.source }}</p>
+        <p><strong>Links considered:</strong> {{ report.selection.links_considered }}</p>
+        <p><strong>Minimum combined similarity:</strong> {{ report.selection.minimum_combined_similarity }}%</p>
+        <p><strong>Minimum relation similarity:</strong> {{ "%.1f%%"|format(report.selection.minimum_relation_similarity * 100) }}</p>
+        <p><strong>Comparisons used:</strong> {{ report.selection.comparisons_used }}</p>
+        <p><strong>Composites produced:</strong> {{ composites|length }}</p>
+        <p><strong>Method:</strong> DataLinkingBase links are nodes. DataLinkingBaseComparison results above the relation threshold are edges. Relation similarity uses SBERT description chunk coherence when chunk evidence is available, plus keyword overlap and shared-profile evidence. Each connected component becomes one CompositeDataLinkingElement.</p>
+        <p class="muted">Composite coherence is the average relation similarity of the comparisons that connect the group, not the average of the original pair scores.</p>
+    </div>
+
+    <div class="composite-actions">
+        <a href="{{ url_for('index') }}{% if folder %}?folder={{ folder }}{% endif %}" class="save-btn">Back To Results</a>
+        <a href="{{ download_url }}" class="save-btn">Download JSON</a>
+    </div>
+
+    {% if levels %}
+    <div class="levels">
+        {% for level in levels %}
+        <section class="level-card">
+            <h2>Level {{ level.level }}: {{ level.name }}</h2>
+            <p class="muted">{{ level.description }}</p>
+            <div class="level-items">
+                {% for item in level["items"] %}
+                <article class="level-item">
+                    <div class="level-item-title">{{ item.item_type }}</div>
+                    <div>{{ item.label }}</div>
+                    <div><strong>Similarity:</strong> {{ "%.1f%%"|format(item.similarity * 100) }}</div>
+                    {% if item.profiles %}
+                    <div class="level-evidence">
+                        <strong>Profiles:</strong>
+                        {{ item.profiles|map(attribute='name')|join(', ') }}
+                    </div>
+                    {% endif %}
+                    {% if item.evidence.shared_keywords %}
+                    <div class="level-evidence">
+                        <strong>Keywords:</strong> {{ item.evidence.shared_keywords[:8]|join(', ') }}
+                    </div>
+                    {% endif %}
+                    {% if item.evidence.description_chunk_matches %}
+                    <div class="level-evidence">
+                        <strong>Top chunk matches:</strong>
+                        <ul class="compact-list">
+                            {% for match in item.evidence.description_chunk_matches[:3] %}
+                            <li>{{ "%.1f%%"|format(match.similarity * 100) }}: {{ match.chunk_evidence_1 }} &lt;-&gt; {{ match.chunk_evidence_2 }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    {% if item.mergeEvidence and item.mergeEvidence.description_chunk_matches %}
+                    <div class="level-evidence">
+                        <strong>Merge chunk evidence:</strong>
+                        <ul class="compact-list">
+                            {% for match in item.mergeEvidence.description_chunk_matches[:3] %}
+                            <li>{{ "%.1f%%"|format(match.similarity * 100) }}: {{ match.chunk_evidence_1 }} &lt;-&gt; {{ match.chunk_evidence_2 }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                    {% if item.evidence.description_top_chunks %}
+                    <div class="level-evidence">
+                        <strong>Profile chunk evidence:</strong>
+                        <ul class="compact-list">
+                            {% for chunk in item.evidence.description_top_chunks[:3] %}
+                            <li>{{ "%.1f%%"|format(chunk.similarity) }}: {{ chunk.chunk1 }} &lt;-&gt; {{ chunk.chunk2 }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% if composites %}
+    <div class="composite-table-wrapper">
+    <table class="composite-table">
+        <thead>
+            <tr>
+                <th>Composite</th>
+                <th>Profiles</th>
+                <th>Links</th>
+                <th>Comparisons</th>
+                <th>Composite Coherence</th>
+                <th>Chunk Coherence</th>
+                <th>Shared Keywords</th>
+                <th>File/Table Names</th>
+                <th>CSV/Table Columns</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for composite in composites %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td class="small-list">
+                    {% if composite.profiles %}
+                    <ul class="compact-list">
+                        {% for profile in composite.profiles[:8] %}
+                        <li>{{ profile.name }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% if composite.profiles|length > 8 %}
+                    <div class="more-items">+{{ composite.profiles|length - 8 }} more</div>
+                    {% endif %}
+                    {% else %}-{% endif %}
+                </td>
+                <td>{{ composite.link_count }}</td>
+                <td>{{ composite.comparison_count }}</td>
+                <td>{{ "%.1f%%"|format(composite.composite_coherence * 100) }}</td>
+                <td>{{ "%.1f%%"|format(composite.evidence.chunk_similarity_avg * 100) }}</td>
+                <td class="small-list">
+                    {% if composite.evidence.shared_keywords %}
+                    <ul class="compact-list">
+                        {% for keyword in composite.evidence.shared_keywords[:12] %}
+                        <li>{{ keyword }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% if composite.evidence.shared_keywords|length > 12 %}
+                    <div class="more-items">+{{ composite.evidence.shared_keywords|length - 12 }} more</div>
+                    {% endif %}
+                    {% else %}-{% endif %}
+                </td>
+                <td class="small-list">
+                    {% if composite.evidence.file_table_names %}
+                    <ul class="compact-list">
+                        {% for name in composite.evidence.file_table_names[:10] %}
+                        <li>{{ name }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% if composite.evidence.file_table_names|length > 10 %}
+                    <div class="more-items">+{{ composite.evidence.file_table_names|length - 10 }} more</div>
+                    {% endif %}
+                    {% else %}-{% endif %}
+                </td>
+                <td class="small-list">
+                    {% if composite.evidence.csv_table_column_names %}
+                    <ul class="compact-list">
+                        {% for column in composite.evidence.csv_table_column_names[:10] %}
+                        <li>{{ column }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% if composite.evidence.csv_table_column_names|length > 10 %}
+                    <div class="more-items">+{{ composite.evidence.csv_table_column_names|length - 10 }} more</div>
+                    {% endif %}
+                    {% else %}-{% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    {% else %}
+    <div class="composite-summary">
+        <p>No CompositeDataLinkingElement was produced.</p>
+        <p class="muted">Try lowering the relation similarity threshold or check whether there are at least two related DataLinkingBase links above the main threshold.</p>
+    </div>
+    {% endif %}
+</body>
+</html>

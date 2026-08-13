@@ -10,7 +10,7 @@ from flask import Flask, render_template, request, send_file, make_response
 
 from dl.similarity import compute_similarities, build_description_top_chunks_for_pair
 from dl.reports import build_croissant_report
-from dl.link_comparison import compare_datalinkingbase_links
+from dl.link_comparison import compare_datalinkingbase_links, build_composite_datalinking_elements
 from dl.refine import refine_similarity, build_refinement_profile
 from dl.utils import get_weights_and_threshold
 
@@ -86,26 +86,18 @@ def _build_refinement_evidence_for_link(link, folder_path, use_api, profile_cach
     if not dp1 or not dp2:
         return {}
 
-    txt_cmp = compare_txt_files(extract_txt_documents(dp1), extract_txt_documents(dp2))
-    csv_cmp = compare_csv_schemas_with_samples(
-        extract_csv_tables_with_samples(dp1),
-        extract_csv_tables_with_samples(dp2)
-    )
-
-    matching_samples = set()
-    for item in csv_cmp.get("per_column_sample_overlap", []) or []:
-        matching_samples.update(str(sample) for sample in item.get("common_samples", []) or [])
+    profile_evidence1 = _profile_evidence(dp1)
+    profile_evidence2 = _profile_evidence(dp2)
 
     return {
-        "matching_files": txt_cmp.get("common_document_names", []),
-        "matching_columns": csv_cmp.get("common_columns", []),
-        "matching_samples": sorted(matching_samples),
+        "resource_names": sorted(set(profile_evidence1["resource_names"] + profile_evidence2["resource_names"])),
+        "column_names": sorted(set(profile_evidence1["column_names"] + profile_evidence2["column_names"])),
     }
 
 
 def _profile_evidence(profile):
-    files = []
-    columns = []
+    resource_names = []
+    column_names = []
     samples = set()
 
     for distribution in profile.get("distribution", []) or []:
@@ -113,24 +105,39 @@ def _profile_evidence(profile):
             continue
         name = str(distribution.get("name") or "").strip()
         if name:
-            files.append(name)
+            resource_names.append(name)
 
     for record_set in profile.get("recordSet", []) or []:
         if not isinstance(record_set, dict):
             continue
+        record_set_name = str(record_set.get("name") or "").strip()
+        if record_set_name:
+            resource_names.append(record_set_name)
         for field in record_set.get("field", []) or []:
             if not isinstance(field, dict):
                 continue
             column_name = str(field.get("name") or field.get("column") or "").strip()
             if column_name:
-                columns.append(column_name)
+                column_names.append(column_name)
             for sample in field.get("sample", []) or []:
                 if str(sample).strip():
                     samples.add(str(sample).strip())
+        if record_set.get("examples"):
+            try:
+                examples = json.loads(record_set["examples"])
+                example = examples[0] if isinstance(examples, list) and examples else examples
+                if isinstance(example, dict):
+                    for column_name in example:
+                        if str(column_name).strip():
+                            column_names.append(str(column_name).strip())
+            except (TypeError, ValueError, json.JSONDecodeError):
+                pass
 
     return {
-        "files": sorted(set(files)),
-        "columns": sorted(set(columns)),
+        "files": sorted(set(resource_names)),
+        "columns": sorted(set(column_names)),
+        "resource_names": sorted(set(resource_names)),
+        "column_names": sorted(set(column_names)),
         "samples": sorted(samples),
     }
 
@@ -142,6 +149,29 @@ def _attach_profile_evidence(link, folder_path, use_api, profile_cache):
         if profile:
             evidence[profile_id] = _profile_evidence(profile)
     link["profile_evidence"] = evidence
+
+
+def _attach_description_chunks(link, folder_path, use_api, profile_cache=None):
+    if link.get("description_top_chunks"):
+        return
+    if profile_cache is not None:
+        dp1 = _load_profile(link.get("dataprofile1ref"), folder_path, use_api, profile_cache)
+        dp2 = _load_profile(link.get("dataprofile2ref"), folder_path, use_api, profile_cache)
+        if dp1 and dp2:
+            from dl import similarity
+
+            similarity._ensure_models()
+            link["description_top_chunks"] = similarity._top_description_chunks(
+                dp1.get("description", ""),
+                dp2.get("description", "")
+            )
+            return
+    link["description_top_chunks"] = build_description_top_chunks_for_pair(
+        folder_path,
+        link.get("dataprofile1ref"),
+        link.get("dataprofile2ref"),
+        use_api=use_api
+    )
 
 
 def _download_url_for_current_request():
@@ -331,6 +361,7 @@ def compare_links():
             use_api,
             profile_cache
         )
+        _attach_description_chunks(link, folder_path if folder_path else None, use_api, profile_cache)
         link["refinement_evidence"] = _build_refinement_evidence_for_link(
             link,
             folder_path if folder_path else None,
@@ -350,6 +381,7 @@ def compare_links():
         "links_considered": len(base_report["links"]),
     }
     selection["includes_refinement_evidence"] = True
+    selection["includes_description_chunks"] = True
     if selected_pairs:
         selection["selected_pairs"] = len(selected_pairs)
     if top_n_value:
@@ -382,6 +414,116 @@ def compare_links():
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f"link_comparisons_{timestamp}.json"
+    response = make_response(send_file(
+        buffer, mimetype="application/json", as_attachment=True, download_name=filename
+    ))
+    response.set_cookie("downloadComplete", "1", max_age=10)
+    return response
+
+
+@app.route("/composite_links")
+def composite_links():
+    folder_path = get_requested_folder()
+    use_api = True if not folder_path else False
+
+    kw_weight, desc_weight, head_weight, th, normalized = get_weights_and_threshold()
+    relation_threshold = request.args.get("relation_th", 0.5)
+    top_n = request.args.get("top_n", "").strip()
+    output_format = request.args.get("format", "html").strip().lower()
+
+    try:
+        relation_threshold = float(relation_threshold)
+    except (TypeError, ValueError):
+        relation_threshold = 0.5
+
+    try:
+        top_n_value = int(top_n) if top_n else None
+    except ValueError:
+        top_n_value = None
+
+    error, similarities, from_cache = compute_similarities(
+        folder_path=folder_path if folder_path else None,
+        kw_weight=kw_weight,
+        desc_weight=desc_weight,
+        head_weight=head_weight,
+        threshold=th,
+        use_api=use_api
+    )
+
+    if error:
+        return f"❌ Cannot build composite links: {error}", 400
+
+    above_threshold = [s for s in similarities if s.get("passes_threshold")]
+    weights = {
+        "keywords": kw_weight,
+        "description": desc_weight,
+        "headline": head_weight,
+        "normalized": normalized,
+        "threshold": th,
+    }
+
+    source_label = folder_path if folder_path else "API_Datagems"
+    base_report = build_croissant_report(source_label, weights, above_threshold, {})
+    profile_cache = {}
+    for link in base_report["links"]:
+        _attach_profile_evidence(
+            link,
+            folder_path if folder_path else None,
+            use_api,
+            profile_cache
+        )
+        _attach_description_chunks(link, folder_path if folder_path else None, use_api, profile_cache)
+        link["refinement_evidence"] = _build_refinement_evidence_for_link(
+            link,
+            folder_path if folder_path else None,
+            use_api,
+            profile_cache
+        )
+
+    composite_data = build_composite_datalinking_elements(
+        base_report["links"],
+        relation_threshold=relation_threshold,
+        top_n=top_n_value,
+    )
+    selection = {
+        "mode": "all_above_threshold",
+        "minimum_combined_similarity": th,
+        "minimum_relation_similarity": relation_threshold,
+        "links_considered": len(base_report["links"]),
+        "comparisons_used": len(composite_data["comparisons"]),
+        "includes_description_chunks": True,
+    }
+    if top_n_value:
+        selection["top_n"] = top_n_value
+
+    output_data = {
+        "@context": "http://mlcommons.org/croissant/",
+        "@type": "CompositeDataLinkingElementReport",
+        "source": source_label,
+        "from_cache": from_cache,
+        "selection": selection,
+        "weights": weights,
+        "levels": composite_data["levels"],
+        "composites": composite_data["composites"],
+        "comparisons": composite_data["comparisons"],
+    }
+
+    if output_format != "json":
+        return render_template(
+            "composite_links.html",
+            report=output_data,
+            levels=output_data["levels"],
+            composites=output_data["composites"],
+            download_url=_download_url_for_current_request(),
+            folder=folder_path or "",
+        )
+
+    buffer = io.BytesIO()
+    buffer.write(json.dumps(output_data, indent=4, ensure_ascii=False).encode("utf-8"))
+    buffer.seek(0)
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    filename = f"composite_links_{timestamp}.json"
     response = make_response(send_file(
         buffer, mimetype="application/json", as_attachment=True, download_name=filename
     ))

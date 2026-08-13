@@ -55,24 +55,23 @@
         }
         .comparison-table th:nth-child(1),
         .comparison-table th:nth-child(2) {
-            width: 18%;
+            width: 16%;
         }
         .comparison-table th:nth-child(3),
-        .comparison-table th:nth-child(8),
-        .comparison-table th:nth-child(9) {
-            width: 6%;
+        .comparison-table th:nth-child(6),
+        .comparison-table th:nth-child(7),
+        .comparison-table th:nth-child(8) {
+            width: 7%;
         }
         .comparison-table th:nth-child(4),
-        .comparison-table th:nth-child(7) {
+        .comparison-table th:nth-child(5) {
             width: 10%;
         }
-        .comparison-table th:nth-child(5),
-        .comparison-table th:nth-child(6),
+        .comparison-table th:nth-child(9) {
+            width: 18%;
+        }
         .comparison-table th:nth-child(10),
-        .comparison-table th:nth-child(11),
-        .comparison-table th:nth-child(12),
-        .comparison-table th:nth-child(13),
-        .comparison-table th:nth-child(14) {
+        .comparison-table th:nth-child(11) {
             width: 12%;
         }
         .muted {
@@ -100,22 +99,20 @@
         <p><strong>Minimum combined similarity:</strong> {{ report.selection.minimum_combined_similarity }}%</p>
         <p><strong>Comparisons produced:</strong> {{ comparisons|length }}</p>
         <p><strong>Requested link weights:</strong> KW {{ "%.1f%%"|format(report.weights.keywords * 100) }}, DESC {{ "%.1f%%"|format(report.weights.description * 100) }}, HEAD {{ "%.1f%%"|format(report.weights.headline * 100) }}.</p>
-        <p><strong>Effective link weights:</strong> shown per compared link in the table. Keywords contribute when at least one profile has keywords, while description/headline contribute only when both profiles have usable text; available weights are renormalized to 100%.</p>
+        <p><strong>Effective link weights:</strong> used internally by each DataLinkingBase score. Keywords contribute when at least one profile has keywords, while description/headline contribute only when both profiles have usable text; available weights are renormalized to 100%.</p>
         {% if report.selection.includes_refinement_evidence %}
-        <p><strong>Shared profile evidence:</strong> files and columns of profiles shared by two relations are shown separately from refinement overlap.</p>
-        <p><strong>Refinement overlap:</strong> shared files, columns and samples are intersections between the evidence of the two compared relations.</p>
+        <p><strong>Relation evidence overlap:</strong> shared file/table names and CSV/table column names are intersections between the non-shared profiles of the two compared relations. Evidence from a profile that appears in both relations is excluded to avoid tautological matches.</p>
         {% endif %}
         <p><strong>Numeric values and formulas:</strong></p>
         <ul>
-            <li><strong>Visible numeric columns</strong> are Relation Sim., Keyword Overlap, Metric Similarity, Link 1/2 Weights, and the percentages shown in the three Refinement Shared columns.</li>
-            <li><strong>Relation Sim.</strong> compares two DataLinkingBase links. Without description chunks it is calculated as: 55% keyword overlap + 40% metric similarity + 5% shared profile score.</li>
-            <li><strong>Relation Sim. with chunks</strong>, when description chunks are available, is calculated as: 45% keyword overlap + 35% metric similarity + 15% description chunk similarity + 5% shared profile score.</li>
+            <li><strong>Visible numeric columns</strong> are Relation Sim., Keyword Overlap, Metric Similarity, Chunk Similarity, and the percentages shown in the shared file/table and CSV/table column columns.</li>
+            <li><strong>Relation Sim.</strong> compares two DataLinkingBase links. Without description chunks it is calculated as: 65% keyword overlap + 30% file/table or CSV/table column evidence overlap + 5% shared profile score.</li>
+            <li><strong>Relation Sim. with chunks</strong>, when description chunks are available, is calculated as: 70% SBERT chunk similarity + 25% keyword overlap + 5% shared profile score.</li>
             <li><strong>Keyword Overlap</strong> is a visible column. It is the Jaccard overlap between the common keywords of the two links: shared keywords divided by all distinct keywords.</li>
-            <li><strong>Metric Similarity</strong> is a visible column. It compares the numeric score profile of the two links: keywords similarity, description similarity, headline similarity and combined similarity. Values are normalized to 0-1, compared with root mean square distance, then converted with 1 - distance.</li>
-            <li><strong>Link 1 Weights</strong> and <strong>Link 2 Weights</strong> show the effective KW/DESC/HEAD weights used when each original DataLinkingBase link was scored.</li>
+            <li><strong>Metric Similarity</strong> is diagnostic only and is not used in Relation Sim. It compares the numeric score profile of the two links, but numeric score similarity alone does not imply semantic coherence.</li>
             <li><strong>Shared Profile Score</strong> is used internally in Relation Sim.; it is not shown as a separate column. It is 0% when two links share no dataset/profile, 50% when they share one profile, and 100% when both profiles are shared.</li>
-            <li><strong>Description Chunk Similarity</strong> is used internally only when description chunks are available; it is not shown as a separate column.</li>
-            <li><strong>Refinement percentages</strong> are shown inside the three Refinement Shared columns. They are Jaccard overlaps for files, columns or samples found in the refinement evidence: shared items divided by all distinct items in that evidence category.</li>
+            <li><strong>Chunk Similarity</strong> compares the description chunk evidence of the two DataLinkingBase links with SBERT.</li>
+            <li><strong>Evidence percentages</strong> are Jaccard overlaps for file/table names or CSV/table column names found in non-shared profile evidence: shared items divided by all distinct items in that evidence category.</li>
         </ul>
     </div>
 
@@ -133,78 +130,44 @@
                 <th>Relation 2</th>
                 <th>Relation Sim.</th>
                 <th>Shared Profiles</th>
-                <th>Shared Profile Files</th>
-                <th>Shared Profile Columns</th>
                 <th>Shared Keywords</th>
                 <th>Keyword Overlap</th>
                 <th>Metric Similarity</th>
-                <th>Link 1 Weights</th>
-                <th>Link 2 Weights</th>
-                <th>Refinement Shared Files</th>
-                <th>Refinement Shared Columns</th>
-                <th>Refinement Shared Samples</th>
+                <th>Chunk Similarity</th>
+                <th>Chunk Evidence</th>
+                <th>Shared File/Table Names</th>
+                <th>Shared CSV/Table Columns</th>
             </tr>
         </thead>
         <tbody>
             {% for c in comparisons %}
             {% set refinement = c.evidence.get('refinement_overlap') %}
-            {% set shared_details = c.evidence.get('shared_profile_details') or [] %}
             <tr>
                 <td>{{ c.link1Label }}</td>
                 <td>{{ c.link2Label }}</td>
                 <td>{{ "%.1f%%"|format(c.relation_similarity * 100) }}</td>
                 <td class="small-list">{{ c.evidence.shared_profiles|join(', ') if c.evidence.shared_profiles else '-' }}</td>
-                <td class="small-list">
-                    {% set files = [] %}
-                    {% for profile in shared_details %}
-                        {% for file in profile.files or [] %}
-                            {% set _ = files.append(file) %}
-                        {% endfor %}
-                    {% endfor %}
-                    {{ files|unique|join(', ') if files else '-' }}
-                </td>
-                <td class="small-list">
-                    {% set columns = [] %}
-                    {% for profile in shared_details %}
-                        {% for column in profile.columns or [] %}
-                            {% set _ = columns.append(column) %}
-                        {% endfor %}
-                    {% endfor %}
-                    {{ columns|unique|join(', ') if columns else '-' }}
-                </td>
                 <td class="small-list">{{ c.evidence.shared_keywords|join(', ') if c.evidence.shared_keywords else '-' }}</td>
                 <td>{{ "%.1f%%"|format(c.evidence.keyword_overlap * 100) }}</td>
                 <td>{{ "%.1f%%"|format(c.evidence.metric_profile_similarity * 100) }}</td>
+                <td>{{ "%.1f%%"|format(c.evidence.description_chunk_similarity * 100) }}</td>
                 <td class="small-list">
-                    {% if c.link1.effective_weights %}
-                        KW {{ "%.1f%%"|format(c.link1.effective_weights.keywords * 100) }},
-                        DESC {{ "%.1f%%"|format(c.link1.effective_weights.description * 100) }},
-                        HEAD {{ "%.1f%%"|format(c.link1.effective_weights.headline * 100) }}
-                    {% else %}-{% endif %}
-                </td>
-                <td class="small-list">
-                    {% if c.link2.effective_weights %}
-                        KW {{ "%.1f%%"|format(c.link2.effective_weights.keywords * 100) }},
-                        DESC {{ "%.1f%%"|format(c.link2.effective_weights.description * 100) }},
-                        HEAD {{ "%.1f%%"|format(c.link2.effective_weights.headline * 100) }}
+                    {% if c.evidence.description_chunk_matches %}
+                        {% for match in c.evidence.description_chunk_matches[:3] %}
+                            <div><strong>{{ "%.1f%%"|format(match.similarity * 100) }}</strong>: {{ match.chunk_evidence_1 }} &lt;-&gt; {{ match.chunk_evidence_2 }}</div>
+                        {% endfor %}
                     {% else %}-{% endif %}
                 </td>
                 <td class="small-list">
                     {% if refinement %}
-                        {{ refinement.shared_files|join(', ') if refinement.shared_files else '-' }}
-                        ({{ "%.1f%%"|format(refinement.common_files_overlap * 100) }})
+                        {{ refinement.shared_file_table_names|join(', ') if refinement.shared_file_table_names else '-' }}
+                        ({{ "%.1f%%"|format(refinement.file_table_name_overlap * 100) }})
                     {% else %}-{% endif %}
                 </td>
                 <td class="small-list">
                     {% if refinement %}
-                        {{ refinement.shared_columns|join(', ') if refinement.shared_columns else '-' }}
-                        ({{ "%.1f%%"|format(refinement.common_columns_overlap * 100) }})
-                    {% else %}-{% endif %}
-                </td>
-                <td class="small-list">
-                    {% if refinement %}
-                        {{ refinement.shared_samples|join(', ') if refinement.shared_samples else '-' }}
-                        ({{ "%.1f%%"|format(refinement.common_samples_overlap * 100) }})
+                        {{ refinement.shared_csv_table_column_names|join(', ') if refinement.shared_csv_table_column_names else '-' }}
+                        ({{ "%.1f%%"|format(refinement.csv_table_column_name_overlap * 100) }})
                     {% else %}-{% endif %}
                 </td>
             </tr>

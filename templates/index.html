@@ -51,6 +51,14 @@
             <input type="hidden" name="th" value="{{ request.args.get('th', 30) }}">
             <button type="submit" class="save-btn">🔗 Compare Links</button>
         </form>
+        <form method="get" action="{{ url_for('composite_links') }}" class="inline-form">
+            <input type="hidden" name="folder" value="{{ folder }}">
+            <input type="hidden" name="kw" value="{{ request.args.get('kw', 0.6) }}">
+            <input type="hidden" name="desc" value="{{ request.args.get('desc', 0.3) }}">
+            <input type="hidden" name="head" value="{{ request.args.get('head', 0.1) }}">
+            <input type="hidden" name="th" value="{{ request.args.get('th', 30) }}">
+            <button type="submit" class="save-btn">🧩 Build Composites</button>
+        </form>
         <form method="get" action="{{ url_for('compare_links') }}" class="inline-form" id="compare-selected-form">
             <input type="hidden" name="folder" value="{{ folder }}">
             <input type="hidden" name="kw" value="{{ request.args.get('kw', 0.6) }}">
