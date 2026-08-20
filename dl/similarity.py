@@ -83,6 +83,34 @@ def _embedding_cache_path(folder: Path, source_type: str) -> Path:
     return folder / f"embedding_cache_{source_type}.pkl"
 
 
+def _api_profile_cache_path(folder: Path, dataset_id: str) -> Path:
+    safe_id = re.sub(r"[^A-Za-z0-9_.-]", "_", str(dataset_id))
+    return folder / "api_profile_cache" / f"{safe_id}.json"
+
+
+def _load_cached_api_profile(folder: Path, dataset_id: str) -> Optional[Dict[str, Any]]:
+    cache_path = _api_profile_cache_path(folder, dataset_id)
+    if not cache_path.exists():
+        return None
+
+    try:
+        with open(cache_path, "r", encoding="utf-8") as f:
+            return _dataset_payload(json.load(f))
+    except Exception as e:
+        print(f"⚠️ API profile cache read error for {dataset_id}: {e}")
+        return None
+
+
+def _save_cached_api_profile(folder: Path, dataset_id: str, profile: Dict[str, Any]) -> None:
+    try:
+        cache_path = _api_profile_cache_path(folder, dataset_id)
+        cache_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(cache_path, "w", encoding="utf-8") as f:
+            json.dump(profile, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"⚠️ API profile cache save failed for {dataset_id}: {e}")
+
+
 def _load_embedding_cache(cache_path: Path) -> Dict[str, Any]:
     if not cache_path.exists():
         return {"version": EMBEDDING_CACHE_VERSION, "entries": {}}
@@ -293,21 +321,36 @@ def fetch_dataset_list(token: str) -> List[Dict[str, Any]]:
     return fix_encoding(resp.json()).get('datasets', [])
 
 
-def fetch_details_from_list(token: str, datasets_raw: List[Dict[str, Any]]) -> Dict[str, Dict[str, Any]]:
+def fetch_details_from_list(
+        token: str,
+        datasets_raw: List[Dict[str, Any]],
+        cache_folder: Optional[Path] = None
+) -> Dict[str, Dict[str, Any]]:
     headers = {'Authorization': f'Bearer {token}', 'accept': 'application/json'}
     file_data = {}
+    downloaded = 0
+    from_cache = 0
 
     for item in datasets_raw:
+        ds_id = None
         try:
             nodes = item.get('nodes', [])
             if not nodes: continue
             ds_id = nodes[0].get('id')
+            if not ds_id: continue
             ds_name = nodes[0].get('properties', {}).get('name', f"ds_{ds_id}")
 
-            res = requests.get(f"{DETAIL_URL}{ds_id}?format=croissant", headers=headers, timeout=25, verify=False)
-            res.raise_for_status()
+            inner_dataset = _load_cached_api_profile(cache_folder, ds_id) if cache_folder else None
+            if inner_dataset is not None:
+                from_cache += 1
+            else:
+                res = requests.get(f"{DETAIL_URL}{ds_id}?format=croissant", headers=headers, timeout=25, verify=False)
+                res.raise_for_status()
+                inner_dataset = _dataset_payload(fix_encoding(res.json()))
+                if cache_folder and inner_dataset:
+                    _save_cached_api_profile(cache_folder, ds_id, inner_dataset)
+                downloaded += 1
 
-            inner_dataset = _dataset_payload(fix_encoding(res.json()))
             if not inner_dataset: continue
             if not _is_ready_dataset(inner_dataset): continue
 
@@ -326,6 +369,9 @@ def fetch_details_from_list(token: str, datasets_raw: List[Dict[str, Any]]) -> D
         except Exception as e:
             print(f"⚠️ Error in dataset {ds_id}: {e}")
             continue
+
+    if cache_folder:
+        print(f"📦 API profiles: {from_cache} loaded from cache, {downloaded} downloaded.")
     return _dedupe_profiles_by_name(file_data)
 
 
@@ -402,10 +448,11 @@ def compute_similarities(
         try:
             token = get_access_token()
             datasets_raw = fetch_dataset_list(token)
-            source_signature = _json_fingerprint(datasets_raw)
             for item in datasets_raw:
                 nodes = item.get('nodes', [])
-                if nodes: current_ids.append(nodes[0].get('id'))
+                if nodes and nodes[0].get('id'):
+                    current_ids.append(nodes[0].get('id'))
+            source_signature = _json_fingerprint(sorted(current_ids))
         except Exception as e:
             return f"❌ API Connection Error: {e}", [], False
     else:
@@ -440,7 +487,7 @@ def compute_similarities(
     file_data = {}
 
     if use_api:
-        file_data = fetch_details_from_list(token, datasets_raw)
+        file_data = fetch_details_from_list(token, datasets_raw, folder)
     else:
         # LOGICA PER FILE LOCALI (Tipo: Era5land_3166e649...)
         for file in folder.glob("*.json"):
@@ -499,7 +546,8 @@ def compute_similarities(
     _save_embedding_cache(embedding_cache_path, embedding_cache)
 
     similarities = []
-    for id1, id2 in combinations(file_data.keys(), 2):
+    total_pairs = len(profile_ids) * (len(profile_ids) - 1) // 2
+    for pair_index, (id1, id2) in enumerate(combinations(file_data.keys(), 2), 1):
         f1, f2 = file_data[id1], file_data[id2]
 
         kw1, kw2 = f1["keywords"], f2["keywords"]
@@ -568,7 +616,8 @@ def compute_similarities(
             "passes_threshold": combined >= threshold
         })
 
-        print(f"✅ Processed pair: {id1[:5]} vs {id2[:5]}")
+        if pair_index == 1 or pair_index == total_pairs or pair_index % 500 == 0:
+            print(f"✅ Processed {pair_index}/{total_pairs} pair(s)")
 
     # --- 5. Save Smart Cache ---
     try:
