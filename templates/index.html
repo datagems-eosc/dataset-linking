@@ -32,6 +32,11 @@
             <input type="number" step="0.1" min="0" max="1" name="head" id="head" value="{{ request.args.get('head', 0.1) }}" class="weight-input">
             <label for="th" class="weight-label">TH</label>
             <input type="number" step="1" min="0" max="100" name="th" id="th" value="{{ request.args.get('th', 30) }}" class="weight-input">
+            <label for="kw_method" class="weight-label">KW Method</label>
+            <select name="kw_method" id="kw_method" class="weight-input">
+                <option value="jaccard" {% if kw_method == 'jaccard' %}selected{% endif %}>Jaccard</option>
+                <option value="sbert" {% if kw_method == 'sbert' %}selected{% endif %}>SBERT</option>
+            </select>
             <button type="submit" class="recalc-btn">🔍 Analyze</button>
         </form>
         {% if not error and similarities %}
@@ -41,6 +46,7 @@
             <input type="hidden" name="desc" value="{{ request.args.get('desc', 0.3) }}">
             <input type="hidden" name="head" value="{{ request.args.get('head', 0.1) }}">
             <input type="hidden" name="th" value="{{ request.args.get('th', 30) }}">
+            <input type="hidden" name="kw_method" value="{{ kw_method }}">
             <button type="submit" class="save-btn">💾 Save Results</button>
         </form>
         <form method="get" action="{{ url_for('compare_links') }}" class="inline-form">
@@ -49,6 +55,7 @@
             <input type="hidden" name="desc" value="{{ request.args.get('desc', 0.3) }}">
             <input type="hidden" name="head" value="{{ request.args.get('head', 0.1) }}">
             <input type="hidden" name="th" value="{{ request.args.get('th', 30) }}">
+            <input type="hidden" name="kw_method" value="{{ kw_method }}">
             <button type="submit" class="save-btn">🔗 Compare Links</button>
         </form>
         <form method="get" action="{{ url_for('composite_links') }}" class="inline-form">
@@ -57,6 +64,7 @@
             <input type="hidden" name="desc" value="{{ request.args.get('desc', 0.3) }}">
             <input type="hidden" name="head" value="{{ request.args.get('head', 0.1) }}">
             <input type="hidden" name="th" value="{{ request.args.get('th', 30) }}">
+            <input type="hidden" name="kw_method" value="{{ kw_method }}">
             <button type="submit" class="save-btn">🧩 Build Composites</button>
         </form>
         <form method="get" action="{{ url_for('compare_links') }}" class="inline-form" id="compare-selected-form">
@@ -65,6 +73,7 @@
             <input type="hidden" name="desc" value="{{ request.args.get('desc', 0.3) }}">
             <input type="hidden" name="head" value="{{ request.args.get('head', 0.1) }}">
             <input type="hidden" name="th" value="{{ request.args.get('th', 30) }}">
+            <input type="hidden" name="kw_method" value="{{ kw_method }}">
             <input type="hidden" name="selected_pairs" id="selected-pairs-input" value="">
             <button type="submit" class="save-btn">☑️ Compare Selected</button>
         </form>
@@ -83,7 +92,7 @@
     {% endif %}
     {% if similarities %}
     <div class="success-box">
-        Requested weights: KW {{ "%.1f%%"|format(kw * 100) }}, DESC {{ "%.1f%%"|format(desc * 100) }}, HEAD {{ "%.1f%%"|format(head * 100) }}.
+        Requested weights: KW {{ "%.1f%%"|format(kw * 100) }}, DESC {{ "%.1f%%"|format(desc * 100) }}, HEAD {{ "%.1f%%"|format(head * 100) }}. Keyword method: {{ kw_method|upper }}.
         Effective weights may vary per pair: keywords are used when at least one profile has keywords, while description/headline are used only when both profiles have usable text; available weights are then renormalized to 100%.
     </div>
     <table id="results-table">
@@ -161,6 +170,7 @@
                         <input type="hidden" name="desc" value="{{ desc }}">
                         <input type="hidden" name="head" value="{{ head }}">
                         <input type="hidden" name="th" value="{{ th }}">
+                        <input type="hidden" name="kw_method" value="{{ kw_method }}">
                         <button type="submit" class="save-btn small" title="Save this pair">💾</button>
                     </form>
 
@@ -168,7 +178,7 @@
                     <a
                       class="save-btn small refine-btn"
                       target="_blank"
-                      href="{{ url_for('refine_pair') }}?d1={{ s.dataprofile1 }}&d2={{ s.dataprofile2 }}&id1={{ s.id1 }}&id2={{ s.id2 }}&folder={{ (folder or '').replace('\\','/') }}&kw_s={{ s.keywords_similarity }}&desc_s={{ s.description_similarity }}&head_s={{ s.headline_similarity }}&comb_s={{ s.combined_similarity }}&kw_w={{ kw }}&desc_w={{ desc }}&head_w={{ head }}"
+                      href="{{ url_for('refine_pair') }}?d1={{ s.dataprofile1 }}&d2={{ s.dataprofile2 }}&id1={{ s.id1 }}&id2={{ s.id2 }}&folder={{ (folder or '').replace('\\','/') }}&kw_s={{ s.keywords_similarity }}&desc_s={{ s.description_similarity }}&head_s={{ s.headline_similarity }}&comb_s={{ s.combined_similarity }}&kw_w={{ kw }}&desc_w={{ desc }}&head_w={{ head }}&kw_method={{ kw_method }}"
                       title="Refine similarity"
                     >🔁</a>
                     {% endif %}

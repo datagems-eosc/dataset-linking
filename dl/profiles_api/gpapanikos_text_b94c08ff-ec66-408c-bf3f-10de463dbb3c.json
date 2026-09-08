@@ -1,0 +1,88 @@
+{
+    "@context": {
+        "@language": "en",
+        "@vocab": "https://schema.org/",
+        "@base": "http://datagems.eu/example/",
+        "access": "dg:access",
+        "citeAs": "cr:citeAs",
+        "column": "cr:column",
+        "conformsTo": "dct:conformsTo",
+        "cr": "http://mlcommons.org/croissant/",
+        "data": {
+            "@id": "cr:data",
+            "@type": "@json"
+        },
+        "dataType": {
+            "@id": "cr:dataType",
+            "@type": "@vocab"
+        },
+        "dct": "http://purl.org/dc/terms/",
+        "dg": "http://datagems.eu/TBD/",
+        "doi": "dg:doi",
+        "examples": {
+            "@id": "cr:examples",
+            "@type": "@json"
+        },
+        "extract": "cr:extract",
+        "field": "cr:field",
+        "fieldOfScience": "dg:fieldOfScience",
+        "fileObject": "cr:fileObject",
+        "fileProperty": "cr:fileProperty",
+        "fileSet": "cr:fileSet",
+        "format": "cr:format",
+        "histogram": "dg:histogram",
+        "includes": "cr:includes",
+        "isLiveDataset": "cr:isLiveDataset",
+        "jsonPath": "cr:jsonPath",
+        "key": "cr:key",
+        "max": "dg:max",
+        "md5": "cr:md5",
+        "mean": "dg:mean",
+        "median": "dg:median",
+        "min": "dg:min",
+        "missingCount": "dg:missingCount",
+        "missingPercentage": "dg:missingPercentage",
+        "parentField": "cr:parentField",
+        "path": "cr:path",
+        "rai": "http://mlcommons.org/croissant/RAI/",
+        "recordSet": "cr:recordSet",
+        "references": "cr:references",
+        "regex": "cr:regex",
+        "repeated": "cr:repeated",
+        "replace": "cr:replace",
+        "rowCount": "dg:rowCount",
+        "sc": "https://schema.org/",
+        "separator": "cr:separator",
+        "source": "cr:source",
+        "standardDeviation": "dg:standardDeviation",
+        "statistics": "dg:statistics",
+        "status": "dg:status",
+        "subField": "cr:subField",
+        "transform": "cr:transform",
+        "uniqueCount": "dg:uniqueCount",
+        "uploadedBy": "dg:uploadedBy",
+        "wd": "https://www.wikidata.org/wiki/"
+    },
+    "@type": "sc:Dataset",
+    "@id": "b94c08ff-ec66-408c-bf3f-10de463dbb3c",
+    "distribution": [],
+    "recordSet": [],
+    "country": "GR",
+    "keywords": [
+        "gpapanikos text"
+    ],
+    "description": "gpapanikos text",
+    "inLanguage": [
+        "en"
+    ],
+    "datePublished": "2026-07-13",
+    "license": "3D-Slicer-1.0",
+    "archivedAt": "s3://dataset/b94c08ff-ec66-408c-bf3f-10de463dbb3c",
+    "fieldOfScience": [
+        "1.1",
+        "1.2"
+    ],
+    "name": "gpapanikos text",
+    "headline": "gpapanikos text",
+    "status": "loaded"
+}

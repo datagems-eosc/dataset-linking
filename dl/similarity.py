@@ -48,14 +48,15 @@ def get_iteration_fingerprint(
         dataset_ids: List[str],
         weights: Tuple[float, float, float],
         source_signature: str = "",
-        include_description_chunks: bool = False
+        include_description_chunks: bool = False,
+        keyword_method: str = "jaccard"
 ) -> str:
     """Creates a unique hash based on IDs and weights."""
     dataset_ids.sort()
     ids_string = ",".join(dataset_ids)
     weights_string = f"{weights[0]:.2f}-{weights[1]:.2f}-{weights[2]:.2f}"
     chunk_mode = "all_description_chunks_v1" if include_description_chunks else "no_description_chunks_v1"
-    full_string = f"{ids_string}|{weights_string}|{source_signature}|{chunk_mode}|dedupe_ready_v1|pairwise_effective_weights_v3|keyword_leaf_v1"
+    full_string = f"{ids_string}|{weights_string}|{source_signature}|{chunk_mode}|kw_method:{keyword_method}|dedupe_ready_v1|pairwise_effective_weights_v3|keyword_leaf_v1"
     return hashlib.md5(full_string.encode()).hexdigest()
 
 
@@ -77,6 +78,17 @@ def _text_fingerprint(text: Any) -> str:
 
 def _has_text(value: Any) -> bool:
     return bool(str(value or "").strip())
+
+
+def _normalize_keyword_method(keyword_method: str) -> str:
+    method = str(keyword_method or "jaccard").strip().lower()
+    if method not in {"jaccard", "sbert"}:
+        return "jaccard"
+    return method
+
+
+def _keywords_text(keywords: set) -> str:
+    return ", ".join(sorted(keywords or set()))
 
 
 def _embedding_cache_path(folder: Path, source_type: str) -> Path:
@@ -432,11 +444,13 @@ def compute_similarities(
         head_weight: float = 0.1,
         threshold: float = 30.0,
         use_api: bool = True,
-        include_description_chunks: bool = False
+        include_description_chunks: bool = False,
+        keyword_method: str = "jaccard"
 ) -> Tuple[Optional[str], List[Dict[str, Any]], Optional[bool]]:
     weights = (kw_weight, desc_weight, head_weight)
     folder = Path(folder_path) if folder_path else Path("/s3/cache")
     source_type = "api" if use_api else "local"
+    keyword_method = _normalize_keyword_method(keyword_method)
 
     current_ids = []
     datasets_raw = []
@@ -465,7 +479,13 @@ def compute_similarities(
         ])
 
     # --- 2. Smart Cache Check with Fingerprint ---
-    fingerprint = get_iteration_fingerprint(current_ids, weights, source_signature, include_description_chunks)
+    fingerprint = get_iteration_fingerprint(
+        current_ids,
+        weights,
+        source_signature,
+        include_description_chunks,
+        keyword_method,
+    )
     cache_path = folder / f"cache_{source_type}_{fingerprint}.json"
 
     if cache_path.exists():
@@ -476,6 +496,7 @@ def compute_similarities(
             # Apply threshold dynamically on cached data
             for s in similarities:
                 s["passes_threshold"] = s.get("combined_similarity", 0) >= threshold
+                s.setdefault("keyword_similarity_method", keyword_method)
 
             print(f"🟢 Smart Cache Hit! (Fingerprint: {fingerprint})")
             return None, similarities, True
@@ -543,6 +564,16 @@ def compute_similarities(
         "headline",
         embedding_cache
     )
+    keyword_embeddings = {}
+    if keyword_method == "sbert":
+        keyword_embeddings = _encode_texts_with_cache(
+            profile_ids,
+            [_keywords_text(file_data[profile_id]["keywords"]) for profile_id in profile_ids],
+            _model_short,
+            MODEL_SHORT_NAME,
+            "keywords",
+            embedding_cache
+        )
     _save_embedding_cache(embedding_cache_path, embedding_cache)
 
     similarities = []
@@ -553,12 +584,15 @@ def compute_similarities(
         kw1, kw2 = f1["keywords"], f2["keywords"]
         common = kw1 & kw2
         union = kw1 | kw2
-        kw_sim = (len(common) / len(union) * 100) if union else 0
+        if keyword_method == "sbert":
+            kw_sim = max(0.0, min(1.0, util.cos_sim(keyword_embeddings[id1], keyword_embeddings[id2]).item())) * 100
+        else:
+            kw_sim = (len(common) / len(union) * 100) if union else 0
 
         desc_sim = max(0.0, min(1.0, util.cos_sim(desc_embeddings[id1], desc_embeddings[id2]).item()))
         head_sim = max(0.0, min(1.0, util.cos_sim(head_embeddings[id1], head_embeddings[id2]).item()))
 
-        keywords_used = bool(union)
+        keywords_used = bool(kw1 and kw2) if keyword_method == "sbert" else bool(union)
         description_used = _has_text(f1.get("description")) and _has_text(f2.get("description"))
         headline_used = _has_text(f1.get("headline")) and _has_text(f2.get("headline"))
 
@@ -594,6 +628,7 @@ def compute_similarities(
             "id1": id1,
             "id2": id2,
             "keywords_similarity": round(kw_sim, 2),
+            "keyword_similarity_method": keyword_method,
             "description_similarity": round(desc_sim * 100, 2),
             "headline_similarity": round(head_sim * 100, 2),
             "combined_similarity": round(combined, 2),

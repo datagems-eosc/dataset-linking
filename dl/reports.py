@@ -68,6 +68,7 @@ def build_croissant_report(folder_path, weights, similarities, file_data=None):
             "dataprofile2ref": s.get("id2"),
             "metrics": {
                 "keywords_similarity": s["keywords_similarity"],
+                "keyword_similarity_method": s.get("keyword_similarity_method", "jaccard"),
                 "description_similarity": s["description_similarity"],
                 "headline_similarity": s["headline_similarity"],
                 "combined_similarity": s["combined_similarity"],

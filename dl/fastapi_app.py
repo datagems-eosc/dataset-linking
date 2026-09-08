@@ -34,6 +34,13 @@ def _timestamp() -> str:
     return datetime.now().strftime("%Y%m%d_%H%M%S")
 
 
+def _keyword_method(value: str) -> str:
+    method = str(value or "jaccard").strip().lower()
+    if method not in {"jaccard", "sbert"}:
+        raise HTTPException(status_code=400, detail="keyword_method must be 'jaccard' or 'sbert'.")
+    return method
+
+
 def _json_download(payload: dict, filename: str) -> StreamingResponse:
     data = json.dumps(payload, ensure_ascii=False, indent=4).encode("utf-8")
     buf = io.BytesIO(data)
@@ -125,6 +132,7 @@ def _run_report_job(
         include_chunks: bool = False,
         include_graphs: bool = False,
         graphs_only_above_threshold: bool = True,
+        keyword_method: str = "jaccard",
 ) -> None:
     try:
         JOBS[job_id]["status"] = "in_progress"
@@ -146,7 +154,8 @@ def _run_report_job(
             head,
             threshold=th,
             use_api=use_api,
-            include_description_chunks=include_chunks
+            include_description_chunks=include_chunks,
+            keyword_method=keyword_method,
         )
         if error:
             JOBS[job_id]["status"] = "failed"
@@ -180,6 +189,7 @@ def _run_report_job(
             "include_description_chunks": include_chunks,
             "include_graphs": include_graphs,
             "graphs_only_above_threshold": graphs_only_above_threshold,
+            "keyword_similarity_method": keyword_method,
         }
 
         report = build_croissant_report(folder, weights, similarities)
@@ -254,11 +264,14 @@ def api_compute_similarities(
     include_chunks: bool = Query(False, description="Include expensive description chunk evidence"),
     include_graphs: bool = Query(False, description="Generate PGJSON graph for each pair"),
     graphs_only_above_threshold: bool = Query(True, description="Generate graphs only for pairs above threshold"),
+    keyword_method: str = Query("jaccard", description="Keyword similarity method: jaccard or sbert"),
 ):
     kw, desc, head, normalized = normalize_weights(kw, desc, head)
+    keyword_method = _keyword_method(keyword_method)
 
     error, similarities, from_cache = compute_similarities(
-        folder, kw, desc, head, threshold=th, include_description_chunks=include_chunks
+        folder, kw, desc, head, threshold=th, include_description_chunks=include_chunks,
+        keyword_method=keyword_method
     )
     if error:
         raise HTTPException(status_code=400, detail=error)
@@ -288,6 +301,7 @@ def api_compute_similarities(
             "include_chunks": include_chunks,
             "include_graphs": include_graphs,
             "graphs_only_above_threshold": graphs_only_above_threshold,
+            "keyword_similarity_method": keyword_method,
         },
     }
 
@@ -304,11 +318,13 @@ def api_single_similarity(
     desc: float = Query(0.3, ge=0),
     head: float = Query(0.1, ge=0),
     th: float = Query(30.0, ge=0, le=100),
+    keyword_method: str = Query("jaccard", description="Keyword similarity method: jaccard or sbert"),
 ):
     kw, desc, head, normalized = normalize_weights(kw, desc, head)
+    keyword_method = _keyword_method(keyword_method)
 
     error, similarities, from_cache = compute_similarities(
-        folder, kw, desc, head, threshold=th
+        folder, kw, desc, head, threshold=th, keyword_method=keyword_method
     )
     if error:
         raise HTTPException(status_code=400, detail=error)
@@ -342,6 +358,7 @@ def api_single_similarity(
             "description": desc,
             "headline": head,
             "normalized": normalized,
+            "keyword_similarity_method": keyword_method,
         },
     }
 
@@ -359,11 +376,13 @@ def api_build_report(
     th: float = Query(30.0, ge=0, le=100),
     include_graphs: bool = Query(False, description="Generate PGJSON graph for each pair"),
     graphs_only_above_threshold: bool = Query(True, description="Generate graphs only for pairs above threshold"),
+    keyword_method: str = Query("jaccard", description="Keyword similarity method: jaccard or sbert"),
 ):
     kw, desc, head, normalized = normalize_weights(kw, desc, head)
+    keyword_method = _keyword_method(keyword_method)
 
     error, similarities, from_cache = compute_similarities(
-        folder, kw, desc, head, threshold=th
+        folder, kw, desc, head, threshold=th, keyword_method=keyword_method
     )
     if error:
         raise HTTPException(status_code=400, detail=error)
@@ -388,6 +407,7 @@ def api_build_report(
         "threshold": th,
         "include_graphs": include_graphs,
         "graphs_only_above_threshold": graphs_only_above_threshold,
+        "keyword_similarity_method": keyword_method,
     }
 
     report = build_croissant_report(folder, weights, similarities)  # file_data optional
@@ -409,11 +429,14 @@ def api_download_report(
     include_chunks: bool = Query(False, description="Include expensive description chunk evidence"),
     include_graphs: bool = Query(False, description="Generate PGJSON graph for each pair"),
     graphs_only_above_threshold: bool = Query(True, description="Generate graphs only for pairs above threshold"),
+    keyword_method: str = Query("jaccard", description="Keyword similarity method: jaccard or sbert"),
 ):
     kw, desc, head, normalized = normalize_weights(kw, desc, head)
+    keyword_method = _keyword_method(keyword_method)
 
     error, similarities, _ = compute_similarities(
-        folder, kw, desc, head, threshold=th, include_description_chunks=include_chunks
+        folder, kw, desc, head, threshold=th, include_description_chunks=include_chunks,
+        keyword_method=keyword_method
     )
     if error:
         raise HTTPException(status_code=400, detail=error)
@@ -439,6 +462,7 @@ def api_download_report(
         "include_description_chunks": include_chunks,
         "include_graphs": include_graphs,
         "graphs_only_above_threshold": graphs_only_above_threshold,
+        "keyword_similarity_method": keyword_method,
     }
 
     report = build_croissant_report(folder, weights, similarities)
@@ -459,10 +483,12 @@ def api_download_pair(
     desc: float = Query(0.3, ge=0),
     head: float = Query(0.1, ge=0),
     th: float = Query(30.0, ge=0, le=100),
+    keyword_method: str = Query("jaccard", description="Keyword similarity method: jaccard or sbert"),
 ):
     kw, desc, head, normalized = normalize_weights(kw, desc, head)
+    keyword_method = _keyword_method(keyword_method)
 
-    error, similarities, _ = compute_similarities(folder, kw, desc, head, threshold=th)
+    error, similarities, _ = compute_similarities(folder, kw, desc, head, threshold=th, keyword_method=keyword_method)
     if error:
         raise HTTPException(status_code=400, detail=error)
 
@@ -499,6 +525,7 @@ def api_download_pair(
             "headline": head,
             "normalized": normalized,
             "threshold": th,
+            "keyword_similarity_method": keyword_method,
         },
     }
 
@@ -529,6 +556,7 @@ def api_download_pair(
             "dataprofile2id": match.get("id2"),
             "metrics": {
                 "keywords_similarity": match["keywords_similarity"],
+                "keyword_similarity_method": match.get("keyword_similarity_method", keyword_method),
                 "description_similarity": match["description_similarity"],
                 "headline_similarity": match["headline_similarity"],
                 "combined_similarity": match["combined_similarity"],
@@ -603,6 +631,7 @@ class SelectProfilesRequest(BaseModel):
     desc: Optional[float] = 0.3
     head: Optional[float] = 0.1
     th: Optional[float] = Field(30.0, ge=0, le=100)
+    keyword_method: Optional[str] = "jaccard"
 
 
 @app.post("/api/similarities/select")
@@ -612,9 +641,10 @@ def api_select_similarities(req: SelectProfilesRequest):
 
     kw, desc, head, normalized = normalize_weights(req.kw, req.desc, req.head)
     th = float(req.th or 30.0)
+    keyword_method = _keyword_method(req.keyword_method or "jaccard")
 
     error, all_similarities, from_cache = compute_similarities(
-        req.folder, kw, desc, head, threshold=th
+        req.folder, kw, desc, head, threshold=th, keyword_method=keyword_method
     )
     if error:
         raise HTTPException(status_code=400, detail=error)
@@ -635,6 +665,7 @@ def api_select_similarities(req: SelectProfilesRequest):
             "description": desc,
             "headline": head,
             "normalized": normalized,
+            "keyword_similarity_method": keyword_method,
         },
     }
 
@@ -653,11 +684,13 @@ def api_job_start_report(
         include_chunks: bool = Query(False, description="Include expensive description chunk evidence"),
         include_graphs: bool = Query(False, description="Generate PGJSON graph for each pair"),
         graphs_only_above_threshold: bool = Query(True, description="Generate graphs only for pairs above threshold"),
+        keyword_method: str = Query("jaccard", description="Keyword similarity method: jaccard or sbert"),
 ):
     if folder and (folder.strip() == "" or folder.strip().lower() == "none"):
         folder = None
 
     kw, desc, head, normalized = normalize_weights(kw, desc, head)
+    keyword_method = _keyword_method(keyword_method)
 
     job_id = str(uuid.uuid4())
     JOBS[job_id] = {
@@ -676,6 +709,7 @@ def api_job_start_report(
             "include_chunks": include_chunks,
             "include_graphs": include_graphs,
             "graphs_only_above_threshold": graphs_only_above_threshold,
+            "keyword_similarity_method": keyword_method,
         },
         "result": None,
     }
@@ -690,6 +724,7 @@ def api_job_start_report(
         include_chunks,
         include_graphs,
         graphs_only_above_threshold,
+        keyword_method,
     )
     return {"job_id": job_id, "status": "queued"}
 
@@ -795,20 +830,23 @@ async def api_discover_and_compare(
     kw: float = Query(0.6, ge=0),
     desc: float = Query(0.3, ge=0),
     head: float = Query(0.1, ge=0),
-    th: float = Query(30.0, ge=0, le=100)
+    th: float = Query(30.0, ge=0, le=100),
+    keyword_method: str = Query("jaccard", description="Keyword similarity method: jaccard or sbert"),
 ):
     """
     Download 'ready' profile by API
     """
     try:
         kw, desc, head, normalized = normalize_weights(kw, desc, head)
+        keyword_method = _keyword_method(keyword_method)
         error, similarities, from_cache = compute_similarities(
             folder_path=None,
             kw_weight=kw,
             desc_weight=desc,
             head_weight=head,
             threshold=th,
-            use_api=True
+            use_api=True,
+            keyword_method=keyword_method
         )
 
         if error:
@@ -820,7 +858,7 @@ async def api_discover_and_compare(
             "metadata": {
                 "total_pairs": len(similarities),
                 "from_cache": from_cache,
-                "weights": {"kw": kw, "desc": desc, "head": head},
+                "weights": {"kw": kw, "desc": desc, "head": head, "keyword_similarity_method": keyword_method},
                 "threshold": th
             }
         }

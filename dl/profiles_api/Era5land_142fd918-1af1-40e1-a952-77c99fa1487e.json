@@ -64,30 +64,28 @@
         "wd": "https://www.wikidata.org/wiki/"
     },
     "@type": "sc:Dataset",
-    "@id": "230fa54e-f5d0-489a-b6a6-5bbc6125ac7f",
+    "@id": "142fd918-1af1-40e1-a952-77c99fa1487e",
     "distribution": [],
     "recordSet": [],
     "country": "GR",
-    "citeAs": "ca",
     "keywords": [
-        "qualifications",
-        "lifelong learning",
-        "skills"
+        "weather",
+        "weather prediction"
     ],
-    "description": "The European Skills, Competences, Qualifications, and Occupations (ESCO) dataset functions as a standardized classification system for occupations, skills, and qualifications across the European labor market. It acts as a structured dictionary, defining skills and linking them to relevant job roles and qualifications.",
+    "citeAs": "ca",
+    "description": "A global atmospheric reanalysis dataset produced by the European Centre for Medium‐Range Weather Forecast’s (ECMWF) and has data available from 1950, providing a consistent view of the evolution of land variables. It has an enhanced resolution of 0.1° x 0.1°, while the temporal frequency of the model output is hourly.",
     "inLanguage": [
-        "en"
+        "el"
     ],
-    "url": "https://esco.ec.europa.eu/en/use-esco/download",
+    "url": "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land?tab=download",
     "datePublished": "2025-05-24",
-    "archivedAt": "s3://dataset/230fa54e-f5d0-489a-b6a6-5bbc6125ac7f",
-    "license": "CC-BY 4.0",
+    "license": "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land?tab=download",
+    "archivedAt": "s3://dataset_staging/142fd918-1af1-40e1-a952-77c99fa1487e",
     "fieldOfScience": [
-        "EDUCATIONAL SCIENCES"
+        "EARTH AND RELATED ENVIRONMENTAL SCIENCES"
     ],
-    "name": "ESCO",
-    "conformsTo": "ct",
-    "headline": "Standarized Classification of Occupations, Skills, and Qualifications in Europe",
+    "name": "Era5land",
+    "headline": "Meteorological data time series by ECWMF",
     "doi": "10.1000/1234567890",
-    "status": "loaded"
+    "status": "staged"
 }

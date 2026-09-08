@@ -45,6 +45,11 @@ def get_requested_folder():
     return str(Path(raw))
 
 
+def get_keyword_method():
+    method = request.args.get("kw_method", "jaccard").strip().lower()
+    return method if method in {"jaccard", "sbert"} else "jaccard"
+
+
 def _dataset_payload(data):
     if isinstance(data, dict) and isinstance(data.get("dataset"), dict):
         return data["dataset"]
@@ -192,6 +197,7 @@ def index():
     use_api = True if not folder_path else False
 
     kw_weight, desc_weight, head_weight, th, normalized = get_weights_and_threshold()
+    keyword_method = get_keyword_method()
 
     error, similarities, from_cache = compute_similarities(
         folder_path=folder_path if folder_path else None,
@@ -199,7 +205,8 @@ def index():
         desc_weight=desc_weight,
         head_weight=head_weight,
         threshold=th,
-        use_api=use_api
+        use_api=use_api,
+        keyword_method=keyword_method
     )
 
     success = None
@@ -214,7 +221,7 @@ def index():
         if from_cache:
             success_message += " | ⚡ Loaded from cache"
 
-        success_message += f" | threshold: {th:.0f}%"
+        success_message += f" | keyword method: {keyword_method.upper()} | threshold: {th:.0f}%"
         success = success_message
 
     return render_template(
@@ -225,6 +232,7 @@ def index():
         desc=desc_weight,
         head=head_weight,
         th=th,
+        kw_method=keyword_method,
         error=error,
         success=success
     )
@@ -236,6 +244,7 @@ def save_results():
     use_api = True if not folder_path else False
 
     kw_weight, desc_weight, head_weight, th, normalized = get_weights_and_threshold()
+    keyword_method = get_keyword_method()
 
     error, similarities, _ = compute_similarities(
         folder_path=folder_path if folder_path else None,
@@ -243,7 +252,8 @@ def save_results():
         desc_weight=desc_weight,
         head_weight=head_weight,
         threshold=th,
-        use_api=use_api
+        use_api=use_api,
+        keyword_method=keyword_method
     )
 
     if error:
@@ -269,7 +279,8 @@ def save_results():
 
     weights = {
         "keywords": kw_weight, "description": desc_weight,
-        "headline": head_weight, "normalized": normalized
+        "headline": head_weight, "normalized": normalized,
+        "keyword_similarity_method": keyword_method
     }
 
     source_label = folder_path if folder_path else "API_Datagems"
@@ -296,6 +307,7 @@ def compare_links():
     use_api = True if not folder_path else False
 
     kw_weight, desc_weight, head_weight, th, normalized = get_weights_and_threshold()
+    keyword_method = get_keyword_method()
     relation_threshold = request.args.get("relation_th", 0.0)
     top_n = request.args.get("top_n", "").strip()
     selected_pairs_raw = request.args.get("selected_pairs", "").strip()
@@ -330,7 +342,8 @@ def compare_links():
         desc_weight=desc_weight,
         head_weight=head_weight,
         threshold=th,
-        use_api=use_api
+        use_api=use_api,
+        keyword_method=keyword_method
     )
 
     if error:
@@ -349,6 +362,7 @@ def compare_links():
         "headline": head_weight,
         "normalized": normalized,
         "threshold": th,
+        "keyword_similarity_method": keyword_method,
     }
 
     source_label = folder_path if folder_path else "API_Datagems"
@@ -427,6 +441,7 @@ def composite_links():
     use_api = True if not folder_path else False
 
     kw_weight, desc_weight, head_weight, th, normalized = get_weights_and_threshold()
+    keyword_method = get_keyword_method()
     relation_threshold = request.args.get("relation_th", 0.5)
     top_n = request.args.get("top_n", "").strip()
     output_format = request.args.get("format", "html").strip().lower()
@@ -447,7 +462,8 @@ def composite_links():
         desc_weight=desc_weight,
         head_weight=head_weight,
         threshold=th,
-        use_api=use_api
+        use_api=use_api,
+        keyword_method=keyword_method
     )
 
     if error:
@@ -460,6 +476,7 @@ def composite_links():
         "headline": head_weight,
         "normalized": normalized,
         "threshold": th,
+        "keyword_similarity_method": keyword_method,
     }
 
     source_label = folder_path if folder_path else "API_Datagems"
@@ -491,7 +508,9 @@ def composite_links():
         "minimum_relation_similarity": relation_threshold,
         "links_considered": len(base_report["links"]),
         "comparisons_used": len(composite_data["comparisons"]),
+        "recursive_comparisons_used": len(composite_data.get("recursive_comparisons", [])),
         "includes_description_chunks": True,
+        "composite_construction": composite_data.get("construction"),
     }
     if top_n_value:
         selection["top_n"] = top_n_value
@@ -504,8 +523,12 @@ def composite_links():
         "selection": selection,
         "weights": weights,
         "levels": composite_data["levels"],
+        "recursive_levels": composite_data.get("recursive_levels", []),
+        "connected_component_levels": composite_data.get("connected_component_levels", []),
         "composites": composite_data["composites"],
+        "connected_component_composites": composite_data.get("connected_component_composites", []),
         "comparisons": composite_data["comparisons"],
+        "recursive_comparisons": composite_data.get("recursive_comparisons", []),
     }
 
     if output_format != "json":
@@ -539,6 +562,7 @@ def save_single():
     use_api = True if not folder_path else False
 
     kw, desc, head, th, _ = get_weights_and_threshold()
+    keyword_method = get_keyword_method()
 
     error, similarities, _ = compute_similarities(
         folder_path if folder_path else None,
@@ -546,7 +570,8 @@ def save_single():
         desc_weight=desc,
         head_weight=head,
         threshold=th,
-        use_api=use_api
+        use_api=use_api,
+        keyword_method=keyword_method
     )
 
     if error:
@@ -578,7 +603,8 @@ def save_single():
                 "description": desc,
                 "headline": head
             },
-            "threshold": th
+            "threshold": th,
+            "keyword_similarity_method": keyword_method
         },
         "link": [{
             "@type": "DataLinkingBase",
@@ -589,6 +615,7 @@ def save_single():
             "dataprofile2ref": match.get("id2"),
             "metrics": {
                 "keywords_similarity": match["keywords_similarity"],
+                "keyword_similarity_method": match.get("keyword_similarity_method", keyword_method),
                 "description_similarity": match["description_similarity"],
                 "headline_similarity": match["headline_similarity"],
                 "combined_similarity": match["combined_similarity"],

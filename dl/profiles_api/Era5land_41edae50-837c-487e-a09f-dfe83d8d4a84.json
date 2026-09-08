@@ -64,41 +64,28 @@
         "wd": "https://www.wikidata.org/wiki/"
     },
     "@type": "sc:Dataset",
-    "@id": "056ff7ea-ac5a-4496-abc5-ad254ddf58fa",
-    "distribution": [
-        {
-            "@id": "38d53b0e-c88f-4509-aeea-f9cfa189eab2",
-            "contentUrl": "s3://dataset/056ff7ea-ac5a-4496-abc5-ad254ddf58fa/weather_data_fr.csv",
-            "sha256": "6df8c700f8c47533c567b7b3108f8f6ddf807474260bcb576f626b72107fa3ad",
-            "contentSize": "2407043 B",
-            "name": "weather_data_fr.csv",
-            "encodingFormat": "text/csv",
-            "description": "",
-            "@type": "cr:FileObject"
-        }
-    ],
+    "@id": "41edae50-837c-487e-a09f-dfe83d8d4a84",
+    "distribution": [],
     "recordSet": [],
-    "country": "PT",
-    "citeAs": "",
+    "country": "GR",
     "keywords": [
-        "dev",
-        "keyword"
+        "weather",
+        "weather prediction"
     ],
+    "citeAs": "ca",
+    "description": "A global atmospheric reanalysis dataset produced by the European Centre for Medium‐Range Weather Forecast’s (ECMWF) and has data available from 1950, providing a consistent view of the evolution of land variables. It has an enhanced resolution of 0.1° x 0.1°, while the temporal frequency of the model output is hourly.",
     "inLanguage": [
         "el"
     ],
-    "description": "Subway data",
-    "version": "",
-    "url": "",
+    "url": "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land?tab=download",
     "datePublished": "2025-05-24",
-    "archivedAt": "s3://dataset/056ff7ea-ac5a-4496-abc5-ad254ddf58fa",
-    "license": "Public Domain",
+    "license": "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-land?tab=download",
+    "archivedAt": "s3://dataset_staging/41edae50-837c-487e-a09f-dfe83d8d4a84",
     "fieldOfScience": [
-        "CIVIL ENGINEERING"
+        "EARTH AND RELATED ENVIRONMENTAL SCIENCES"
     ],
-    "name": "OASA Data",
-    "conformsTo": "",
-    "headline": "Subway data.",
-    "doi": "10.1234/oasa-dataset",
-    "status": "loaded"
+    "name": "Era5land",
+    "headline": "Meteorological data time series by ECWMF",
+    "doi": "10.1000/1234567890",
+    "status": "staged"
 }

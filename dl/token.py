@@ -17,6 +17,7 @@ if sys.stdout.encoding != 'utf-8':
 BASE_URL = "https://datagems-dev.scayle.es"
 OUTPUT_FOLDER = "profiles_api"
 
+
 def fix_encoding(data: Any) -> Any:
     """Corregge eventuali problemi di encoding nelle stringhe ricevute"""
     if isinstance(data, str):
@@ -29,6 +30,7 @@ def fix_encoding(data: Any) -> Any:
     elif isinstance(data, dict):
         return {k: fix_encoding(v) for k, v in data.items()}
     return data
+
 
 def get_token() -> str:
     """Ottiene il token OAuth2 bypassando SSL"""
@@ -46,6 +48,7 @@ def get_token() -> str:
         sys.exit(1)
     return response.json().get('access_token')
 
+
 def get_dataset_detail(token: str, dataset_id: str) -> dict:
     """Scarica il profilo Croissant di un singolo dataset"""
     url = f"{BASE_URL}/dmm/api/v1/dataset/get/{dataset_id}?format=croissant"
@@ -58,10 +61,12 @@ def get_dataset_detail(token: str, dataset_id: str) -> dict:
         print(f"\n⚠️ Errore nel download dell'ID {dataset_id}: {e}")
         return {}
 
+
 def sanitize_filename(name: str) -> str:
     """Rimuove caratteri non validi per i nomi file"""
     clean_name = re.sub(r'[\\/*?:"<>|]', "", name)
     return clean_name.replace(" ", "_")
+
 
 if __name__ == "__main__":
     if not os.path.exists(OUTPUT_FOLDER):
@@ -70,7 +75,6 @@ if __name__ == "__main__":
     access_token = get_token()
     print("🔑 Token ottenuto con successo.")
 
-    # --- AGGIORNAMENTO: Aggiunto count=200 per superare il limite di 25 ---
     search_url = f"{BASE_URL}/dmm/api/v1/dataset/search"
     params = {'properties': 'name', 'count': 200, 'dataset_status': 'ready'}
     headers = {'Authorization': f'Bearer {access_token}'}
@@ -86,6 +90,9 @@ if __name__ == "__main__":
     total = len(all_datasets)
     print(f"📂 Trovati {total} dataset. Inizio il download...\n")
 
+    # Contatore stati per il riepilogo finale
+    status_counts = {}
+
     for index, item in enumerate(all_datasets, 1):
         nodes = item.get('nodes', [])
         if not nodes: continue
@@ -97,22 +104,38 @@ if __name__ == "__main__":
         filename = f"{clean_name}_{ds_id}.json"
         filepath = os.path.join(OUTPUT_FOLDER, filename)
 
+        # Logica di controllo esistenza e validità status
+        needs_download = True
         if os.path.exists(filepath):
             with open(filepath, "r", encoding="utf-8") as f:
                 details = json.load(f)
             status = details.get('status', 'unknown')
-            print(f"[{index}/{total}] ⏩ Saltato (esistente): {filename} | ℹ️  Status: {status}")
-            continue
 
-        details = get_dataset_detail(access_token, ds_id)
+            if status == 'ready':
+                print(f"[{index}/{total}] ⏩ Saltato (esistente e pronto): {filename}")
+                needs_download = False
+            else:
+                print(f"[{index}/{total}] 🔄 Esistente ma status '{status}'. Riscarico...")
 
-        if details:
-            ds_status = details.get('status', 'N/A')
-            with open(filepath, "w", encoding="utf-8") as f:
-                json.dump(details, f, indent=4, ensure_ascii=False)
-            status_icon = "🟢" if ds_status == "ready" else "🟡"
-            print(f"[{index}/{total}] ✅ Salvato: {filename} | {status_icon} Status: {ds_status}")
-        else:
-            print(f"[{index}/{total}] ❌ Fallito: {ds_name}")
+        if needs_download:
+            details = get_dataset_detail(access_token, ds_id)
+            if details:
+                with open(filepath, "w", encoding="utf-8") as f:
+                    json.dump(details, f, indent=4, ensure_ascii=False)
+                status = details.get('status', 'N/A')
+                status_icon = "🟢" if status == "ready" else "🟡"
+                print(f"[{index}/{total}] ✅ Salvato: {filename} | {status_icon} Status: {status}")
+            else:
+                print(f"[{index}/{total}] ❌ Fallito: {ds_name}")
+                status = "failed"
 
+        # Aggiorna contatore
+        status_counts[status] = status_counts.get(status, 0) + 1
+
+    # Riepilogo finale
     print(f"\n✅ Operazione completata. File in: {os.path.abspath(OUTPUT_FOLDER)}")
+    print("\n" + "=" * 30)
+    print("📊 Riepilogo Stati (Locali):")
+    for s, c in status_counts.items():
+        print(f" - {s.capitalize()}: {c}")
+    print("=" * 30)
