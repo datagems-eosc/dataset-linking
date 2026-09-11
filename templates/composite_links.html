@@ -273,13 +273,13 @@
         <p><strong>Comparisons used:</strong> {{ report.selection.comparisons_used }}</p>
         <p><strong>Composites produced:</strong> {{ composites|length }}</p>
         <p><strong>Construction:</strong> {{ report.selection.composite_construction }}</p>
-        <p><strong>Method:</strong> each profile-to-profile link keeps up to three representative description chunk matches. Recursive composite levels compare those representative chunks 3x3, keep the top three matches, average their similarity, and keep only results above the relation threshold.</p>
+        <p><strong>Method:</strong> recursive levels compare the original description chunks for every cross-parent profile pair. Embeddings and the best match for each profile pair are cached; the three strongest distinct profile-pair matches provide the chunk score and the evidence shown here.</p>
         <p class="muted">If no recursive chunk-based composite survives, the report falls back to connected clusters of links above threshold.</p>
     </div>
 
     <div class="composite-actions">
         <a href="{{ url_for('index') }}{% if folder %}?folder={{ folder }}{% endif %}" class="save-btn">Back To Results</a>
-        <a href="{{ download_url }}" class="save-btn">Download JSON</a>
+        <a href="{{ download_url }}" class="save-btn">Download compact JSON</a>
     </div>
 
     {% if composites %}
