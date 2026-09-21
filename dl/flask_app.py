@@ -31,6 +31,7 @@ import requests
 BASE_DIR = Path(__file__).resolve().parent.parent
 COMPOSITE_DOWNLOAD_DIR = Path(tempfile.gettempdir()) / "dataset-linking-composite-downloads"
 COMPOSITE_DOWNLOAD_TTL_SECONDS = 6 * 60 * 60
+ANALYSIS_CACHE = {}
 app = Flask(
     __name__,
     template_folder=str(BASE_DIR / "templates"),
@@ -54,6 +55,47 @@ def get_keyword_method():
     return method if method in {"jaccard", "sbert"} else "jaccard"
 
 
+def _local_source_marker(folder_path):
+    if not folder_path:
+        return "api"
+    folder = Path(folder_path)
+    try:
+        return tuple(
+            (path.name, path.stat().st_mtime_ns, path.stat().st_size)
+            for path in sorted(folder.glob("*.json"))
+            if not path.name.lower().startswith("cache_")
+        )
+    except OSError:
+        return str(folder)
+
+
+def _analysis_cache_key(folder_path, kw, desc, head, th, keyword_method):
+    return (
+        str(folder_path or "API_Datagems"),
+        _local_source_marker(folder_path),
+        round(float(kw), 4),
+        round(float(desc), 4),
+        round(float(head), 4),
+        round(float(th), 4),
+        keyword_method,
+    )
+
+
+def _remember_analysis(key, similarities, from_cache):
+    ANALYSIS_CACHE[key] = {
+        "similarities": similarities,
+        "from_cache": from_cache,
+        "saved_at": time.time(),
+    }
+
+
+def _cached_analysis(key):
+    cached = ANALYSIS_CACHE.get(key)
+    if cached:
+        print(f"[ANALYSIS] In-memory result reused ({len(cached['similarities'])} pair(s))")
+    return cached
+
+
 def _dataset_payload(data):
     if isinstance(data, dict) and isinstance(data.get("dataset"), dict):
         return data["dataset"]
@@ -66,11 +108,24 @@ def _load_profile(profile_id, folder_path, use_api, profile_cache):
 
     profile = None
     if use_api:
-        token = get_access_token()
-        headers = {'Authorization': f'Bearer {token}', 'accept': 'application/json'}
-        response = requests.get(f"{DETAIL_URL}{profile_id}?format=croissant", headers=headers, timeout=25, verify=False)
-        response.raise_for_status()
-        profile = _dataset_payload(fix_encoding(response.json()))
+        from dl import similarity
+
+        cache_folder = Path("/s3/cache")
+        profile = similarity._load_cached_api_profile(cache_folder, profile_id)
+        if profile is not None:
+            print(f"[PROFILE] Cache hit: {profile_id}")
+        else:
+            token = profile_cache.get("__api_token__")
+            if not token:
+                token = get_access_token()
+                profile_cache["__api_token__"] = token
+            headers = {'Authorization': f'Bearer {token}', 'accept': 'application/json'}
+            response = requests.get(f"{DETAIL_URL}{profile_id}?format=croissant", headers=headers, timeout=25, verify=False)
+            response.raise_for_status()
+            profile = _dataset_payload(fix_encoding(response.json()))
+            if profile:
+                similarity._save_cached_api_profile(cache_folder, profile_id, profile)
+                print(f"[PROFILE] Downloaded and cached: {profile_id}")
     else:
         folder = Path(folder_path)
         for file_path in folder.glob("*.json"):
@@ -168,6 +223,8 @@ def _attach_description_chunks(
         include_original_chunks=False,
 ):
     if profile_cache is not None:
+        if link.get("description_top_chunks") and not include_original_chunks:
+            return
         dp1 = _load_profile(link.get("dataprofile1ref"), folder_path, use_api, profile_cache)
         dp2 = _load_profile(link.get("dataprofile2ref"), folder_path, use_api, profile_cache)
         if dp1 and dp2:
@@ -237,13 +294,37 @@ def _compact_chunk_match(match):
         "similarity": match.get("similarity", 0.0),
         "left_profile": match.get("left_profile_key") or atomic.get("left_profile_key", ""),
         "right_profile": match.get("right_profile_key") or atomic.get("right_profile_key", ""),
-        "left_text": _compact_text(match.get("chunk_evidence_1") or atomic.get("left_text")),
-        "right_text": _compact_text(match.get("chunk_evidence_2") or atomic.get("right_text")),
+        "left_text": _compact_text(
+            match.get("chunk_evidence_1")
+            or match.get("chunk1")
+            or atomic.get("left_text")
+        ),
+        "right_text": _compact_text(
+            match.get("chunk_evidence_2")
+            or match.get("chunk2")
+            or atomic.get("right_text")
+        ),
         "evaluated_chunk_pair_count": (
             match.get("evaluated_chunk_pair_count")
             or match.get("valid_atomic_pair_count")
             or 0
         ),
+    }
+
+
+def _compact_multi_profile_match(match):
+    return {
+        "rank": match.get("rank"),
+        "similarity": match.get("similarity", 0.0),
+        "profiles": [
+            {
+                "profile": item.get("profile"),
+                "profile_id": item.get("profile_id"),
+                "text": _compact_text(item.get("text")),
+                "similarity": item.get("similarity", 0.0),
+            }
+            for item in (match.get("profiles") or [])
+        ],
     }
 
 
@@ -267,6 +348,10 @@ def _compact_recursive_comparison(comparison):
         "top_chunk_matches": [
             _compact_chunk_match(match)
             for match in (evidence.get("description_chunk_matches") or [])[:3]
+        ],
+        "multi_profile_chunk_matches": [
+            _compact_multi_profile_match(match)
+            for match in (evidence.get("multi_profile_chunk_matches") or [])[:3]
         ],
     }
     if latent:
@@ -299,6 +384,7 @@ def _compact_composite(composite, supporting_limit=10):
         "internal_link_count": composite.get("link_count", len(composite.get("linkRefs", []) or [])),
         "comparison_count": composite.get("comparison_count", 0),
         "recursive_level": composite.get("recursive_level"),
+        "status": composite.get("status", "green"),
         "composite_coherence": composite.get("composite_coherence", 0.0),
         "merge_similarity": composite.get("merge_similarity", 0.0),
         "chunk_similarity": merge_evidence.get("chunk_similarity", 0.0),
@@ -315,6 +401,10 @@ def _compact_composite(composite, supporting_limit=10):
         "top_chunk_matches": [
             _compact_chunk_match(match)
             for match in (merge_evidence.get("description_chunk_matches") or [])[:3]
+        ],
+        "multi_profile_chunk_matches": [
+            _compact_multi_profile_match(match)
+            for match in (merge_evidence.get("multi_profile_chunk_matches") or [])[:3]
         ],
         "supporting_path_count": len(supporting),
         "supporting_paths_included": min(len(supporting), supporting_limit),
@@ -412,6 +502,18 @@ def _cache_compact_composite_report(report):
     return token
 
 
+def _cache_full_composite_report(report, token):
+    """Store the complete report beside its compact projection."""
+    COMPOSITE_DOWNLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    target = COMPOSITE_DOWNLOAD_DIR / f"{token}_full.json"
+    temporary = COMPOSITE_DOWNLOAD_DIR / f"{token}_full.tmp"
+    temporary.write_text(
+        json.dumps(report, ensure_ascii=False, indent=4),
+        encoding="utf-8",
+    )
+    temporary.replace(target)
+
+
 # ---------------------------------------------------------------------------- #
 # Routes
 # ---------------------------------------------------------------------------- #
@@ -421,7 +523,11 @@ def _cache_compact_composite_report(report):
 def download_cached_composite(token):
     if len(token) != 32 or any(character not in "0123456789abcdef" for character in token.lower()):
         abort(404)
-    path = COMPOSITE_DOWNLOAD_DIR / f"{token.lower()}.json"
+    mode = request.args.get("mode", "compact").strip().lower()
+    if mode not in {"compact", "full"}:
+        abort(404)
+    suffix = "_full" if mode == "full" else ""
+    path = COMPOSITE_DOWNLOAD_DIR / f"{token.lower()}{suffix}.json"
     if not path.is_file():
         abort(404)
 
@@ -430,7 +536,7 @@ def download_cached_composite(token):
         path,
         mimetype="application/json",
         as_attachment=True,
-        download_name=f"composite_links_compact_{timestamp}.json",
+        download_name=f"composite_links_{mode}_{timestamp}.json",
     ))
     response.set_cookie("downloadComplete", "1", max_age=10)
     return response
@@ -452,8 +558,15 @@ def index():
         head_weight=head_weight,
         threshold=th,
         use_api=use_api,
+        include_description_chunks=True,
         keyword_method=keyword_method
     )
+    if not error:
+        _remember_analysis(
+            _analysis_cache_key(folder_path, kw_weight, desc_weight, head_weight, th, keyword_method),
+            similarities,
+            from_cache,
+        )
 
     success = None
     if not error:
@@ -707,20 +820,32 @@ def composite_links():
     except ValueError:
         top_n_value = None
 
-    error, similarities, from_cache = compute_similarities(
-        folder_path=folder_path if folder_path else None,
-        kw_weight=kw_weight,
-        desc_weight=desc_weight,
-        head_weight=head_weight,
-        threshold=th,
-        use_api=use_api,
-        keyword_method=keyword_method
-    )
+    started_at = time.perf_counter()
+    cache_key = _analysis_cache_key(folder_path, kw_weight, desc_weight, head_weight, th, keyword_method)
+    cached = _cached_analysis(cache_key)
+    if cached:
+        error = None
+        similarities = cached["similarities"]
+        from_cache = True
+        print("[COMPOSITE] Reusing analysis from the home page")
+    else:
+        print("[COMPOSITE] No in-memory analysis found; loading similarity cache or computing")
+        error, similarities, from_cache = compute_similarities(
+            folder_path=folder_path if folder_path else None,
+            kw_weight=kw_weight,
+            desc_weight=desc_weight,
+            head_weight=head_weight,
+            threshold=th,
+            use_api=use_api,
+            include_description_chunks=True,
+            keyword_method=keyword_method
+        )
+        if not error:
+            _remember_analysis(cache_key, similarities, from_cache)
 
     if error:
         return f"❌ Cannot build composite links: {error}", 400
 
-    above_threshold = [s for s in similarities if s.get("passes_threshold")]
     weights = {
         "keywords": kw_weight,
         "description": desc_weight,
@@ -731,7 +856,10 @@ def composite_links():
     }
 
     source_label = folder_path if folder_path else "API_Datagems"
-    base_report = build_croissant_report(source_label, weights, above_threshold, {})
+    # Keep every base pair. Green pairs can build the next level, while red
+    # pairs remain visible and can mark a composite as weak.
+    base_report = build_croissant_report(source_label, weights, similarities, {})
+    print(f"[COMPOSITE] Base pairs: {len(base_report['links'])}")
     profile_cache = {}
     for link in base_report["links"]:
         _attach_profile_evidence(
@@ -745,7 +873,7 @@ def composite_links():
             folder_path if folder_path else None,
             use_api,
             profile_cache,
-            include_original_chunks=True,
+            include_original_chunks=False,
         )
         link["refinement_evidence"] = _build_refinement_evidence_for_link(
             link,
@@ -753,17 +881,45 @@ def composite_links():
             use_api,
             profile_cache
         )
+    print(f"[COMPOSITE] Profile evidence ready for {len(profile_cache) - (1 if '__api_token__' in profile_cache else 0)} profile(s)")
+    from dl import similarity as similarity_module
+    profile_chunks = {
+        str(profile_id).strip().lower(): similarity_module._split_chunks(profile.get("description", ""))
+        for profile_id, profile in profile_cache.items()
+        if profile_id != "__api_token__" and isinstance(profile, dict)
+    }
+    profile_labels = {
+        str(profile_id).strip().lower(): str(profile.get("name") or profile_id)
+        for profile_id, profile in profile_cache.items()
+        if profile_id != "__api_token__" and isinstance(profile, dict)
+    }
 
     composite_data = build_composite_datalinking_elements(
         base_report["links"],
         relation_threshold=relation_threshold,
         top_n=top_n_value,
+        base_threshold=th / 100.0,
+        profile_chunks=profile_chunks,
+        profile_labels=profile_labels,
+    )
+    for level in composite_data.get("levels", []):
+        items = level.get("items", []) or []
+        green = sum(1 for item in items if item.get("status") == "green")
+        red = sum(1 for item in items if item.get("status") == "red")
+        print(f"[COMPOSITE] Level {level.get('level')}: {len(items)} item(s), {green} green, {red} red")
+    print(
+        f"[COMPOSITE] Final terminal composites: {len(composite_data.get('composites', []))} "
+        f"in {time.perf_counter() - started_at:.2f}s"
     )
     selection = {
-        "mode": "all_above_threshold",
+        "mode": "all_pairs_with_green_parent_merges",
         "minimum_combined_similarity": th,
         "minimum_relation_similarity": relation_threshold,
         "links_considered": len(base_report["links"]),
+        "green_base_links": sum(
+            1 for link in base_report["links"]
+            if float((link.get("metrics") or {}).get("combined_similarity") or 0) / 100.0 >= th / 100.0
+        ),
         "comparisons_used": len(composite_data["comparisons"]),
         "recursive_comparisons_used": len(composite_data.get("recursive_comparisons", [])),
         "includes_description_chunks": True,
@@ -790,12 +946,14 @@ def composite_links():
 
     if output_format != "json":
         download_token = _cache_compact_composite_report(output_data)
+        _cache_full_composite_report(output_data, download_token)
         return render_template(
             "composite_links.html",
             report=output_data,
             levels=output_data["levels"],
             composites=output_data["composites"],
             download_url=url_for("download_cached_composite", token=download_token),
+            full_download_url=url_for("download_cached_composite", token=download_token, mode="full"),
             folder=folder_path or "",
         )
 

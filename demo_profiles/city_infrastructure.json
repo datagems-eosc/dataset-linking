@@ -1,0 +1,12 @@
+{
+  "@id": "demo-city-infrastructure",
+  "@type": "Dataset",
+  "name": "City Infrastructure Demand",
+  "headline": "Urban infrastructure capacity and service demand indicators",
+  "description": "Monthly indicators of urban infrastructure capacity, electricity demand, public service usage, transport pressure and city planning needs. The dataset supports integrated urban planning and analysis of infrastructure demand.",
+  "keywords": ["urban", "infrastructure", "demand", "city planning", "transport", "energy", "public services", "capacity"],
+  "distribution": [
+    {"@id": "demo-city-infrastructure-file", "name": "city_infrastructure_demand.csv", "encodingFormat": "text/csv", "contentUrl": "file://city_infrastructure_demand.csv"}
+  ],
+  "recordSet": [{"name": "infrastructure_monthly", "field": [{"name": "month"}, {"name": "city"}, {"name": "infrastructure_capacity"}, {"name": "energy_demand"}, {"name": "transport_pressure"}]}]
+}

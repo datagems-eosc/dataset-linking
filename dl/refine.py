@@ -244,9 +244,9 @@ def build_graph_json(report: Dict, dp1: Dict, dp2: Dict) -> Dict:
             "id": ds_id, "labels": ["sc:Dataset"],
             "properties": {
                 "type": "sc:Dataset", "name": profile.get("name"),
-                "dg:description": profile.get("description", ""),
-                "dg:headline": profile.get("headline", ""),
-                "dg:keywords": list(profile.get("keywords", []))
+                "description": profile.get("description", ""),
+                "headline": profile.get("headline", ""),
+                "keywords": list(profile.get("keywords", []))
             }
         })
         edges.append({"from": root_id, "to": ds_id, "labels": ["HAS_TARGET"]})
@@ -350,8 +350,8 @@ def build_graph_json(report: Dict, dp1: Dict, dp2: Dict) -> Dict:
                     "properties": {
                         "name": meta.get("name", fname),
                         "type": "cr:FileObject",
-                        "sc:encodingFormat": meta.get("encodingFormat", "application/pdf"),
-                        "sc:contentUrl": meta.get("contentUrl", "")
+                        "encodingFormat": meta.get("encodingFormat", "application/pdf"),
+                        "contentUrl": meta.get("contentUrl", "")
                     }
                 })
                 edges.append({"from": parent, "to": fid, "labels": ["distribution"]})
@@ -390,8 +390,8 @@ def build_graph_json(report: Dict, dp1: Dict, dp2: Dict) -> Dict:
                     "properties": {
                         "name": td["name"],
                         "type": "cr:FileObject",
-                        "sc:encodingFormat": td["format"],
-                        "sc:contentUrl": td.get("url", "")
+                        "encodingFormat": td["format"],
+                        "contentUrl": td.get("url", "")
                     }
                 })
                 edges.append({"from": parent, "to": td["id"], "labels": ["distribution"]})

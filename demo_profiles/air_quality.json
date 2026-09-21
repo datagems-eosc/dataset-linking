@@ -1,0 +1,12 @@
+{
+  "@id": "demo-air-quality",
+  "@type": "Dataset",
+  "name": "Urban Air Quality Monitoring",
+  "headline": "Air pollution measurements from European urban stations",
+  "description": "Hourly measurements of air quality, temperature, humidity and rainfall context at environmental monitoring stations. The records support climate impact analysis, pollution monitoring and comparison of atmospheric conditions.",
+  "keywords": ["air quality", "pollution", "PM10", "PM2.5", "nitrogen dioxide", "ozone", "climate", "temperature", "humidity", "rainfall"],
+  "distribution": [
+    {"@id": "demo-air-file", "name": "air_quality_measurements.csv", "encodingFormat": "text/csv", "contentUrl": "file://air_quality_measurements.csv"}
+  ],
+  "recordSet": [{"name": "air_quality_hourly", "field": [{"name": "timestamp"}, {"name": "city"}, {"name": "pm25"}, {"name": "pm10"}, {"name": "nitrogen_dioxide"}]}]
+}

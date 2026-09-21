@@ -72,6 +72,11 @@ def _file_fingerprint(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _is_profile_json(path: Path) -> bool:
+    """Return whether a top-level JSON file should be treated as a profile."""
+    return path.suffix.lower() == ".json" and not path.name.lower().startswith("cache_")
+
+
 def _text_fingerprint(text: Any) -> str:
     return hashlib.sha256(str(text or "").encode("utf-8")).hexdigest()
 
@@ -471,7 +476,7 @@ def compute_similarities(
             return f"❌ API Connection Error: {e}", [], False
     else:
         if not folder.exists(): return f"❌ Folder not found", [], False
-        json_files = list(folder.glob("*.json"))
+        json_files = [file for file in folder.glob("*.json") if _is_profile_json(file)]
         current_ids = [f.name for f in json_files]
         source_signature = _json_fingerprint([
             _file_fingerprint(file)

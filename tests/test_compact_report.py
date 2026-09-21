@@ -5,7 +5,8 @@ from pathlib import Path
 from unittest.mock import patch
 
 from dl import flask_app
-from dl.flask_app import _compact_composite_report
+from dl.flask_app import _compact_chunk_match, _compact_composite_report
+from dl.reports import build_croissant_report
 
 
 def _recursive_comparison(index):
@@ -45,6 +46,28 @@ def _recursive_comparison(index):
 
 
 class CompactCompositeReportTests(unittest.TestCase):
+    def test_report_builder_supports_api_mode_without_folder(self):
+        report = build_croissant_report(
+            None,
+            {"keywords": 0.6, "description": 0.3, "headline": 0.1},
+            [],
+        )
+
+        self.assertEqual(report["analyzedFolder"], "None")
+        self.assertEqual(report["links"], [])
+
+    def test_compact_chunk_match_supports_base_pair_fields(self):
+        compact = _compact_chunk_match({
+            "rank": 1,
+            "similarity": 62.48,
+            "chunk1": "left profile evidence",
+            "chunk2": "right profile evidence",
+        })
+
+        self.assertEqual(compact["left_text"], "left profile evidence")
+        self.assertEqual(compact["right_text"], "right profile evidence")
+        self.assertEqual(compact["similarity"], 62.48)
+
     def test_compact_report_keeps_results_without_repeated_heavy_evidence(self):
         supporting = [_recursive_comparison(index) for index in range(25)]
         composite = {
@@ -104,8 +127,10 @@ class CompactCompositeReportTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             with patch.object(flask_app, "COMPOSITE_DOWNLOAD_DIR", Path(directory)):
                 token = flask_app._cache_compact_composite_report(report)
+                flask_app._cache_full_composite_report(report, token)
                 cached_path = Path(directory) / f"{token}.json"
                 self.assertTrue(cached_path.is_file())
+                self.assertTrue((Path(directory) / f"{token}_full.json").is_file())
 
                 with patch.object(
                     flask_app,
@@ -117,6 +142,13 @@ class CompactCompositeReportTests(unittest.TestCase):
                 self.assertEqual(response.status_code, 200)
                 self.assertEqual(json.loads(response.data), compact)
                 response.close()
+
+                full_response = flask_app.app.test_client().get(
+                    f"/composite_download/{token}?mode=full"
+                )
+                self.assertEqual(full_response.status_code, 200)
+                self.assertEqual(json.loads(full_response.data), report)
+                full_response.close()
 
 
 if __name__ == "__main__":

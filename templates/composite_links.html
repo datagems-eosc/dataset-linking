@@ -12,6 +12,33 @@
             border-radius: 6px;
             background: #f6f8fa;
         }
+        .status-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 16px;
+        }
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border-radius: 999px;
+            padding: 5px 10px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .status-pill.green,
+        .status-badge.green {
+            color: #116329;
+            background: #dafbe1;
+            border: 1px solid #aceebb;
+        }
+        .status-pill.red,
+        .status-badge.red {
+            color: #a40e26;
+            background: #ffebe9;
+            border: 1px solid #ffb3ba;
+        }
         .composite-actions {
             margin: 16px;
             display: flex;
@@ -87,6 +114,12 @@
             box-shadow: 0 1px 4px rgba(27, 31, 36, 0.08);
             overflow: hidden;
         }
+        .composite-card.green {
+            border-top: 4px solid #1a7f37;
+        }
+        .composite-card.red {
+            border-top: 4px solid #cf222e;
+        }
         .composite-card-header {
             padding: 14px 16px;
             background: #f6f8fa;
@@ -107,6 +140,15 @@
             background: #ddf4ff;
             color: #0969da;
             font-weight: 700;
+        }
+        .status-badge {
+            display: inline-block;
+            margin-top: 7px;
+            border-radius: 999px;
+            padding: 3px 8px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
         }
         .composite-card-body {
             padding: 14px 16px;
@@ -184,6 +226,14 @@
             border-radius: 6px;
             padding: 8px 10px;
             background: #f6f8fa;
+        }
+        .level-item.green {
+            background: #f0fff4;
+            border-color: #aceebb;
+        }
+        .level-item.red {
+            background: #fff5f5;
+            border-color: #ffb3ba;
         }
         .level-item-row {
             display: grid;
@@ -273,32 +323,41 @@
         <p><strong>Comparisons used:</strong> {{ report.selection.comparisons_used }}</p>
         <p><strong>Composites produced:</strong> {{ composites|length }}</p>
         <p><strong>Construction:</strong> {{ report.selection.composite_construction }}</p>
-        <p><strong>Method:</strong> recursive levels compare the original description chunks for every cross-parent profile pair. Embeddings and the best match for each profile pair are cached; the three strongest distinct profile-pair matches provide the chunk score and the evidence shown here.</p>
-        <p class="muted">If no recursive chunk-based composite survives, the report falls back to connected clusters of links above threshold.</p>
+        <p><strong>Method:</strong> every base pair is retained. Only green items can build the next level; red items remain visible as terminal results.</p>
+        <p class="muted">Final composites are terminal groups only. A green group used to build a larger group is not repeated as a final composite.</p>
+    </div>
+
+    <div class="status-legend" aria-label="Composite status legend">
+        <span class="status-pill green">Green: above threshold and eligible to merge</span>
+        <span class="status-pill red">Red: below threshold and terminal</span>
     </div>
 
     <div class="composite-actions">
         <a href="{{ url_for('index') }}{% if folder %}?folder={{ folder }}{% endif %}" class="save-btn">Back To Results</a>
         <a href="{{ download_url }}" class="save-btn">Download compact JSON</a>
+        <a href="{{ full_download_url }}" class="save-btn">Download full JSON</a>
     </div>
 
     {% if composites %}
     <div class="results-grid">
         {% for composite in composites %}
-        <article class="composite-card">
+        <article class="composite-card {{ composite.status|default('green') }}">
             <div class="composite-card-header">
                 <div>
                     <h2 class="composite-title">Composite {{ loop.index }}</h2>
-                    <div class="muted">{{ composite.profiles|length }} profiles, {{ composite.link_count }} links, {{ composite.supportingComparisons|length if composite.supportingComparisons else composite.comparison_count }} supporting path(s)</div>
+                    <div class="muted">{{ composite.profiles|length }} profiles, {{ composite.link_count }} links</div>
                 </div>
-                <div class="score-badge">{{ "%.1f%%"|format(composite.composite_coherence * 100) }}</div>
+                <div>
+                    <div class="score-badge">{{ "%.1f%%"|format(composite.composite_coherence * 100) }}</div>
+                    <div class="status-badge {{ composite.status|default('green') }}">{{ composite.status|default('green') }}</div>
+                </div>
             </div>
             <div class="composite-card-body">
                 <div class="metric-row">
                     <div class="metric-box"><span class="metric-label">Composite coherence</span><span class="metric-value">{{ "%.1f%%"|format(composite.composite_coherence * 100) }}</span></div>
                     <div class="metric-box"><span class="metric-label">Chunk coherence</span><span class="metric-value">{{ "%.1f%%"|format(composite.evidence.chunk_similarity_avg * 100) }}</span></div>
                     <div class="metric-box"><span class="metric-label">Internal links</span><span class="metric-value">{{ composite.link_count }}</span></div>
-                    <div class="metric-box"><span class="metric-label">Supporting paths</span><span class="metric-value">{{ composite.supportingComparisons|length if composite.supportingComparisons else composite.comparison_count }}</span></div>
+                    <div class="metric-box"><span class="metric-label">Final status</span><span class="metric-value">{{ composite.status|default('green')|capitalize }}</span></div>
                 </div>
 
                 <div>
@@ -323,23 +382,38 @@
                     {% endif %}
                 </div>
 
-                {% if composite.mergeEvidence and composite.mergeEvidence.description_chunk_matches %}
+                {% if composite.mergeEvidence and composite.mergeEvidence.multi_profile_chunk_matches %}
+                <details>
+                    <summary>Show shared evidence across all profiles</summary>
+                    <ol class="compact-list level-evidence">
+                        {% for match in composite.mergeEvidence.multi_profile_chunk_matches[:3] %}
+                        <li>
+                            <strong>{{ "%.1f%%"|format(match.similarity * 100) }}</strong>
+                            <ul class="compact-list">
+                                {% for profile_chunk in match.profiles %}
+                                <li><strong>{{ profile_chunk.profile }}:</strong> {{ profile_chunk.text }}</li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        {% endfor %}
+                    </ol>
+                </details>
+                {% elif composite.mergeEvidence and composite.mergeEvidence.description_chunk_matches %}
                 <details>
                     <summary>Show top chunk evidence</summary>
                     <ul class="compact-list level-evidence">
                         {% for match in composite.mergeEvidence.description_chunk_matches[:5] %}
-                        <li>{{ "%.1f%%"|format(match.similarity * 100) }}: {{ match.chunk_evidence_1 }} &lt;-&gt; {{ match.chunk_evidence_2 }}</li>
-                        {% endfor %}
-                    </ul>
-                </details>
-                {% endif %}
-
-                {% if composite.supportingComparisons %}
-                <details>
-                    <summary>Show supporting paths</summary>
-                    <ul class="compact-list level-evidence">
-                        {% for comparison in composite.supportingComparisons %}
-                        <li>{{ "%.1f%%"|format(comparison.chunk_similarity * 100) }}: {{ comparison.leftOriginRefs|join(' + ') }} vs {{ comparison.rightOriginRefs|join(' + ') }}</li>
+                         <li>
+                             {% set chunk_score = match.similarity|default(0)|float %}
+                             {% if chunk_score > 1 %}
+                             {{ "%.1f%%"|format(chunk_score) }}
+                             {% else %}
+                             {{ "%.1f%%"|format(chunk_score * 100) }}
+                             {% endif %}:
+                             {{ match.chunk_evidence_1 or match.chunk1 or "(left chunk unavailable)" }}
+                             &lt;-&gt;
+                             {{ match.chunk_evidence_2 or match.chunk2 or "(right chunk unavailable)" }}
+                         </li>
                         {% endfor %}
                     </ul>
                 </details>
@@ -350,7 +424,7 @@
                     <div class="copy-block">Composite {{ loop.index }}
 Profiles: {{ composite.profiles|map(attribute='name')|join(', ') }}
 Links: {{ composite.link_count }}
-Supporting paths: {{ composite.supportingComparisons|length if composite.supportingComparisons else composite.comparison_count }}
+Status: {{ composite.status|default('green') }}
 Composite coherence: {{ "%.1f%%"|format(composite.composite_coherence * 100) }}
 Chunk coherence: {{ "%.1f%%"|format(composite.evidence.chunk_similarity_avg * 100) }}
 Keywords: {{ composite.evidence.shared_keywords|join(', ') }}
@@ -378,12 +452,12 @@ CSV/Table Columns: {{ composite.evidence.csv_table_column_names|join(', ') }}</d
                 <p class="muted">{{ level.description }}</p>
                 <div class="level-items">
                     {% for item in level["items"] %}
-                    <article class="level-item">
+                    <article class="level-item {{ item.status|default('green') }}">
                         <div class="level-item-row">
                             <div class="level-item-title">{{ item.item_type }}</div>
                             <div>{{ item.label }}</div>
                             <div><strong>{{ "%.1f%%"|format(item.similarity * 100) }}</strong></div>
-                            <div class="compact-meta">links: {{ item.linkRefs|length if item.linkRefs else 1 }}</div>
+                            <div class="compact-meta"><span class="status-badge {{ item.status|default('green') }}">{{ item.status|default('green') }}</span></div>
                         </div>
                         <details>
                             <summary>Details / chunk similarity</summary>

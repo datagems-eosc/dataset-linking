@@ -1,0 +1,12 @@
+{
+  "@id": "demo-river-water-quality",
+  "@type": "Dataset",
+  "name": "River Water Quality Monitoring",
+  "headline": "Water quality and rainfall context from river monitoring stations",
+  "description": "Daily river water quality measurements combined with rainfall, temperature and humidity observations from environmental monitoring stations. The data supports climate impact analysis, watershed monitoring and assessment of regional environmental conditions.",
+  "keywords": ["water quality", "river", "rainfall", "temperature", "humidity", "climate", "environmental monitoring", "watershed"],
+  "distribution": [
+    {"@id": "demo-river-quality-file", "name": "river_water_quality.csv", "encodingFormat": "text/csv", "contentUrl": "file://river_water_quality.csv"}
+  ],
+  "recordSet": [{"name": "river_quality_daily", "field": [{"name": "date"}, {"name": "station_id"}, {"name": "water_temperature"}, {"name": "rainfall"}, {"name": "water_quality_index"}]}]
+}

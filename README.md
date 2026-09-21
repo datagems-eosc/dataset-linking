@@ -43,6 +43,20 @@ The Flask UI supports:
 - Refining a selected pair and generating PGJSON graph output on the Desktop as `grafo_visualizer.json`.
 - Comparing generated `DataLinkingBase` links through `Compare Links` and `Compare Selected`.
 
+## Demo Profiles
+
+The repository includes ten small, synthetic profiles in `demo_profiles/`, arranged in two thematic groups. From the Flask home page, click `Load demo profiles`, or enter `demo_profiles` in the folder field. The demo button uses a 45% threshold to make the two intended final composites easier to see without calling the DataGEMS API; the general application default remains unchanged.
+
+To demonstrate the multi-profile chunk evidence directly, run:
+
+```bash
+uv run python demo_multi_profile_chunks.py
+```
+
+The script prints up to three evidence groups for each thematic group, with one compatible description chunk per profile.
+
+When building composites, the terminal shows progress such as the number of base pairs, cached profiles, green/red items per level, and final terminal composites. Results computed on the home page are reused by the composite request when the source and parameters are unchanged.
+
 ## Run The FastAPI App
 
 From the project root:
@@ -130,6 +144,8 @@ Description chunk extraction is optional because it can be expensive on large ru
 - FastAPI endpoints expose `include_chunks` where applicable.
 
 ## FastAPI Endpoints
+
+For the complete integration contract, asynchronous job examples, polling workflow, result shapes, error codes, and PGJSON extraction instructions, see [`docs/API_INTEGRATION.md`](docs/API_INTEGRATION.md).
 
 Main endpoints:
 

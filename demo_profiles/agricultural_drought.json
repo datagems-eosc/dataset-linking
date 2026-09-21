@@ -1,0 +1,12 @@
+{
+  "@id": "demo-agricultural-drought",
+  "@type": "Dataset",
+  "name": "Agricultural Drought Indicators",
+  "headline": "Drought and crop stress indicators for European agricultural regions",
+  "description": "Weekly drought indicators for agricultural regions, combining soil moisture, rainfall deficit, temperature anomalies and crop stress observations. The data supports drought monitoring, agricultural planning and climate impact assessment.",
+  "keywords": ["drought", "agriculture", "soil moisture", "rainfall", "temperature", "crop stress", "climate"],
+  "distribution": [
+    {"@id": "demo-drought-file", "name": "agricultural_drought_indicators.csv", "encodingFormat": "text/csv", "contentUrl": "file://agricultural_drought_indicators.csv"}
+  ],
+  "recordSet": [{"name": "drought_weekly", "field": [{"name": "week"}, {"name": "region"}, {"name": "soil_moisture"}, {"name": "rainfall_deficit"}, {"name": "crop_stress"}]}]
+}

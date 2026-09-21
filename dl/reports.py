@@ -10,21 +10,22 @@ def build_croissant_report(folder_path, weights, similarities, file_data=None):
     """
     if file_data is None:
         file_data = {}
-        for fn in os.listdir(folder_path):
-            if not fn.lower().endswith(".json"):
-                continue
-            path = os.path.join(folder_path, fn)
-            try:
-                with open(path, "r", encoding="utf-8") as f:
-                    dp = json.load(f)
-                file_data[fn] = {
-                    "description": dp.get("description", "") or "",
-                    "headline": dp.get("headline", "") or "",
-                    "keywords": dp.get("keywords", []) or [],
-                }
-            except (OSError, json.JSONDecodeError) as e:
-                file_data[fn] = {"description": "", "headline": "", "keywords": []}
-                print(f"⚠️ Failed to load {path}: {e}")
+        if folder_path:
+            for fn in os.listdir(folder_path):
+                if not fn.lower().endswith(".json") or fn.lower().startswith("cache_"):
+                    continue
+                path = os.path.join(folder_path, fn)
+                try:
+                    with open(path, "r", encoding="utf-8") as f:
+                        dp = json.load(f)
+                    file_data[fn] = {
+                        "description": dp.get("description", "") or "",
+                        "headline": dp.get("headline", "") or "",
+                        "keywords": dp.get("keywords", []) or [],
+                    }
+                except (OSError, json.JSONDecodeError) as e:
+                    file_data[fn] = {"description": "", "headline": "", "keywords": []}
+                    print(f"⚠️ Failed to load {path}: {e}")
     report = {
         "@context": "http://mlcommons.org/croissant/",
         "@type": "DatasetSimilarityReport",

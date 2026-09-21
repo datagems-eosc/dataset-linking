@@ -1,0 +1,12 @@
+{
+  "@id": "demo-public-mobility-demand",
+  "@type": "Dataset",
+  "name": "Public Mobility Demand",
+  "headline": "Urban public mobility demand and service usage",
+  "description": "Daily measurements of urban mobility demand, passenger flows, public transport usage, travel time and service capacity. The records support mobility planning, traffic analysis and evaluation of city infrastructure.",
+  "keywords": ["mobility", "public transport", "passenger demand", "traffic", "urban", "infrastructure", "planning", "service capacity"],
+  "distribution": [
+    {"@id": "demo-mobility-demand-file", "name": "public_mobility_demand.csv", "encodingFormat": "text/csv", "contentUrl": "file://public_mobility_demand.csv"}
+  ],
+  "recordSet": [{"name": "mobility_demand_daily", "field": [{"name": "date"}, {"name": "city"}, {"name": "passenger_demand"}, {"name": "service_capacity"}, {"name": "average_travel_time"}]}]
+}

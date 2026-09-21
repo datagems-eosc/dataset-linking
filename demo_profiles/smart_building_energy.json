@@ -1,0 +1,12 @@
+{
+  "@id": "demo-smart-building-energy",
+  "@type": "Dataset",
+  "name": "Smart Building Energy Demand",
+  "headline": "Building energy demand and infrastructure performance indicators",
+  "description": "Hourly measurements of building energy demand, electricity consumption, infrastructure capacity and service performance in urban areas. The data supports smart city planning, energy management and analysis of urban infrastructure demand.",
+  "keywords": ["energy", "electricity", "building", "urban", "infrastructure", "demand", "smart city", "planning"],
+  "distribution": [
+    {"@id": "demo-building-energy-file", "name": "smart_building_energy.csv", "encodingFormat": "text/csv", "contentUrl": "file://smart_building_energy.csv"}
+  ],
+  "recordSet": [{"name": "building_energy_hourly", "field": [{"name": "timestamp"}, {"name": "building_id"}, {"name": "energy_demand"}, {"name": "electricity_consumption"}, {"name": "infrastructure_load"}]}]
+}

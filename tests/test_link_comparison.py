@@ -155,14 +155,110 @@ class OriginalChunkComparisonTests(unittest.TestCase):
             result = link_comparison.build_composite_datalinking_elements([
                 link("AB", "A", "B"),
                 link("BC", "B", "C"),
+                link("AC", "A", "C"),
             ])
 
-        self.assertEqual(result["construction"], "recursive_original_chunk_keyword_with_latent_bridges")
+        self.assertEqual(result["construction"], "recursive_green_parent_hierarchy")
         self.assertEqual(len(result["composites"]), 1)
         merge_evidence = result["composites"][0]["mergeEvidence"]
-        self.assertEqual(merge_evidence["chunk_evidence_strategy"], "all_original_profile_chunks_cached")
+        self.assertEqual(merge_evidence["chunk_evidence_strategy"], "cached_base_pair_metrics")
         self.assertEqual(merge_evidence["evaluated_profile_pair_count"], 3)
-        self.assertEqual(merge_evidence["chunk_similarity"], 0.9)
+        self.assertEqual(merge_evidence["chunk_similarity"], 0.0)
+
+    def test_only_green_parents_can_create_a_next_level(self):
+        def link(link_id, left, right, score):
+            return {
+                "@id": link_id,
+                "dataprofile1ref": left,
+                "dataprofile2ref": right,
+                "dp1Name": left,
+                "dp2Name": right,
+                "metrics": {"combined_similarity": score * 100},
+                "common_keywords": "math",
+                "description_top_chunks": [],
+                "_description_chunks_by_profile": {
+                    left: {"id": left, "name": left, "chunks": [f"{left}-chunk"]},
+                    right: {"id": right, "name": right, "chunks": [f"{right}-chunk"]},
+                },
+            }
+
+        with patch.object(link_comparison, "_profile_pair_original_chunk_match", return_value=None):
+            result = link_comparison.build_composite_datalinking_elements([
+                link("AB", "A", "B", 0.2),
+                link("AC", "A", "C", 0.8),
+            ])
+
+        self.assertEqual(result["levels"][0]["items"][0]["status"], "red")
+        self.assertEqual(result["levels"][0]["items"][1]["status"], "green")
+        self.assertEqual(len(result["levels"]), 1)
+        self.assertEqual(result["composites"], [])
+
+    def test_red_child_is_terminal_final_composite(self):
+        def link(link_id, left, right):
+            return {
+                "@id": link_id,
+                "dataprofile1ref": left,
+                "dataprofile2ref": right,
+                "dp1Name": left,
+                "dp2Name": right,
+                "metrics": {"combined_similarity": 80},
+                "common_keywords": "math",
+                "description_top_chunks": [],
+                "_description_chunks_by_profile": {
+                    left: {"id": left, "name": left, "chunks": [f"{left}-chunk"]},
+                    right: {"id": right, "name": right, "chunks": [f"{right}-chunk"]},
+                },
+            }
+
+        with patch.object(
+            link_comparison,
+            "_profile_pair_original_chunk_match",
+            return_value=None,
+        ):
+            result = link_comparison.build_composite_datalinking_elements([
+                link("AB", "A", "B"),
+                link("AC", "A", "C"),
+                link("BC", "B", "C"),
+            ])
+
+        self.assertEqual(len(result["levels"]), 2)
+        child = result["levels"][1]["items"][0]
+        self.assertEqual(child["status"], "red")
+        self.assertEqual(len(result["composites"]), 1)
+        self.assertEqual(result["composites"][0]["profiles"], child["profiles"])
+
+    def test_only_terminal_quartet_is_returned_as_final_composite(self):
+        def link(left, right):
+            return {
+                "@id": f"{left}{right}",
+                "dataprofile1ref": left,
+                "dataprofile2ref": right,
+                "dp1Name": left,
+                "dp2Name": right,
+                "metrics": {
+                    "combined_similarity": 80,
+                    "description_similarity": 80,
+                    "keywords_similarity": 80,
+                },
+                "common_keywords": "math",
+                "description_top_chunks": [],
+            }
+
+        result = link_comparison.build_composite_datalinking_elements([
+            link("A", "B"),
+            link("A", "C"),
+            link("A", "D"),
+            link("B", "C"),
+            link("B", "D"),
+            link("C", "D"),
+        ])
+
+        self.assertEqual(len(result["levels"]), 3)
+        self.assertEqual(len(result["composites"]), 1)
+        self.assertEqual(
+            {profile["id"] for profile in result["composites"][0]["profiles"]},
+            {"A", "B", "C", "D"},
+        )
 
 
 if __name__ == "__main__":

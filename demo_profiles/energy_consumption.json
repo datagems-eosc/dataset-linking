@@ -1,0 +1,12 @@
+{
+  "@id": "demo-energy-consumption",
+  "@type": "Dataset",
+  "name": "Regional Energy Consumption",
+  "headline": "Electricity and energy consumption across European regions",
+  "description": "Monthly energy demand by sector and urban region, with electricity consumption, renewable production, peak load and infrastructure indicators. The data supports urban planning, service demand analysis and sustainable city management.",
+  "keywords": ["energy", "electricity", "consumption", "renewable", "peak load", "urban", "infrastructure", "demand", "planning"],
+  "distribution": [
+    {"@id": "demo-energy-file", "name": "regional_energy_consumption.csv", "encodingFormat": "text/csv", "contentUrl": "file://regional_energy_consumption.csv"}
+  ],
+  "recordSet": [{"name": "energy_monthly", "field": [{"name": "region"}, {"name": "month"}, {"name": "sector"}, {"name": "electricity_demand"}, {"name": "renewable_share"}]}]
+}

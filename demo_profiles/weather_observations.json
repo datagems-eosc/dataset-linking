@@ -1,0 +1,12 @@
+{
+  "@id": "demo-weather-observations",
+  "@type": "Dataset",
+  "name": "European Weather Observations",
+  "headline": "Daily weather observations from European monitoring stations",
+  "description": "Daily observations of temperature, rainfall, wind speed and humidity from weather stations across Europe. The records support climate monitoring, seasonal analysis and regional weather comparison.",
+  "keywords": ["weather", "temperature", "rainfall", "humidity", "wind", "climate"],
+  "distribution": [
+    {"@id": "demo-weather-file", "name": "weather_observations.csv", "encodingFormat": "text/csv", "contentUrl": "file://weather_observations.csv"}
+  ],
+  "recordSet": [{"name": "weather_daily", "field": [{"name": "date"}, {"name": "station_id"}, {"name": "temperature"}, {"name": "rainfall"}, {"name": "humidity"}]}]
+}

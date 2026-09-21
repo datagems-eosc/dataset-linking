@@ -1,0 +1,12 @@
+{
+  "@id": "demo-urban-transport",
+  "@type": "Dataset",
+  "name": "Urban Transport Statistics",
+  "headline": "Daily mobility and public transport statistics for European cities",
+  "description": "Daily statistics about urban mobility demand, public transport usage, traffic volume, travel time and city infrastructure. The records support transport planning, congestion analysis and comparison of urban service demand.",
+  "keywords": ["transport", "mobility", "traffic", "public transport", "travel time", "urban", "infrastructure", "demand", "planning"],
+  "distribution": [
+    {"@id": "demo-transport-file", "name": "urban_transport_statistics.csv", "encodingFormat": "text/csv", "contentUrl": "file://urban_transport_statistics.csv"}
+  ],
+  "recordSet": [{"name": "mobility_daily", "field": [{"name": "date"}, {"name": "city"}, {"name": "passenger_count"}, {"name": "traffic_volume"}, {"name": "average_travel_time"}]}]
+}

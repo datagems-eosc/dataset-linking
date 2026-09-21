@@ -1,0 +1,12 @@
+{
+  "@id": "demo-climate-indicators",
+  "@type": "Dataset",
+  "name": "European Climate Indicators",
+  "headline": "Regional climate indicators and long term temperature trends",
+  "description": "Monthly and annual climate indicators for European regions, including average temperature, rainfall, humidity and extreme weather events. The indicators support climate trend analysis and comparison between regions.",
+  "keywords": ["climate", "temperature", "rainfall", "humidity", "trends", "extreme weather"],
+  "distribution": [
+    {"@id": "demo-climate-file", "name": "climate_indicators.csv", "encodingFormat": "text/csv", "contentUrl": "file://climate_indicators.csv"}
+  ],
+  "recordSet": [{"name": "climate_monthly", "field": [{"name": "region"}, {"name": "month"}, {"name": "average_temperature"}, {"name": "rainfall"}, {"name": "extreme_events"}]}]
+}
