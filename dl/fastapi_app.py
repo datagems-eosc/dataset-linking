@@ -734,15 +734,18 @@ def api_job_start_report(
 # ---------------------------------------------------------------------- #
 @app.post("/api/jobs/refine")
 def api_job_start_refine(
-    background_tasks: BackgroundTasks,
-    folder: str = Query(...),
-    d1: str = Query(...),
-    d2: str = Query(...),
-    kw: float = Query(0.6, ge=0),
-    desc: float = Query(0.3, ge=0),
-    head: float = Query(0.1, ge=0),
-    th: float = Query(30.0, ge=0, le=100),
+        background_tasks: BackgroundTasks,
+        folder: Optional[str] = Query(None),
+        d1: str = Query(...),
+        d2: str = Query(...),
+        kw: float = Query(0.6, ge=0),
+        desc: float = Query(0.3, ge=0),
+        head: float = Query(0.1, ge=0),
+        th: float = Query(30.0, ge=0, le=100),
 ):
+    if folder and (folder.strip() == "" or folder.strip().lower() == "none"):
+        folder = None
+
     kw, desc, head, normalized = normalize_weights(kw, desc, head)
 
     job_id = str(uuid.uuid4())
