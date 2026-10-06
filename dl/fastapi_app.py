@@ -1,6 +1,7 @@
 # dl/fastapi_app.py
 import io
 import json
+import logging
 import uuid
 import traceback
 from datetime import datetime
@@ -14,8 +15,14 @@ from pydantic import BaseModel, Field
 
 from dl.refine import refine_similarity, build_refinement_profile
 from dl.reports import build_croissant_report
+from dl import similarity as similarity_module
 from dl.similarity import compute_similarities, build_description_top_chunks_for_pair
+from dl.similarity import get_access_token, fetch_dataset_list, fetch_details_from_list
+from dl.dmm_client import register_graph_in_dmm
 from dl.utils import normalize_weights
+from dl.link_comparison import compare_datalinkingbase_links, build_composite_datalinking_elements
+
+logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title="Profile Similarity API", 
@@ -48,6 +55,7 @@ def _json_download(payload: dict, filename: str) -> StreamingResponse:
     return StreamingResponse(buf, media_type="application/json", headers=headers)
 
 JOBS: Dict[str, Dict[str, Any]] = {}
+COMPOSITE_CHUNK_CACHES: Dict[str, Dict[str, Dict[Any, Any]]] = {}
 
 
 def _normalize_folder_path(folder: str) -> str:
@@ -74,6 +82,45 @@ def _profile_filename_lookup(folder: str) -> Dict[str, str]:
     return lookup
 
 
+def _load_profiles_for_composites(folder: Optional[str]) -> tuple[Dict[str, Any], Dict[str, str]]:
+    """Load descriptions and labels using the same source mode as similarity."""
+    profiles: Dict[str, Any] = {}
+    if folder:
+        for file_path in Path(folder).glob("*.json"):
+            if file_path.name.lower().startswith("cache_"):
+                continue
+            try:
+                data = json.loads(file_path.read_text(encoding="utf-8"))
+                data = similarity_module._dataset_payload(data)
+                profile_id = str(data.get("@id") or file_path.name)
+                profiles[profile_id.strip().lower()] = data
+            except (OSError, ValueError, TypeError):
+                continue
+    else:
+        token = get_access_token()
+        datasets = fetch_dataset_list(token)
+        api_profiles = fetch_details_from_list(token, datasets, Path("/s3/cache"))
+        for profile_id, data in api_profiles.items():
+            profiles[str(profile_id).strip().lower()] = data
+
+    chunks = {
+        profile_id: similarity_module._split_chunks(profile.get("description", ""))
+        for profile_id, profile in profiles.items()
+        if isinstance(profile, dict)
+    }
+    labels = {
+        profile_id: str(profile.get("name") or profile_id)
+        for profile_id, profile in profiles.items()
+        if isinstance(profile, dict)
+    }
+    return chunks, labels
+
+
+def _composite_cache_for(folder: Optional[str]) -> Dict[str, Dict[Any, Any]]:
+    key = folder or "API_Datagems"
+    return COMPOSITE_CHUNK_CACHES.setdefault(key, {"profile": {}, "original": {}})
+
+
 def _attach_graphs_to_similarities(
         folder: Optional[str],
         similarities: List[Dict[str, Any]],
@@ -87,6 +134,7 @@ def _attach_graphs_to_similarities(
     generated = 0
     failed = 0
     skipped = 0
+    dmm_token = None
 
     for item in similarities:
         if only_above_threshold and not item.get("passes_threshold"):
@@ -114,6 +162,10 @@ def _attach_graphs_to_similarities(
                 failed += 1
                 continue
             item["graph"] = report.get("graph")
+            if item.get("graph"):
+                if dmm_token is None:
+                    dmm_token = get_access_token()
+                register_graph_in_dmm(item["graph"], token=dmm_token)
             generated += 1
         except Exception as exc:
             item["graph_error"] = str(exc)
@@ -162,6 +214,11 @@ def _run_report_job(
             JOBS[job_id]["progress"] = 100
             JOBS[job_id]["message"] = error
             return
+
+        logger.info(
+            "Dataset Linking analysis completed successfully",
+            extra={"job_id": job_id, "similarity_count": len(similarities)},
+        )
 
         graph_summary = None
         if include_graphs:
@@ -414,6 +471,165 @@ def api_build_report(
     report["from_cache"] = from_cache
     report["graphs"] = graph_summary
     return report
+
+
+# ----------------------------------------------------------------------
+# 4) Compare DataLinkingBase links (Flask: /compare_links)
+# ----------------------------------------------------------------------
+class CompareLinksRequest(BaseModel):
+    folder: Optional[str] = None
+    kw: float = Field(0.6, ge=0)
+    desc: float = Field(0.3, ge=0)
+    head: float = Field(0.1, ge=0)
+    th: float = Field(30.0, ge=0, le=100)
+    relation_th: float = Field(0.0, ge=0, le=1)
+    top_n: Optional[int] = Field(None, ge=1)
+    selected_pairs: List[List[str]] = Field(default_factory=list)
+    keyword_method: str = "jaccard"
+
+
+@app.post("/api/compare-links")
+def api_compare_links(req: CompareLinksRequest):
+    folder = _normalize_folder_path(req.folder) if req.folder else None
+    kw, desc, head, normalized = normalize_weights(req.kw, req.desc, req.head)
+    keyword_method = _keyword_method(req.keyword_method)
+    error, similarities, from_cache = compute_similarities(
+        folder,
+        kw,
+        desc,
+        head,
+        threshold=req.th,
+        use_api=folder is None,
+        keyword_method=keyword_method,
+    )
+    if error:
+        raise HTTPException(status_code=400, detail=error)
+
+    selected_keys = {
+        frozenset(str(value) for value in pair)
+        for pair in req.selected_pairs
+        if len(pair) == 2
+    }
+    links = [item for item in similarities if item.get("passes_threshold")]
+    if selected_keys:
+        links = [
+            item for item in links
+            if frozenset((str(item.get("id1")), str(item.get("id2")))) in selected_keys
+        ]
+
+    weights = {
+        "keywords": kw,
+        "description": desc,
+        "headline": head,
+        "normalized": normalized,
+        "threshold": req.th,
+        "keyword_similarity_method": keyword_method,
+    }
+    base_report = build_croissant_report(folder or "API_Datagems", weights, links, {})
+    comparisons = compare_datalinkingbase_links(
+        base_report["links"],
+        relation_threshold=req.relation_th,
+        top_n=req.top_n,
+    )
+    return {
+        "@context": "http://mlcommons.org/croissant/",
+        "@type": "DataLinkingBaseComparisonReport",
+        "source": folder or "API_Datagems",
+        "from_cache": from_cache,
+        "selection": {
+            "mode": "selected_links" if selected_keys else "all_above_threshold",
+            "minimum_combined_similarity": req.th,
+            "minimum_relation_similarity": req.relation_th,
+            "links_considered": len(base_report["links"]),
+            "selected_pairs": len(selected_keys),
+        },
+        "weights": weights,
+        "comparisons": comparisons,
+    }
+
+
+# ----------------------------------------------------------------------
+# 5) Build composite DataLinking elements (Flask: /composite_links)
+# ----------------------------------------------------------------------
+@app.get("/api/composites")
+@app.get("/api/build-composites", include_in_schema=False)
+def api_build_composites(
+    folder: Optional[str] = Query(None, description="Profile folder; omit for DataGEMS API mode"),
+    kw: float = Query(0.6, ge=0),
+    desc: float = Query(0.3, ge=0),
+    head: float = Query(0.1, ge=0),
+    th: float = Query(30.0, ge=0, le=100),
+    relation_th: float = Query(0.5, ge=0, le=1),
+    top_n: Optional[int] = Query(None, ge=1),
+    keyword_method: str = Query("jaccard"),
+):
+    folder = _normalize_folder_path(folder) if folder else None
+    kw, desc, head, normalized = normalize_weights(kw, desc, head)
+    keyword_method = _keyword_method(keyword_method)
+    error, similarities, from_cache = compute_similarities(
+        folder,
+        kw,
+        desc,
+        head,
+        threshold=th,
+        use_api=folder is None,
+        include_description_chunks=True,
+        keyword_method=keyword_method,
+    )
+    if error:
+        raise HTTPException(status_code=400, detail=error)
+
+    weights = {
+        "keywords": kw,
+        "description": desc,
+        "headline": head,
+        "normalized": normalized,
+        "threshold": th,
+        "keyword_similarity_method": keyword_method,
+    }
+    source = folder or "API_Datagems"
+    base_report = build_croissant_report(source, weights, similarities, {})
+    profile_chunks, profile_labels = _load_profiles_for_composites(folder)
+    caches = _composite_cache_for(folder)
+    composite_data = build_composite_datalinking_elements(
+        base_report["links"],
+        relation_threshold=relation_th,
+        top_n=top_n,
+        base_threshold=th / 100.0,
+        profile_chunks=profile_chunks,
+        profile_labels=profile_labels,
+        profile_chunk_cache=caches["profile"],
+        original_chunk_cache=caches["original"],
+    )
+    return {
+        "@context": "http://mlcommons.org/croissant/",
+        "@type": "CompositeDataLinkingElementReport",
+        "source": source,
+        "from_cache": from_cache,
+        "selection": {
+            "mode": "all_pairs_with_green_parent_merges",
+            "minimum_combined_similarity": th,
+            "minimum_relation_similarity": relation_th,
+            "links_considered": len(base_report["links"]),
+            "green_base_links": sum(
+                1 for link in base_report["links"]
+                if float((link.get("metrics") or {}).get("combined_similarity") or 0) / 100.0 >= th / 100.0
+            ),
+            "comparisons_used": len(composite_data["comparisons"]),
+            "recursive_comparisons_used": len(composite_data.get("recursive_comparisons", [])),
+            "final_composite_count": len(composite_data.get("final_composites", [])),
+            "includes_description_chunks": True,
+        },
+        "weights": weights,
+        "levels": composite_data["levels"],
+        "recursive_levels": composite_data.get("recursive_levels", []),
+        "connected_component_levels": composite_data.get("connected_component_levels", []),
+        "composites": composite_data["composites"],
+        "final_composites": composite_data.get("final_composites", composite_data["composites"]),
+        "connected_component_composites": composite_data.get("connected_component_composites", []),
+        "comparisons": composite_data["comparisons"],
+        "recursive_comparisons": composite_data.get("recursive_comparisons", []),
+    }
 
 
 # ---------------------------------------------------------------------- #

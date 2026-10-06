@@ -1,0 +1,79 @@
+DATASET LINKING INCREMENTAL CACHE BENCHMARK
+================================================
+
+Source: profiles downloaded from DataGEMS through the API
+Source folder: C:\Users\tanfo\Desktop\dataset-linking\data\datagems\clean
+Weights: keywords=0.6, description=0.3, headline=0.1
+Keyword method: jaccard
+Description chunks: enabled
+
+PROFILES USED IN ALL RUNS
+--------------------------
+01. 19th century knowledge project | id=d84d1a2e-127d-4393-91d0-afb7e4fd9c68 | file=19th century knowledge project.json
+02. Airbnb Prices in European Cities | id=b4a9ecc7-03d3-4f3e-b6a9-56a9566f0263 | file=Airbnb Prices in European Cities.json
+03. Average Monthly surface temperature  | id=734c344d-7d89-4fd6-a12e-5ca22d6b6959 | file=Average Monthly surface temperature.json
+04. Barcelona Rent Prices | id=98521b66-80a9-4a48-a9ef-d63831eb3e18 | file=Barcelona Rent Prices.json
+05. Barcelona Traffic Accidents | id=21310389-f082-4c45-8077-39404c766f6f | file=Barcelona Traffic Accidents.json
+06. Beijing Multi-Site Air Quality | id=5b0b80ec-927a-452e-aa8f-de3fc3508f6f | file=Beijing Multi-Site Air Quality.json
+07. Beijing PM2.5 | id=657a968c-12c3-4a2b-8957-1a0750e9ccfc | file=Beijing PM2.5.json
+08. Best Books Ever Dataset | id=670df25d-6efa-483e-919c-85c91fb8426b | file=Best Books Ever Dataset.json
+09. Bias correction of numerical prediction model temperature forecast | id=38d48fb2-5a59-4fc2-9fac-8d39a4cdf00d | file=Bias correction of numerical prediction model temperature forecast.json
+10. BioTIME | id=67931803-bc33-4b1c-a787-1c91954e0300 | file=BioTIME.json
+11. Chemical Composition of Ceramic Samples | id=75587055-e100-4c10-b77c-ee67daee3738 | file=Chemical Composition of Ceramic Samples.json
+12. Climate Policy Decisions | id=c4670d24-7161-4e38-b640-49db9248db87 | file=Climate Policy Decisions.json
+13. Complex numbers | id=bd8f34e3-ff09-4178-bed1-eb611dae446c | file=Complex numbers.json
+14. Concrete Compressive Strength | id=b590ff14-b5f3-4aa2-950f-6e2e47544633 | file=Concrete Compressive Strength.json
+15. dataset-test-A | id=6f8ae7d0-1a06-4f3e-b65e-298b1e51e24f | file=dataset-test-A.json
+16. Diabetes 130-US Hospitals Dataset | id=99d9f9ad-762a-4202-bddb-602777c12449 | file=Diabetes 130-US Hospitals Dataset.json
+17. Diabetes Health Indicators Dataset | id=d331fe5f-b0ea-4d2a-99e6-edb758001b70 | file=Diabetes Health Indicators Dataset.json
+18. Encyclopédie, ou Dictionnaire raisonné des sciences, des arts et des métiers | id=d5c34990-9acf-4349-91d4-924f58565922 | file=Encyclopédie, ou Dictionnaire raisonné des sciences, des arts et des métiers.json
+19. EncycNet | id=07382b91-5bc5-42f9-8391-33adc2460c19 | file=EncycNet.json
+20. Era5land | id=d176cd7d-d082-464d-8054-9abe279f083c | file=Era5land.json
+21. Estimation of Obesity | id=7fd7b299-6320-4055-98be-1e31efb0963a | file=Estimation of Obesity.json
+22. Forest Fires | id=59c43aa5-0f9b-479f-96e6-6bdbe564042c | file=Forest Fires.json
+23. Global CO2 emissions from cement production | id=0a4af172-8e2c-4857-9ea9-06a4d817f3b6 | file=Global CO2 emissions from cement production.json
+24. Global Education | id=43d329c6-be5c-4c02-a080-bbdaf85edabd | file=Global Education.json
+25. gpapanikos text | id=b94c08ff-ec66-408c-bf3f-10de463dbb3c | file=gpapanikos text.json
+26. Heart Failure Clinical Records | id=cf3b920b-0ef0-4d30-ab04-ff4149cadc71 | file=Heart Failure Clinical Records.json
+27. Integration Techniques Questions MathE Database | id=a36dde9d-7f95-40ff-8a9b-f687d0a72318 | file=Integration Techniques Questions MathE Database.json
+28. International Energy Statistics | id=92c5e669-ffa6-48c8-a91b-49663bedc08c | file=International Energy Statistics.json
+29. ISCO taxonomy | id=42f492f7-d706-4153-a3f8-f8eac695d3ec | file=ISCO taxonomy.json
+30. Last-mile customer delivery instances | id=cbb778ba-1856-4515-9f53-12abc6324cd5 | file=Last-mile customer delivery instances.json
+31. MathE Database 2026 | id=629bed3a-c1f1-421b-858a-f0f685bb8275 | file=MathE Database 2026.json
+
+The first 30 profiles are used in the initial run.
+Profile 31 is then added to exactly the same set.
+
+SIMILARITY: FULL RECALCULATION BASELINE
+----------------------------------------
+30 profiles: 435 pairs, 155.103 seconds (2.59 minutes)
+31 profiles: 465 pairs, 171.161 seconds (2.85 minutes)
+Pair cache is intentionally not shared between these runs.
+
+SIMILARITY: INCREMENTAL CACHE
+------------------------------
+30 profiles: 435 pairs, 154.165 seconds (2.57 minutes)
+  cache misses=435, cache hits=0
+31 profiles: 465 pairs, 13.151 seconds (0.22 minutes)
+  cache misses=30, cache hits=435
+Similarity time saved on the second run: 158.010 seconds (2.63 minutes)
+
+BUILD COMPOSITES: FULL RECALCULATION BASELINE
+-----------------------------------------------
+30 profiles: links=435, final composites=1, 0.310 seconds (0.01 minutes)
+31 profiles: links=465, final composites=1, 0.323 seconds (0.01 minutes)
+Composite caches are intentionally not shared between these runs.
+
+BUILD COMPOSITES: INCREMENTAL CACHE
+-----------------------------------
+30 profiles: links=435, final composites=1, 0.282 seconds (0.00 minutes)
+  profile cache entries=3, original chunk cache entries=0
+31 profiles: links=465, final composites=1, 0.164 seconds (0.00 minutes)
+  profile cache entries=3, original chunk cache entries=0
+Composite time saved on the second run: 0.159 seconds (0.00 minutes)
+
+INTERPRETATION
+--------------
+The baseline recalculates the 30-profile result and then recalculates the 31-profile result from scratch.
+The incremental run keeps the same 30 profiles, adds the same profile 31, and reuses existing pairwise and composite chunk calculations.
+The grouping stage of build composites still runs again because a new profile can change group membership; expensive profile-pair chunk work is reused.

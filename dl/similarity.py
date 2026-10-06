@@ -15,6 +15,7 @@ from dl.utils import normalize_keywords
 # --- GLOBALS ---
 _model_short: Optional[SentenceTransformer] = None
 _model_long: Optional[SentenceTransformer] = None
+LAST_PAIRWISE_STATS: Dict[str, Any] = {}
 
 MODEL_SHORT_NAME = "all-MiniLM-L6-v2"
 MODEL_LONG_NAME = "all-mpnet-base-v2"
@@ -75,6 +76,40 @@ def _file_fingerprint(path: Path) -> str:
 def _is_profile_json(path: Path) -> bool:
     """Return whether a top-level JSON file should be treated as a profile."""
     return path.suffix.lower() == ".json" and not path.name.lower().startswith("cache_")
+
+
+def _pairwise_cache_path(
+        folder: Path,
+        source_type: str,
+        weights: Tuple[float, float, float],
+        include_description_chunks: bool,
+        keyword_method: str,
+) -> Path:
+    config = {
+        "cache_version": "pairwise_v1",
+        "weights": weights,
+        "include_description_chunks": include_description_chunks,
+        "keyword_method": keyword_method,
+    }
+    suffix = _json_fingerprint(config)[:16]
+    return folder / f"cache_pairwise_{source_type}_{suffix}.json"
+
+
+def _profile_signature(profile: Dict[str, Any]) -> str:
+    return _json_fingerprint({
+        "id": profile.get("id"),
+        "name": profile.get("name"),
+        "keywords": sorted(profile.get("keywords", []) or []),
+        "description": profile.get("description", "") or "",
+        "headline": profile.get("headline", "") or "",
+    })
+
+
+def _pairwise_cache_key(
+        left_signature: str,
+        right_signature: str,
+) -> str:
+    return "|".join(sorted((left_signature, right_signature)))
 
 
 def _text_fingerprint(text: Any) -> str:
@@ -452,6 +487,7 @@ def compute_similarities(
         include_description_chunks: bool = False,
         keyword_method: str = "jaccard"
 ) -> Tuple[Optional[str], List[Dict[str, Any]], Optional[bool]]:
+    global LAST_PAIRWISE_STATS
     weights = (kw_weight, desc_weight, head_weight)
     folder = Path(folder_path) if folder_path else Path("/s3/cache")
     source_type = "api" if use_api else "local"
@@ -492,6 +528,20 @@ def compute_similarities(
         keyword_method,
     )
     cache_path = folder / f"cache_{source_type}_{fingerprint}.json"
+    pairwise_cache_path = _pairwise_cache_path(
+        folder,
+        source_type,
+        weights,
+        include_description_chunks,
+        keyword_method,
+    )
+    LAST_PAIRWISE_STATS = {
+        "mode": "full_cache_miss",
+        "total_pairs": 0,
+        "pair_cache_hits": 0,
+        "pair_cache_misses": 0,
+        "pairwise_cache": str(pairwise_cache_path),
+    }
 
     if cache_path.exists():
         try:
@@ -503,6 +553,13 @@ def compute_similarities(
                 s["passes_threshold"] = s.get("combined_similarity", 0) >= threshold
                 s.setdefault("keyword_similarity_method", keyword_method)
 
+            LAST_PAIRWISE_STATS = {
+                "mode": "full_report_cache_hit",
+                "total_pairs": len(similarities),
+                "pair_cache_hits": len(similarities),
+                "pair_cache_misses": 0,
+                "pairwise_cache": str(pairwise_cache_path),
+            }
             print(f"🟢 Smart Cache Hit! (Fingerprint: {fingerprint})")
             return None, similarities, True
         except Exception as e:
@@ -517,6 +574,8 @@ def compute_similarities(
     else:
         # LOGICA PER FILE LOCALI (Tipo: Era5land_3166e649...)
         for file in folder.glob("*.json"):
+            if not _is_profile_json(file):
+                continue
             try:
                 with open(file, "r", encoding="utf-8") as f:
                     data = json.load(f)
@@ -583,8 +642,37 @@ def compute_similarities(
 
     similarities = []
     total_pairs = len(profile_ids) * (len(profile_ids) - 1) // 2
+    profile_signatures = {
+        profile_id: _profile_signature(file_data[profile_id])
+        for profile_id in profile_ids
+    }
+    pairwise_cache = {}
+    if pairwise_cache_path.exists():
+        try:
+            pairwise_cache = json.loads(
+                pairwise_cache_path.read_text(encoding="utf-8")
+            )
+        except (OSError, json.JSONDecodeError):
+            pairwise_cache = {}
+
+    pair_cache_hits = 0
+    pair_cache_misses = 0
     for pair_index, (id1, id2) in enumerate(combinations(file_data.keys(), 2), 1):
         f1, f2 = file_data[id1], file_data[id2]
+        pair_key = _pairwise_cache_key(
+            profile_signatures[id1], profile_signatures[id2]
+        )
+        cached_pair = pairwise_cache.get(pair_key)
+        if cached_pair is not None:
+            cached_result = dict(cached_pair)
+            cached_result["passes_threshold"] = (
+                cached_result.get("combined_similarity", 0) >= threshold
+            )
+            similarities.append(cached_result)
+            pair_cache_hits += 1
+            continue
+
+        pair_cache_misses += 1
 
         kw1, kw2 = f1["keywords"], f2["keywords"]
         common = kw1 & kw2
@@ -625,7 +713,7 @@ def compute_similarities(
         if include_description_chunks:
             description_top_chunks = _top_description_chunks(f1["description"], f2["description"])
 
-        similarities.append({
+        pair_result = {
             #"dataprofile1": f"{f1['name']} ({id1[:5]})",
             #"dataprofile2": f"{f2['name']} ({id2[:5]})",
             "dataprofile1": f"{f1['name']}",
@@ -654,16 +742,32 @@ def compute_similarities(
             "unique_to_2": ", ".join(sorted(kw2 - kw1)),
             "description_top_chunks": description_top_chunks,
             "passes_threshold": combined >= threshold
-        })
+        }
+        similarities.append(pair_result)
+        pairwise_cache[pair_key] = dict(pair_result)
 
         if pair_index == 1 or pair_index == total_pairs or pair_index % 500 == 0:
             print(f"✅ Processed {pair_index}/{total_pairs} pair(s)")
+
+    LAST_PAIRWISE_STATS = {
+        "mode": "pairwise_incremental",
+        "total_pairs": total_pairs,
+        "pair_cache_hits": pair_cache_hits,
+        "pair_cache_misses": pair_cache_misses,
+        "pairwise_cache": str(pairwise_cache_path),
+    }
+    print(
+        f"🔁 Pairwise cache: {pair_cache_hits} hit(s), "
+        f"{pair_cache_misses} calculated pair(s)"
+    )
 
     # --- 5. Save Smart Cache ---
     try:
         folder.mkdir(parents=True, exist_ok=True)
         with open(cache_path, "w", encoding="utf-8") as f:
             json.dump(similarities, f, ensure_ascii=False, indent=4)
+        with open(pairwise_cache_path, "w", encoding="utf-8") as f:
+            json.dump(pairwise_cache, f, ensure_ascii=False, indent=2)
         print(f"💾 Smart Cache saved: {cache_path.name}")
     except Exception as e:
         print(f"⚠️ Cache save failed: {e}")

@@ -36,7 +36,66 @@ class _FakeModel:
         return torch.tensor([self.vectors[text] for text in texts])
 
 
+class _ChunkPoolModel:
+    def __init__(self):
+        self.calls = []
+
+    def encode(self, texts, convert_to_tensor=True):
+        self.calls.append(tuple(texts))
+        return torch.tensor([[float(index + 1), 1.0] for index, _ in enumerate(texts)])
+
+
 class OriginalChunkComparisonTests(unittest.TestCase):
+    def test_red_attempt_does_not_replace_last_green_level(self):
+        levels = [
+            {"level": 1, "items": [{"item_type": "DataLinkingBase", "status": "green"}]},
+            {"level": 2, "items": [{
+                "item_type": "CompositeDataLinkingElement",
+                "id": "ABC",
+                "status": "green",
+            }]},
+            {"level": 3, "items": [{
+                "item_type": "CompositeDataLinkingElement",
+                "id": "ABCD",
+                "status": "red",
+                "parentRefs": ["ABC"],
+            }]},
+        ]
+
+        final = link_comparison._final_composite_items(levels)
+
+        self.assertEqual([item["id"] for item in final], ["ABC"])
+
+    def test_multi_profile_evidence_caps_chunks_and_reuses_cache(self):
+        from dl import similarity as similarity_module
+
+        model = _ChunkPoolModel()
+        profile_chunks = {
+            "a": [f"a chunk {index}" for index in range(12)],
+            "b": [f"b chunk {index}" for index in range(12)],
+            "c": [f"c chunk {index}" for index in range(12)],
+        }
+        cache = {}
+
+        with patch.object(similarity_module, "_ensure_models"), patch.object(
+            similarity_module, "_model_long", model
+        ):
+            first = link_comparison._multi_profile_chunk_evidence(
+                ["a", "b", "c"], profile_chunks, cache=cache
+            )
+            second = link_comparison._multi_profile_chunk_evidence(
+                ["a", "b", "c"], profile_chunks, cache=cache
+            )
+
+        self.assertEqual(len(cache["chunks"]["a"]), 10)
+        self.assertEqual(len(cache["chunks"]["b"]), 10)
+        self.assertEqual(len(cache["chunks"]["c"]), 10)
+        self.assertEqual(len(cache["pair_scores"]), 3)
+        self.assertEqual(len(model.calls), 3)
+        self.assertEqual(len(first), 3)
+        self.assertEqual(len(second), 3)
+        self.assertTrue(all(len(item["profiles"]) == 3 for item in first))
+
     def test_registry_keeps_chunks_outside_link_top_three(self):
         link = {
             "@id": "AB",
@@ -130,7 +189,11 @@ class OriginalChunkComparisonTests(unittest.TestCase):
                 "dataprofile2ref": right,
                 "dp1Name": left,
                 "dp2Name": right,
-                "metrics": {"combined_similarity": 80},
+                "metrics": {
+                    "combined_similarity": 80,
+                    "description_similarity": 80,
+                    "keywords_similarity": 80,
+                },
                 "common_keywords": "math",
                 "description_top_chunks": [],
                 "_description_chunks_by_profile": {
@@ -163,7 +226,7 @@ class OriginalChunkComparisonTests(unittest.TestCase):
         merge_evidence = result["composites"][0]["mergeEvidence"]
         self.assertEqual(merge_evidence["chunk_evidence_strategy"], "cached_base_pair_metrics")
         self.assertEqual(merge_evidence["evaluated_profile_pair_count"], 3)
-        self.assertEqual(merge_evidence["chunk_similarity"], 0.0)
+        self.assertEqual(merge_evidence["chunk_similarity"], 0.8)
 
     def test_only_green_parents_can_create_a_next_level(self):
         def link(link_id, left, right, score):
@@ -193,7 +256,7 @@ class OriginalChunkComparisonTests(unittest.TestCase):
         self.assertEqual(len(result["levels"]), 1)
         self.assertEqual(result["composites"], [])
 
-    def test_red_child_is_terminal_final_composite(self):
+    def test_red_child_is_not_a_final_composite(self):
         def link(link_id, left, right):
             return {
                 "@id": link_id,
@@ -224,8 +287,7 @@ class OriginalChunkComparisonTests(unittest.TestCase):
         self.assertEqual(len(result["levels"]), 2)
         child = result["levels"][1]["items"][0]
         self.assertEqual(child["status"], "red")
-        self.assertEqual(len(result["composites"]), 1)
-        self.assertEqual(result["composites"][0]["profiles"], child["profiles"])
+        self.assertEqual(result["composites"], [])
 
     def test_only_terminal_quartet_is_returned_as_final_composite(self):
         def link(left, right):
@@ -255,8 +317,15 @@ class OriginalChunkComparisonTests(unittest.TestCase):
 
         self.assertEqual(len(result["levels"]), 3)
         self.assertEqual(len(result["composites"]), 1)
+        final = result["composites"][0]
+        self.assertTrue(final["is_terminal"])
+        self.assertNotIn(final["@id"], {
+            parent_ref
+            for item in result["recursive_levels"][1:]
+            for parent_ref in item.get("parentRefs", [])
+        })
         self.assertEqual(
-            {profile["id"] for profile in result["composites"][0]["profiles"]},
+            {profile["id"] for profile in final["profiles"]},
             {"A", "B", "C", "D"},
         )
 

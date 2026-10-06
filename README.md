@@ -9,6 +9,27 @@ The project provides:
 - A similarity engine based on keywords, descriptions, and headlines with configurable weights.
 - Refinement logic that inspects file objects, tabular structures, text evidence, and shared resources.
 
+## Project Layout
+
+```text
+dl/                         Application and analysis modules
+templates/                  Flask templates
+static/                     Browser assets
+tests/                      Automated tests
+scripts/demos/              Small demonstrations
+scripts/datagems/           DataGEMS download and cleanup utilities
+scripts/benchmarks/         Performance benchmarks
+scripts/language_use_case/  Language use-case utilities
+data/                       Downloaded profiles and local runtime data
+reports/                    Generated reports and benchmark documents
+docs/                       API and integration documentation
+```
+
+Bulk downloaded profiles and benchmark inputs are stored under `data/`; the
+legacy `dl/profiles_api/` folder is kept because it is part of the existing
+application image. Neither is required to run the application with
+`demo_profiles/`.
+
 ## Requirements
 
 - Python 3.12 recommended
@@ -50,10 +71,20 @@ The repository includes ten small, synthetic profiles in `demo_profiles/`, arran
 To demonstrate the multi-profile chunk evidence directly, run:
 
 ```bash
-uv run python demo_multi_profile_chunks.py
+   uv run python scripts/demos/demo_multi_profile_chunks.py
 ```
 
 The script prints up to three evidence groups for each thematic group, with one compatible description chunk per profile.
+
+During composite construction, each original profile contributes at most ten deduplicated candidate chunks, selected by length. Their embeddings and pairwise chunk-similarity matrices are cached and reused at later levels. The top three multi-profile chunk groups are stored as output evidence; they are not used as the only source for later levels.
+
+For a focused four-profile explanation, run:
+
+```bash
+   uv run python scripts/demos/demo_four_profile_chunks.py
+```
+
+This script evaluates every candidate combination of chunks for profiles A, B, C and D. It checks all six pairwise similarities (`AB`, `AC`, `AD`, `BC`, `BD`, `CD`) and prints the top three four-chunk evidence groups with their minimum, average and combined scores.
 
 When building composites, the terminal shows progress such as the number of base pairs, cached profiles, green/red items per level, and final terminal composites. Results computed on the home page are reused by the composite request when the source and parameters are unchanged.
 
@@ -157,6 +188,8 @@ Main endpoints:
 | `GET` | `/api/report` | Build a report JSON |
 | `GET` | `/api/report/download` | Download a report JSON |
 | `GET` | `/api/report/pair/download` | Download a single pair report |
+| `POST` | `/api/compare-links` | Compare DataLinkingBase links |
+| `GET` | `/api/composites` | Build composite DataLinking elements |
 | `GET` | `/api/refine` | Run refinement for one pair and return graph data |
 | `GET` | `/api/refine/download` | Download one refinement report |
 | `POST` | `/api/similarities/select` | Compute similarities for selected profiles |
@@ -290,12 +323,13 @@ Cache fingerprints include source signatures, weights, local file content finger
 
 ## Utility Scripts
 
-Useful scripts under `dl/`:
+Useful scripts are grouped under `scripts/`:
 
-- `token.py`: downloads platform Croissant profiles into a local `profiles_api` folder.
-- `count_datasets.py`: compares platform search counts with Croissant detail statuses.
-- `export_excel.py`: exports similarity results to Excel.
-- `run_refinement.py`: helper for refinement experiments.
+- `scripts/datagems/`: download and deduplication utilities.
+- `scripts/benchmarks/`: performance benchmarks.
+- `scripts/demos/`: small composite-linking demonstrations.
+- `scripts/language_use_case/`: language use-case analysis and export utilities.
+- `dl/count_datasets.py`, `dl/export_excel.py`, and `dl/run_refinement.py`: legacy diagnostics and helpers.
 
 ## Project Structure
 
@@ -318,6 +352,21 @@ templates/
 
 static/
 └── style.css
+
+scripts/
+├── benchmarks/
+├── datagems/
+├── demos/
+└── language_use_case/
+
+data/
+├── datagems/
+└── language_use_case/
+
+reports/
+├── benchmarks/
+├── language_use_case/
+└── legacy/
 ```
 
 ## Models
@@ -330,7 +379,7 @@ Models are loaded lazily when first needed.
 ## Notes
 
 - The temporary branch `temp/sbert-keywords-local-analysis` contains an experimental local-analysis variant where keyword similarity is SBERT-based. It is not part of the stable `main` behavior described here.
-- Generated files such as `__pycache__`, local Excel reports, and downloaded `profiles_api` JSON files should not be committed unless explicitly needed.
+- Generated files such as `__pycache__`, local caches, downloaded profiles, and generated analysis results are kept under `data/` or `reports/` and ignored unless explicitly needed.
 
 ## Author
 

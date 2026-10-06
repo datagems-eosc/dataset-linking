@@ -39,6 +39,8 @@ The upstream module interacts with Dataset Linking in one of two ways:
 | Operation | Purpose | Input source |
 |---|---|---|
 | `report` | Compare all available dataset profiles and produce pairwise similarity analysis | Local shared folder **or** configured DataGEMS API |
+| `compare-links` | Compare the DataLinkingBase links that pass the pair threshold | Local shared folder **or** configured DataGEMS API |
+| `composites` | Build multi-profile composite DataLinking elements from the pair links | Local shared folder **or** configured DataGEMS API |
 | `refine` | Run detailed refinement for one selected pair | Two DataGEMS dataset IDs by default, or two local profile files from a shared folder |
 
 The two operations are separate entry points. A `refine` job does not need the `job_id` of a previous `report` job.
@@ -237,6 +239,40 @@ Example response:
 ```
 
 The upstream module should store `job_id` if it needs to verify completion or failure.
+
+## 5.5 Compare Links and Build Composites
+
+The Flask `Compare Links` and `Build Composite Links` actions are also
+available through FastAPI.
+
+Compare links with a JSON request:
+
+```bash
+curl -X POST "http://127.0.0.1:8000/api/compare-links" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "folder": "/exchange/profiles",
+    "kw": 0.6,
+    "desc": 0.3,
+    "head": 0.1,
+    "th": 30,
+    "relation_th": 0.0,
+    "top_n": 50,
+    "selected_pairs": []
+  }'
+```
+
+Build composite elements from all pair links:
+
+```bash
+curl "http://127.0.0.1:8000/api/composites?folder=/exchange/profiles&kw=0.6&desc=0.3&head=0.1&th=30&relation_th=0.5"
+```
+
+Omit `folder` on `/api/composites` to use the configured DataGEMS API. The
+response includes `levels`, `comparisons`, `recursive_comparisons`,
+`composites`, and `final_composites`. Both endpoints reuse pairwise and
+composite chunk caches when the same profiles and parameters are analyzed
+again.
 
 ## 6. Refine Job
 

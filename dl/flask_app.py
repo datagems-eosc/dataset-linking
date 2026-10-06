@@ -32,6 +32,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 COMPOSITE_DOWNLOAD_DIR = Path(tempfile.gettempdir()) / "dataset-linking-composite-downloads"
 COMPOSITE_DOWNLOAD_TTL_SECONDS = 6 * 60 * 60
 ANALYSIS_CACHE = {}
+COMPOSITE_CHUNK_CACHES = {}
 app = Flask(
     __name__,
     template_folder=str(BASE_DIR / "templates"),
@@ -382,6 +383,15 @@ def _compact_composite(composite, supporting_limit=10):
         "profiles": composite.get("profiles", []),
         "profile_count": composite.get("profile_count", len(composite.get("profiles", []) or [])),
         "internal_link_count": composite.get("link_count", len(composite.get("linkRefs", []) or [])),
+        "source_link_count": composite.get(
+            "source_link_count",
+            composite.get("link_count", len(composite.get("linkRefs", []) or [])),
+        ),
+        "internal_pair_count": composite.get(
+            "internal_pair_count",
+            (composite.get("profile_count", len(composite.get("profiles", []) or []))
+             * (composite.get("profile_count", len(composite.get("profiles", []) or [])) - 1)) // 2,
+        ),
         "comparison_count": composite.get("comparison_count", 0),
         "recursive_level": composite.get("recursive_level"),
         "status": composite.get("status", "green"),
@@ -392,6 +402,8 @@ def _compact_composite(composite, supporting_limit=10):
         "merge_type": merge_evidence.get("merge_type"),
         "chunk_evidence_strategy": merge_evidence.get("chunk_evidence_strategy"),
         "evaluated_profile_pair_count": merge_evidence.get("evaluated_profile_pair_count", 0),
+        "reused_profile_pair_count": merge_evidence.get("reused_profile_pair_count", 0),
+        "new_profile_pair_count": merge_evidence.get("new_profile_pair_count", 0),
         "main_keywords": keywords[:100],
         "main_keyword_count": len(keywords),
         "file_table_names": [_compact_text(value, 300) for value in files[:50]],
@@ -894,6 +906,10 @@ def composite_links():
         if profile_id != "__api_token__" and isinstance(profile, dict)
     }
 
+    composite_cache = COMPOSITE_CHUNK_CACHES.setdefault(
+        folder_path or "API_Datagems",
+        {"profile": {}, "original": {}},
+    )
     composite_data = build_composite_datalinking_elements(
         base_report["links"],
         relation_threshold=relation_threshold,
@@ -901,6 +917,8 @@ def composite_links():
         base_threshold=th / 100.0,
         profile_chunks=profile_chunks,
         profile_labels=profile_labels,
+        profile_chunk_cache=composite_cache["profile"],
+        original_chunk_cache=composite_cache["original"],
     )
     for level in composite_data.get("levels", []):
         items = level.get("items", []) or []
@@ -922,6 +940,7 @@ def composite_links():
         ),
         "comparisons_used": len(composite_data["comparisons"]),
         "recursive_comparisons_used": len(composite_data.get("recursive_comparisons", [])),
+        "final_composite_count": len(composite_data.get("final_composites", [])),
         "includes_description_chunks": True,
         "composite_construction": composite_data.get("construction"),
     }
@@ -939,6 +958,7 @@ def composite_links():
         "recursive_levels": composite_data.get("recursive_levels", []),
         "connected_component_levels": composite_data.get("connected_component_levels", []),
         "composites": composite_data["composites"],
+        "final_composites": composite_data.get("final_composites", composite_data["composites"]),
         "connected_component_composites": composite_data.get("connected_component_composites", []),
         "comparisons": composite_data["comparisons"],
         "recursive_comparisons": composite_data.get("recursive_comparisons", []),

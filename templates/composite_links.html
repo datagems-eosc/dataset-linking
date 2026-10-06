@@ -190,6 +190,12 @@
             background: #fff;
             font-size: 12px;
         }
+        .composite-card .profile-chip {
+            padding: 6px 10px;
+            font-size: 14px;
+            font-weight: 600;
+            background: #f6f8fa;
+        }
         .keyword-chip {
             background: #dafbe1;
             border-color: #aceebb;
@@ -324,7 +330,7 @@
         <p><strong>Composites produced:</strong> {{ composites|length }}</p>
         <p><strong>Construction:</strong> {{ report.selection.composite_construction }}</p>
         <p><strong>Method:</strong> every base pair is retained. Only green items can build the next level; red items remain visible as terminal results.</p>
-        <p class="muted">Final composites are terminal groups only. A green group used to build a larger group is not repeated as a final composite.</p>
+        <p class="muted">Final composites are the green groups from the last level that produced green groups. A later level containing only red groups is a failed extension and is not used as the final level.</p>
     </div>
 
     <div class="status-legend" aria-label="Composite status legend">
@@ -345,7 +351,7 @@
             <div class="composite-card-header">
                 <div>
                     <h2 class="composite-title">Composite {{ loop.index }}</h2>
-                    <div class="muted">{{ composite.profiles|length }} profiles, {{ composite.link_count }} links</div>
+                    <div class="muted">{{ composite.profiles|length }} profiles</div>
                 </div>
                 <div>
                     <div class="score-badge">{{ "%.1f%%"|format(composite.composite_coherence * 100) }}</div>
@@ -356,7 +362,7 @@
                 <div class="metric-row">
                     <div class="metric-box"><span class="metric-label">Composite coherence</span><span class="metric-value">{{ "%.1f%%"|format(composite.composite_coherence * 100) }}</span></div>
                     <div class="metric-box"><span class="metric-label">Chunk coherence</span><span class="metric-value">{{ "%.1f%%"|format(composite.evidence.chunk_similarity_avg * 100) }}</span></div>
-                    <div class="metric-box"><span class="metric-label">Internal links</span><span class="metric-value">{{ composite.link_count }}</span></div>
+                    <div class="metric-box"><span class="metric-label">Keyword coherence</span><span class="metric-value">{{ "%.1f%%"|format((composite.mergeEvidence.keyword_similarity|default(0)|float) * 100) }}</span></div>
                     <div class="metric-box"><span class="metric-label">Final status</span><span class="metric-value">{{ composite.status|default('green')|capitalize }}</span></div>
                 </div>
 
@@ -423,7 +429,6 @@
                     <summary>Copy-friendly summary</summary>
                     <div class="copy-block">Composite {{ loop.index }}
 Profiles: {{ composite.profiles|map(attribute='name')|join(', ') }}
-Links: {{ composite.link_count }}
 Status: {{ composite.status|default('green') }}
 Composite coherence: {{ "%.1f%%"|format(composite.composite_coherence * 100) }}
 Chunk coherence: {{ "%.1f%%"|format(composite.evidence.chunk_similarity_avg * 100) }}
@@ -455,7 +460,7 @@ CSV/Table Columns: {{ composite.evidence.csv_table_column_names|join(', ') }}</d
                     <article class="level-item {{ item.status|default('green') }}">
                         <div class="level-item-row">
                             <div class="level-item-title">{{ item.item_type }}</div>
-                            <div>{{ item.label }}</div>
+                            <div>{% if item.profiles %}{{ item.profiles|map(attribute='name')|join(', ') }}{% else %}{{ item.label }}{% endif %}</div>
                             <div><strong>{{ "%.1f%%"|format(item.similarity * 100) }}</strong></div>
                             <div class="compact-meta"><span class="status-badge {{ item.status|default('green') }}">{{ item.status|default('green') }}</span></div>
                         </div>
@@ -467,12 +472,31 @@ CSV/Table Columns: {{ composite.evidence.csv_table_column_names|join(', ') }}</d
                             {% if item.evidence.shared_keywords %}
                             <div class="level-evidence"><strong>Keywords:</strong> {{ item.evidence.shared_keywords[:12]|join(', ') }}</div>
                             {% endif %}
-                            {% if item.mergeEvidence and item.mergeEvidence.description_chunk_matches %}
+                            {% if item.mergeEvidence %}
+                            <div class="level-evidence metric-row">
+                                <div class="metric-box"><span class="metric-label">Aggregate chunk similarity</span><span class="metric-value">{{ "%.1f%%"|format((item.mergeEvidence.chunk_similarity|default(0)|float) * 100) }}</span></div>
+                                <div class="metric-box"><span class="metric-label">Aggregate keyword similarity</span><span class="metric-value">{{ "%.1f%%"|format((item.mergeEvidence.keyword_similarity|default(0)|float) * 100) }}</span></div>
+                            </div>
+                            {% endif %}
+                            {% if item.mergeEvidence and item.mergeEvidence.multi_profile_chunk_matches %}
+                            <div class="level-evidence">
+                                <strong>Top shared chunk groups:</strong>
+                                {% for match in item.mergeEvidence.multi_profile_chunk_matches[:3] %}
+                                <div class="copy-block">
+                                    <strong>Evidence {{ loop.index }}: {{ "%.1f%%"|format(match.similarity * 100) }}</strong>
+                                    {% for profile_chunk in match.profiles %}
+                                    <br><strong>{{ profile_chunk.profile }}:</strong> {{ profile_chunk.text }}
+                                    {% endfor %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% elif item.mergeEvidence and item.mergeEvidence.description_chunk_matches %}
                             <div class="level-evidence">
                                 <strong>Merge chunk evidence:</strong>
                                 <ul class="compact-list">
                                     {% for match in item.mergeEvidence.description_chunk_matches[:3] %}
-                                    <li>{{ "%.1f%%"|format(match.similarity * 100) }}: {{ match.chunk_evidence_1 }} &lt;-&gt; {{ match.chunk_evidence_2 }}</li>
+                                    {% set chunk_score = match.similarity|default(0)|float %}
+                                    <li>{{ "%.1f%%"|format(chunk_score if chunk_score > 1 else chunk_score * 100) }}: {{ match.chunk_evidence_1 or match.chunk1 or "(left chunk unavailable)" }} &lt;-&gt; {{ match.chunk_evidence_2 or match.chunk2 or "(right chunk unavailable)" }}</li>
                                     {% endfor %}
                                 </ul>
                             </div>

@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+
+# Runtime caches and generated analysis files
+**/cache_*.json
+**/embedding_cache_*.pkl
+data/cache/
+
+# Downloaded profiles and generated reports
+data/datagems/raw/*
+data/datagems/clean/
+data/language_use_case/raw/
+data/language_use_case/all/
+data/language_use_case/clean/
+reports/language_use_case/results/

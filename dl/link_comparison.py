@@ -1,6 +1,6 @@
 import math
 import uuid
-from itertools import combinations
+from itertools import combinations, product
 from typing import Any, Dict, List, Optional, Set
 
 
@@ -16,6 +16,9 @@ METRIC_KEYS = [
 RECURSIVE_CHUNK_WEIGHT = 0.75
 RECURSIVE_KEYWORD_WEIGHT = 0.25
 REPRESENTATIVE_CHUNK_LIMIT = 3
+MAX_PROFILE_CHUNK_CANDIDATES = 10
+MAX_EXHAUSTIVE_CHUNK_COMBINATIONS = 10000
+CHUNK_BEAM_WIDTH = 200
 
 # Legacy latent-bridge configuration is retained for backward-compatible
 # function signatures; the production hierarchy now requires overlapping
@@ -83,9 +86,32 @@ def _multi_profile_chunk_evidence(
         profile_chunks: Dict[str, List[str]],
         profile_labels: Optional[Dict[str, str]] = None,
         limit: int = 3,
+        cache: Optional[Dict[str, Any]] = None,
 ) -> List[Dict[str, Any]]:
-    """Find small, one-chunk-per-profile evidence groups for a composite."""
-    profiles = [key for key in sorted(profile_keys) if profile_chunks.get(key)]
+    """Find one-chunk-per-profile evidence groups using cached pair scores."""
+    cache = cache if cache is not None else {}
+    selected_chunks = cache.setdefault("chunks", {})
+    embeddings_cache = cache.setdefault("embeddings", {})
+    pair_cache = cache.setdefault("pair_scores", {})
+
+    for profile in sorted(profile_keys):
+        if profile in selected_chunks:
+            continue
+        values = []
+        seen = set()
+        for value in profile_chunks.get(profile, []) or []:
+            text = str(value or "").strip()
+            normalized = " ".join(text.split()).lower()
+            if not normalized or normalized in seen:
+                continue
+            seen.add(normalized)
+            values.append(text)
+        selected_chunks[profile] = sorted(
+            values,
+            key=lambda value: (-len(value), value.lower()),
+        )[:MAX_PROFILE_CHUNK_CANDIDATES]
+
+    profiles = [key for key in sorted(profile_keys) if selected_chunks.get(key)]
     if len(profiles) < 2:
         return []
 
@@ -97,51 +123,93 @@ def _multi_profile_chunk_evidence(
         if similarity._model_long is None:
             return []
 
-        embeddings = {
-            profile: similarity._model_long.encode(
-                profile_chunks[profile],
-                convert_to_tensor=True,
-            )
-            for profile in profiles
-        }
-        candidates = []
-        for anchor_profile in profiles:
-            for anchor_index, anchor_text in enumerate(profile_chunks[anchor_profile]):
-                selected = [{
-                    "profile": (profile_labels or {}).get(anchor_profile, anchor_profile),
-                    "profile_id": anchor_profile,
-                    "text": anchor_text,
-                    "anchor": True,
-                    "similarity": 1.0,
-                }]
-                pair_scores = []
-                for other_profile in profiles:
-                    if other_profile == anchor_profile:
-                        continue
-                    scores = util.cos_sim(
-                        embeddings[anchor_profile][anchor_index],
-                        embeddings[other_profile],
-                    )[0]
-                    best_index = int(scores.argmax().item())
-                    best_score = max(0.0, min(1.0, float(scores[best_index].item())))
-                    pair_scores.append(best_score)
-                    selected.append({
-                        "profile": (profile_labels or {}).get(other_profile, other_profile),
-                        "profile_id": other_profile,
-                        "text": profile_chunks[other_profile][best_index],
-                        "anchor": False,
-                        "similarity": round(best_score, 4),
-                    })
+        for profile in profiles:
+            if profile not in embeddings_cache:
+                embeddings_cache[profile] = similarity._model_long.encode(
+                    selected_chunks[profile],
+                    convert_to_tensor=True,
+                )
 
-                if not pair_scores:
-                    continue
-                mean_score = sum(pair_scores) / len(pair_scores)
-                min_score = min(pair_scores)
-                group_score = round(0.5 * mean_score + 0.5 * min_score, 4)
-                candidates.append({
-                    "similarity": group_score,
-                    "profiles": selected,
+        def pair_matrix(left, right):
+            key = _profile_pair_key(left, right)
+            if key not in pair_cache:
+                pair_cache[key] = util.cos_sim(
+                    embeddings_cache[key[0]],
+                    embeddings_cache[key[1]],
+                )
+            matrix = pair_cache[key]
+            return matrix if left == key[0] else matrix.T
+
+        def evaluate(indexes):
+            selected = {
+                profile: indexes[position]
+                for position, profile in enumerate(profiles)
+            }
+            pair_scores = []
+            pair_details = []
+            for left, right in combinations(profiles, 2):
+                score = float(pair_matrix(left, right)[selected[left], selected[right]].item())
+                score = max(0.0, min(1.0, score))
+                pair_scores.append(score)
+                pair_details.append({
+                    "pair": [left, right],
+                    "similarity": round(score, 4),
                 })
+            minimum = min(pair_scores)
+            average = sum(pair_scores) / len(pair_scores)
+            return {
+                "similarity": round(0.5 * minimum + 0.5 * average, 4),
+                "minimum_pair_similarity": round(minimum, 4),
+                "average_pair_similarity": round(average, 4),
+                "indexes": selected,
+                "pairwise_scores": pair_details,
+            }
+
+        combination_count = 1
+        for profile in profiles:
+            combination_count *= len(selected_chunks[profile])
+
+        candidates = []
+        if combination_count <= MAX_EXHAUSTIVE_CHUNK_COMBINATIONS:
+            candidates = [
+                evaluate(indexes)
+                for indexes in product(*(range(len(selected_chunks[profile])) for profile in profiles))
+            ]
+        else:
+            beam = [([], 0.0)]
+            for position, profile in enumerate(profiles):
+                expanded = []
+                for indexes, unused_score in beam:
+                    for chunk_index in range(len(selected_chunks[profile])):
+                        candidate_indexes = indexes + [chunk_index]
+                        if len(candidate_indexes) == 1:
+                            score = 1.0
+                        else:
+                            partial = evaluate(candidate_indexes)
+                            score = partial["similarity"]
+                        expanded.append((candidate_indexes, score))
+                expanded.sort(key=lambda item: item[1], reverse=True)
+                beam = expanded[:CHUNK_BEAM_WIDTH]
+            candidates = [evaluate(indexes) for indexes, unused_score in beam]
+
+        for candidate in candidates:
+            candidate["profiles"] = []
+            for profile in profiles:
+                index = candidate["indexes"][profile]
+                candidate["profiles"].append({
+                    "profile": (profile_labels or {}).get(profile, profile),
+                    "profile_id": profile,
+                    "text": selected_chunks[profile][index],
+                    "similarity": round(
+                        min(
+                            detail["similarity"]
+                            for detail in candidate["pairwise_scores"]
+                            if profile in detail["pair"]
+                        ),
+                        4,
+                    ),
+                })
+            candidate.pop("indexes", None)
 
         candidates.sort(key=lambda item: item["similarity"], reverse=True)
         unique = []
@@ -1293,6 +1361,7 @@ def _compare_level_items(
         pair_lookup: Optional[Dict[tuple, Dict[str, Any]]] = None,
         profile_chunks: Optional[Dict[str, List[str]]] = None,
         profile_labels: Optional[Dict[str, str]] = None,
+        profile_chunk_cache: Optional[Dict[str, Any]] = None,
 ) -> Optional[Dict[str, Any]]:
     left_refs = _item_link_refs(left)
     right_refs = _item_link_refs(right)
@@ -1314,12 +1383,46 @@ def _compare_level_items(
     if pair_lookup is not None:
         internal_links = []
         missing_pairs = []
+        cached_pair_metrics = {}
+        reused_pair_count = 0
+        new_links = []
+        for parent in (left, right):
+            for metric in (parent.get("mergeEvidence") or {}).get("internal_pair_metrics", []) or []:
+                pair = metric.get("pair") or []
+                if len(pair) == 2:
+                    cached_pair_metrics[_profile_pair_key(pair[0], pair[1])] = metric
+
+        pair_metrics = []
         for profile_left, profile_right in combinations(sorted(merged_profiles), 2):
-            pair = pair_lookup.get(_profile_pair_key(profile_left, profile_right))
+            pair_key = _profile_pair_key(profile_left, profile_right)
+            cached_metric = cached_pair_metrics.get(pair_key)
+            pair = pair_lookup.get(pair_key)
+            if cached_metric is not None:
+                pair_metrics.append(dict(cached_metric))
+                reused_pair_count += 1
+                if pair is not None:
+                    internal_links.append(pair)
+                continue
             if pair is None:
                 missing_pairs.append([profile_left, profile_right])
             else:
                 internal_links.append(pair)
+                new_links.append(pair)
+                metrics = pair.get("metrics") or {}
+                try:
+                    combined_similarity = float(metrics.get("combined_similarity", 0)) / 100.0
+                    keyword_similarity = float(metrics.get("keywords_similarity", 0)) / 100.0
+                    chunk_similarity = float(metrics.get("description_similarity", 0)) / 100.0
+                except (TypeError, ValueError):
+                    continue
+                pair_metrics.append({
+                    "pair": [profile_left, profile_right],
+                    "source_link": pair.get("@id"),
+                    "combined_similarity": round(combined_similarity, 4),
+                    "keyword_similarity": round(keyword_similarity, 4),
+                    "chunk_similarity": round(chunk_similarity, 4),
+                    "shared_keywords": sorted(_keyword_evidence_from_links([pair])),
+                })
         if missing_pairs:
             return None
 
@@ -1328,19 +1431,24 @@ def _compare_level_items(
         combined_scores = []
         chunk_matches = []
         pair_statuses = []
-        for link in internal_links:
-            metrics = link.get("metrics") or {}
-            try:
-                combined_scores.append(float(metrics.get("combined_similarity", 0)) / 100.0)
-                keyword_scores.append(float(metrics.get("keywords_similarity", 0)) / 100.0)
-                chunk_scores.append(float(metrics.get("description_similarity", 0)) / 100.0)
-            except (TypeError, ValueError):
-                continue
+        inherited_chunk_matches = []
+        inherited_keywords = set()
+        for parent in (left, right):
+            parent_evidence = parent.get("mergeEvidence") or {}
+            inherited_chunk_matches.extend(parent_evidence.get("description_chunk_matches", []) or [])
+            inherited_keywords.update(_as_set(parent_evidence.get("shared_keywords", [])))
+        for metric in pair_metrics:
+            combined_scores.append(float(metric.get("combined_similarity") or 0.0))
+            keyword_scores.append(float(metric.get("keyword_similarity") or 0.0))
+            chunk_scores.append(float(metric.get("chunk_similarity") or 0.0))
             pair_statuses.append({
-                "pair": [link.get("dp1Name"), link.get("dp2Name")],
+                "pair": metric.get("pair", []),
                 "status": "green" if combined_scores[-1] >= relation_threshold else "red",
                 "similarity": round(combined_scores[-1], 4),
             })
+            inherited_keywords.update(_as_set(metric.get("shared_keywords", [])))
+
+        for link in new_links:
             chunk_matches.extend((link.get("description_top_chunks") or [])[:3])
 
         if not combined_scores:
@@ -1353,7 +1461,10 @@ def _compare_level_items(
             4,
         )
         multi_profile_matches = _multi_profile_chunk_evidence(
-            sorted(merged_profiles), profile_chunks or {}, profile_labels
+            sorted(merged_profiles),
+            profile_chunks or {},
+            profile_labels,
+            cache=profile_chunk_cache,
         ) if profile_chunks else []
         return {
             "@type": "RecursiveCompositeComparison",
@@ -1380,14 +1491,17 @@ def _compare_level_items(
             "evidence": {
                 "shared_profiles": [],
                 "shared_parent_profiles": sorted(shared_parent_profiles),
-                "shared_keywords": sorted(_keyword_evidence_from_links(internal_links)),
-                "description_chunk_matches": chunk_matches[:3],
+                 "shared_keywords": sorted(inherited_keywords),
+                 "description_chunk_matches": (inherited_chunk_matches + chunk_matches)[:3],
                 "multi_profile_chunk_matches": multi_profile_matches,
                 "chunk_evidence_strategy": (
                     "multi_profile_anchor_chunks" if multi_profile_matches
                     else "cached_base_pair_metrics"
                 ),
-                "evaluated_profile_pair_count": len(internal_links),
+                 "evaluated_profile_pair_count": len(pair_metrics),
+                 "reused_profile_pair_count": reused_pair_count,
+                 "new_profile_pair_count": len(pair_metrics) - reused_pair_count,
+                 "internal_pair_metrics": pair_metrics,
                 "internal_pair_statuses": pair_statuses,
                 "internal_pair_scores": [round(score, 4) for score in combined_scores],
             },
@@ -1551,7 +1665,7 @@ def _composite_level_item(
         "@type": "HierarchyLevelItem",
         "item_type": "CompositeDataLinkingElement",
         "id": f"hierarchy:level:{level_number}:{uuid.uuid4()}",
-        "label": f"Composite of {len(profiles)} profile(s) from {len(links)} internal link(s)",
+         "label": f"Composite of {len(profiles)} profile(s)",
         "similarity": recursive_coherence,
         "status": recursive_comparison.get("status", "green"),
         "recursive_coherence": recursive_coherence,
@@ -1585,8 +1699,11 @@ def _composite_level_item(
             "description_chunk_matches": recursive_evidence.get("description_chunk_matches", []),
             "multi_profile_chunk_matches": recursive_evidence.get("multi_profile_chunk_matches", []),
             "chunk_evidence_strategy": recursive_evidence.get("chunk_evidence_strategy"),
-            "evaluated_profile_pair_count": recursive_evidence.get("evaluated_profile_pair_count", 0),
-            "shared_keywords": recursive_evidence.get("shared_keywords", []),
+             "evaluated_profile_pair_count": recursive_evidence.get("evaluated_profile_pair_count", 0),
+             "reused_profile_pair_count": recursive_evidence.get("reused_profile_pair_count", 0),
+             "new_profile_pair_count": recursive_evidence.get("new_profile_pair_count", 0),
+             "internal_pair_metrics": recursive_evidence.get("internal_pair_metrics", []),
+             "shared_keywords": recursive_evidence.get("shared_keywords", []),
         },
         "evidence": evidence,
     }
@@ -1641,8 +1758,11 @@ def _merge_duplicate_composite_item(
             "description_chunk_matches": recursive_evidence.get("description_chunk_matches", []),
             "multi_profile_chunk_matches": recursive_evidence.get("multi_profile_chunk_matches", []),
             "chunk_evidence_strategy": recursive_evidence.get("chunk_evidence_strategy"),
-            "evaluated_profile_pair_count": recursive_evidence.get("evaluated_profile_pair_count", 0),
-            "shared_keywords": recursive_evidence.get("shared_keywords", []),
+             "evaluated_profile_pair_count": recursive_evidence.get("evaluated_profile_pair_count", 0),
+             "reused_profile_pair_count": recursive_evidence.get("reused_profile_pair_count", 0),
+             "new_profile_pair_count": recursive_evidence.get("new_profile_pair_count", 0),
+             "internal_pair_metrics": recursive_evidence.get("internal_pair_metrics", []),
+             "shared_keywords": recursive_evidence.get("shared_keywords", []),
         }
 
     link_refs = set(item.get("linkRefs", [])) | set(recursive_comparison.get("originLinkRefs", []))
@@ -1659,7 +1779,7 @@ def _merge_duplicate_composite_item(
         profile_keys.update(_profile_key(profile) for profile in _profile_entries(link) if _profile_key(profile))
     item["comparisonRefs"] = sorted(comparison_ids)
     item["profiles"] = [profile_map[key] for key in sorted(profile_keys) if key in profile_map]
-    item["label"] = f"Composite of {len(item['profiles'])} profile(s) from {len(valid_links)} internal link(s)"
+    item["label"] = f"Composite of {len(item['profiles'])} profile(s)"
 
     keyword_evidence = _keyword_evidence_from_links(valid_links)
     item["keyword_evidence"] = keyword_evidence
@@ -1685,10 +1805,12 @@ def _build_hierarchy_levels(
         base_threshold: Optional[float] = None,
         profile_chunks: Optional[Dict[str, List[str]]] = None,
         profile_labels: Optional[Dict[str, str]] = None,
+        profile_chunk_cache: Optional[Dict[str, Any]] = None,
         latent_relation_threshold: float = LATENT_RELATION_THRESHOLD,
         latent_profile_pair_threshold: float = LATENT_PROFILE_PAIR_THRESHOLD,
         latent_min_strong_profile_pairs: int = LATENT_MIN_STRONG_PROFILE_PAIRS,
         latent_min_profile_coverage: float = LATENT_MIN_PROFILE_COVERAGE,
+        original_chunk_cache: Optional[Dict[tuple, Any]] = None,
 ) -> tuple:
     links_by_id = {link.get("@id"): link for link in links if link.get("@id")}
     pair_lookup = {}
@@ -1698,7 +1820,7 @@ def _build_hierarchy_levels(
             pair_lookup[_profile_pair_key(_profile_key(profiles[0]), _profile_key(profiles[1]))] = link
     base_items = [_link_level_item(link, base_threshold if base_threshold is not None else relation_threshold) for link in links]
     original_chunk_registry = _original_chunk_registry(links)
-    original_chunk_cache: Dict[tuple, Any] = {}
+    original_chunk_cache = original_chunk_cache if original_chunk_cache is not None else {}
     candidate_items = [item for item in base_items if item.get("status") == "green"]
     levels = [
         {
@@ -1763,6 +1885,7 @@ def _build_hierarchy_levels(
                 pair_lookup,
                 profile_chunks,
                 profile_labels,
+                profile_chunk_cache,
             )
             if not recursive_comparison:
                 continue
@@ -1814,16 +1937,26 @@ def _build_hierarchy_levels(
 
 def _composite_from_level_item(item: Dict[str, Any]) -> Dict[str, Any]:
     recursive_coherence = item.get("recursive_coherence", item.get("similarity", 0.0))
+    profiles = item.get("profiles", []) or []
+    profile_count = len(profiles)
+    merge_evidence = item.get("mergeEvidence", {}) or {}
+    internal_pair_count = merge_evidence.get(
+        "evaluated_profile_pair_count",
+        profile_count * (profile_count - 1) // 2,
+    )
     return {
         "@type": "CompositeDataLinkingElement",
         "@id": item.get("id"),
-        "profiles": item.get("profiles", []),
+        "is_terminal": True,
+        "profiles": profiles,
         "linkRefs": item.get("linkRefs", []),
         "internalLinkRefs": item.get("internalLinkRefs", item.get("linkRefs", [])),
         "comparisonRefs": item.get("comparisonRefs", []),
         "parentRefs": item.get("parentRefs", []),
         "link_count": len(item.get("linkRefs", [])),
-        "profile_count": len(item.get("profiles", [])),
+        "source_link_count": len(item.get("linkRefs", [])),
+        "internal_pair_count": internal_pair_count,
+        "profile_count": profile_count,
         "comparison_count": len(item.get("comparisonRefs", [])),
         "composite_coherence": recursive_coherence,
         "recursive_coherence": recursive_coherence,
@@ -1838,23 +1971,26 @@ def _composite_from_level_item(item: Dict[str, Any]) -> Dict[str, Any]:
         "mergeEvidence": item.get("mergeEvidence", {}),
     }
 
-def _terminal_composite_items(levels: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    composite_items = [
-        item
+def _final_composite_items(levels: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Return green groups from the last level that produced green groups."""
+    green_levels = [
+        level
         for level in levels[1:]
-        for item in level.get("items", [])
-        if item.get("item_type") == "CompositeDataLinkingElement"
+        if any(
+            item.get("item_type") == "CompositeDataLinkingElement"
+            and item.get("status") == "green"
+            for item in level.get("items", [])
+        )
     ]
-    used_as_parent = {
-        parent_ref
-        for item in composite_items
-        for parent_ref in item.get("parentRefs", [])
-        if parent_ref
-    }
+    if not green_levels:
+        return []
+
+    last_green_level = green_levels[-1]
     return [
         item
-        for item in composite_items
-        if item.get("id") not in used_as_parent
+        for item in last_green_level.get("items", [])
+        if item.get("item_type") == "CompositeDataLinkingElement"
+        and item.get("status") == "green"
     ]
 
 
@@ -1875,6 +2011,7 @@ def _component_composite(
         profile_keys.update(_profile_key(profile) for profile in _profile_entries(link) if _profile_key(profile))
 
     evidence = _composite_evidence(component_links, component_comparisons)
+    profile_count = len(profile_keys)
     return {
         "@type": "CompositeDataLinkingElement",
         "@id": f"composite:{uuid.uuid4()}",
@@ -1882,7 +2019,9 @@ def _component_composite(
         "linkRefs": sorted(component_link_ids),
         "comparisonRefs": sorted(comparison.get("@id") for comparison in component_comparisons if comparison.get("@id")),
         "link_count": len(component_links),
-        "profile_count": len(profile_keys),
+        "source_link_count": len(component_links),
+        "internal_pair_count": profile_count * (profile_count - 1) // 2,
+        "profile_count": profile_count,
         "comparison_count": len(component_comparisons),
         "composite_coherence": evidence["relation_similarity_avg"],
         "evidence": evidence,
@@ -1936,7 +2075,7 @@ def _component_level_item(composite: Dict[str, Any]) -> Dict[str, Any]:
         "@type": "HierarchyLevelItem",
         "item_type": "CompositeDataLinkingElement",
         "id": composite.get("@id"),
-        "label": f"Cluster of {composite.get('profile_count', 0)} profile(s) from {composite.get('link_count', 0)} link(s)",
+        "label": f"Cluster of {composite.get('profile_count', 0)} profile(s)",
         "similarity": composite.get("composite_coherence", 0.0),
         "linkRefs": composite.get("linkRefs", []),
         "comparisonRefs": composite.get("comparisonRefs", []),
@@ -1972,16 +2111,19 @@ def build_composite_datalinking_elements(
         base_threshold: Optional[float] = None,
         profile_chunks: Optional[Dict[str, List[str]]] = None,
         profile_labels: Optional[Dict[str, str]] = None,
+        profile_chunk_cache: Optional[Dict[str, Any]] = None,
         latent_relation_threshold: float = LATENT_RELATION_THRESHOLD,
         latent_profile_pair_threshold: float = LATENT_PROFILE_PAIR_THRESHOLD,
         latent_min_strong_profile_pairs: int = LATENT_MIN_STRONG_PROFILE_PAIRS,
         latent_min_profile_coverage: float = LATENT_MIN_PROFILE_COVERAGE,
+        original_chunk_cache: Optional[Dict[tuple, Any]] = None,
 ) -> Dict[str, Any]:
     selected_links = links[:top_n] if top_n and top_n > 0 else links
     # Composite scoring reuses the metrics already stored on every base link.
     # Do not compare every pair of base links again here: with 15 base links
     # that would create 105 unnecessary semantic comparisons.
     comparisons = []
+    profile_chunk_cache = profile_chunk_cache if profile_chunk_cache is not None else {}
     recursive_levels, recursive_comparisons = _build_hierarchy_levels(
         selected_links,
         comparisons,
@@ -1989,12 +2131,14 @@ def build_composite_datalinking_elements(
         base_threshold,
         profile_chunks,
         profile_labels,
+        profile_chunk_cache,
         latent_relation_threshold,
         latent_profile_pair_threshold,
         latent_min_strong_profile_pairs,
         latent_min_profile_coverage,
+        original_chunk_cache,
     )
-    recursive_components = [_composite_from_level_item(item) for item in _terminal_composite_items(recursive_levels)]
+    recursive_components = [_composite_from_level_item(item) for item in _final_composite_items(recursive_levels)]
     component_composites = _build_component_composites(selected_links, comparisons)
     component_levels = _build_component_levels(selected_links, component_composites)
     # Only terminal items from the level-by-level hierarchy are composites.
@@ -2014,6 +2158,7 @@ def build_composite_datalinking_elements(
         "connected_component_composites": component_composites,
         "connected_component_levels": component_levels,
         "construction": construction,
+        "final_composites": components,
         "latent_semantic_bridge_config": {
             "enabled": True,
             "relation_threshold": max(float(relation_threshold), float(latent_relation_threshold)),
