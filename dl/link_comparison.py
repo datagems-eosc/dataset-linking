@@ -2117,6 +2117,7 @@ def build_composite_datalinking_elements(
         latent_min_strong_profile_pairs: int = LATENT_MIN_STRONG_PROFILE_PAIRS,
         latent_min_profile_coverage: float = LATENT_MIN_PROFILE_COVERAGE,
         original_chunk_cache: Optional[Dict[tuple, Any]] = None,
+        force_refresh: bool = False,
 ) -> Dict[str, Any]:
     selected_links = links[:top_n] if top_n and top_n > 0 else links
     # Composite scoring reuses the metrics already stored on every base link.
@@ -2124,6 +2125,10 @@ def build_composite_datalinking_elements(
     # that would create 105 unnecessary semantic comparisons.
     comparisons = []
     profile_chunk_cache = profile_chunk_cache if profile_chunk_cache is not None else {}
+    original_chunk_cache = original_chunk_cache if original_chunk_cache is not None else {}
+    if force_refresh:
+        profile_chunk_cache.clear()
+        original_chunk_cache.clear()
     recursive_levels, recursive_comparisons = _build_hierarchy_levels(
         selected_links,
         comparisons,

@@ -200,6 +200,10 @@ Main endpoints:
 | `GET` | `/api/jobs/{job_id}/download` | Download completed job result |
 | `GET` | `/api/discover-and-compare` | Fetch platform profiles and compare them |
 
+Similarity, report, comparison, and composite endpoints accept
+`force_refresh=true` to ignore report, pairwise, embedding, and composite
+chunk caches and recompute the analysis from scratch.
+
 ## PGJSON Graph Output
 
 Refinement generates PGJSON-style graph data with:

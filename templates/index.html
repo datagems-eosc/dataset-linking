@@ -38,6 +38,7 @@
                 <option value="sbert" {% if kw_method == 'sbert' %}selected{% endif %}>SBERT</option>
             </select>
             <button type="submit" class="recalc-btn">🔍 Analyze</button>
+            <button type="submit" name="force_refresh" value="true" class="save-btn">🔄 Analyze from scratch</button>
             <a href="{{ url_for('index', folder='demo_profiles', kw=0.6, desc=0.3, head=0.1, th=45, kw_method='jaccard') }}" class="demo-btn">Load demo profiles</a>
         </form>
         {% if not error and similarities %}
@@ -58,6 +59,7 @@
             <input type="hidden" name="th" value="{{ request.args.get('th', 30) }}">
             <input type="hidden" name="kw_method" value="{{ kw_method }}">
             <button type="submit" class="save-btn">🔗 Compare Links</button>
+            <button type="submit" name="force_refresh" value="true" class="save-btn">🔄 From scratch</button>
         </form>
         <form method="get" action="{{ url_for('composite_links') }}" class="inline-form">
             <input type="hidden" name="folder" value="{{ folder }}">
@@ -67,6 +69,7 @@
             <input type="hidden" name="th" value="{{ request.args.get('th', 30) }}">
             <input type="hidden" name="kw_method" value="{{ kw_method }}">
             <button type="submit" class="save-btn">🧩 Build Composites</button>
+            <button type="submit" name="force_refresh" value="true" class="save-btn">🔄 From scratch</button>
         </form>
         <form method="get" action="{{ url_for('compare_links') }}" class="inline-form" id="compare-selected-form">
             <input type="hidden" name="folder" value="{{ folder }}">

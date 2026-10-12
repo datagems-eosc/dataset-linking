@@ -485,7 +485,8 @@ def compute_similarities(
         threshold: float = 30.0,
         use_api: bool = True,
         include_description_chunks: bool = False,
-        keyword_method: str = "jaccard"
+        keyword_method: str = "jaccard",
+        force_refresh: bool = False,
 ) -> Tuple[Optional[str], List[Dict[str, Any]], Optional[bool]]:
     global LAST_PAIRWISE_STATS
     weights = (kw_weight, desc_weight, head_weight)
@@ -543,7 +544,7 @@ def compute_similarities(
         "pairwise_cache": str(pairwise_cache_path),
     }
 
-    if cache_path.exists():
+    if cache_path.exists() and not force_refresh:
         try:
             with open(cache_path, "r", encoding="utf-8") as f:
                 similarities = json.load(f)
@@ -570,7 +571,11 @@ def compute_similarities(
     file_data = {}
 
     if use_api:
-        file_data = fetch_details_from_list(token, datasets_raw, folder)
+        file_data = fetch_details_from_list(
+            token,
+            datasets_raw,
+            None if force_refresh else folder,
+        )
     else:
         # LOGICA PER FILE LOCALI (Tipo: Era5land_3166e649...)
         for file in folder.glob("*.json"):
@@ -611,7 +616,7 @@ def compute_similarities(
 
     profile_ids = list(file_data.keys())
     embedding_cache_path = _embedding_cache_path(folder, source_type)
-    embedding_cache = _load_embedding_cache(embedding_cache_path)
+    embedding_cache = {} if force_refresh else _load_embedding_cache(embedding_cache_path)
     desc_embeddings = _encode_texts_with_cache(
         profile_ids,
         [file_data[profile_id]["description"] for profile_id in profile_ids],
@@ -647,7 +652,7 @@ def compute_similarities(
         for profile_id in profile_ids
     }
     pairwise_cache = {}
-    if pairwise_cache_path.exists():
+    if pairwise_cache_path.exists() and not force_refresh:
         try:
             pairwise_cache = json.loads(
                 pairwise_cache_path.read_text(encoding="utf-8")

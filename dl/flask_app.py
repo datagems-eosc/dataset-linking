@@ -56,6 +56,11 @@ def get_keyword_method():
     return method if method in {"jaccard", "sbert"} else "jaccard"
 
 
+def _force_refresh_requested():
+    value = request.args.get("force_refresh", request.args.get("from_scratch", "false"))
+    return str(value).strip().lower() in {"1", "true", "yes", "on"}
+
+
 def _local_source_marker(folder_path):
     if not folder_path:
         return "api"
@@ -556,6 +561,7 @@ def download_cached_composite(token):
 @app.route("/")
 def index():
     folder_path = get_requested_folder()
+    force_refresh = _force_refresh_requested()
 
     # If there is no folder_path --> API
     use_api = True if not folder_path else False
@@ -571,7 +577,8 @@ def index():
         threshold=th,
         use_api=use_api,
         include_description_chunks=True,
-        keyword_method=keyword_method
+        keyword_method=keyword_method,
+        force_refresh=force_refresh,
     )
     if not error:
         _remember_analysis(
@@ -616,6 +623,7 @@ def save_results():
 
     kw_weight, desc_weight, head_weight, th, normalized = get_weights_and_threshold()
     keyword_method = get_keyword_method()
+    force_refresh = _force_refresh_requested()
 
     error, similarities, _ = compute_similarities(
         folder_path=folder_path if folder_path else None,
@@ -624,7 +632,8 @@ def save_results():
         head_weight=head_weight,
         threshold=th,
         use_api=use_api,
-        keyword_method=keyword_method
+        keyword_method=keyword_method,
+        force_refresh=force_refresh,
     )
 
     if error:
@@ -679,6 +688,7 @@ def compare_links():
 
     kw_weight, desc_weight, head_weight, th, normalized = get_weights_and_threshold()
     keyword_method = get_keyword_method()
+    force_refresh = _force_refresh_requested()
     relation_threshold = request.args.get("relation_th", 0.0)
     top_n = request.args.get("top_n", "").strip()
     selected_pairs_raw = request.args.get("selected_pairs", "").strip()
@@ -714,7 +724,8 @@ def compare_links():
         head_weight=head_weight,
         threshold=th,
         use_api=use_api,
-        keyword_method=keyword_method
+        keyword_method=keyword_method,
+        force_refresh=force_refresh,
     )
 
     if error:
@@ -815,6 +826,7 @@ def compare_links():
 def composite_links():
     folder_path = get_requested_folder()
     use_api = True if not folder_path else False
+    force_refresh = _force_refresh_requested()
 
     kw_weight, desc_weight, head_weight, th, normalized = get_weights_and_threshold()
     keyword_method = get_keyword_method()
@@ -834,7 +846,7 @@ def composite_links():
 
     started_at = time.perf_counter()
     cache_key = _analysis_cache_key(folder_path, kw_weight, desc_weight, head_weight, th, keyword_method)
-    cached = _cached_analysis(cache_key)
+    cached = None if force_refresh else _cached_analysis(cache_key)
     if cached:
         error = None
         similarities = cached["similarities"]
@@ -850,7 +862,8 @@ def composite_links():
             threshold=th,
             use_api=use_api,
             include_description_chunks=True,
-            keyword_method=keyword_method
+            keyword_method=keyword_method,
+            force_refresh=force_refresh,
         )
         if not error:
             _remember_analysis(cache_key, similarities, from_cache)
@@ -919,6 +932,7 @@ def composite_links():
         profile_labels=profile_labels,
         profile_chunk_cache=composite_cache["profile"],
         original_chunk_cache=composite_cache["original"],
+        force_refresh=force_refresh,
     )
     for level in composite_data.get("levels", []):
         items = level.get("items", []) or []

@@ -185,6 +185,7 @@ def _run_report_job(
         include_graphs: bool = False,
         graphs_only_above_threshold: bool = True,
         keyword_method: str = "jaccard",
+        force_refresh: bool = False,
 ) -> None:
     try:
         JOBS[job_id]["status"] = "in_progress"
@@ -208,6 +209,7 @@ def _run_report_job(
             use_api=use_api,
             include_description_chunks=include_chunks,
             keyword_method=keyword_method,
+            force_refresh=force_refresh,
         )
         if error:
             JOBS[job_id]["status"] = "failed"
@@ -313,7 +315,7 @@ def root():
 # ---------------------------------------------------------------------- #
 @app.get("/api/similarities")
 def api_compute_similarities(
-    folder: str = Query(..., description="Folder path containing JSON profiles"),
+    folder: Optional[str] = Query(None, description="Folder path; omit for DataGEMS API mode"),
     kw: float = Query(0.6, ge=0, description="Weight for keywords similarity"),
     desc: float = Query(0.3, ge=0, description="Weight for description similarity"),
     head: float = Query(0.1, ge=0, description="Weight for headline similarity"),
@@ -322,13 +324,17 @@ def api_compute_similarities(
     include_graphs: bool = Query(False, description="Generate PGJSON graph for each pair"),
     graphs_only_above_threshold: bool = Query(True, description="Generate graphs only for pairs above threshold"),
     keyword_method: str = Query("jaccard", description="Keyword similarity method: jaccard or sbert"),
+    force_refresh: bool = Query(False, description="Ignore all similarity caches and recompute from scratch"),
 ):
     kw, desc, head, normalized = normalize_weights(kw, desc, head)
     keyword_method = _keyword_method(keyword_method)
 
+    folder = _normalize_folder_path(folder) if folder else None
     error, similarities, from_cache = compute_similarities(
-        folder, kw, desc, head, threshold=th, include_description_chunks=include_chunks,
-        keyword_method=keyword_method
+        folder, kw, desc, head, threshold=th, use_api=folder is None,
+        include_description_chunks=include_chunks,
+        keyword_method=keyword_method,
+        force_refresh=force_refresh,
     )
     if error:
         raise HTTPException(status_code=400, detail=error)
@@ -348,6 +354,7 @@ def api_compute_similarities(
     return {
         "results": similarities,
         "from_cache": from_cache,
+        "force_refresh": force_refresh,
         "threshold": th,
         "graphs": graph_summary,
         "weights": {
@@ -426,7 +433,7 @@ def api_single_similarity(
 # ---------------------------------------------------------------------- #
 @app.get("/api/report")
 def api_build_report(
-    folder: str = Query(...),
+    folder: Optional[str] = Query(None),
     kw: float = Query(0.6, ge=0),
     desc: float = Query(0.3, ge=0),
     head: float = Query(0.1, ge=0),
@@ -434,12 +441,16 @@ def api_build_report(
     include_graphs: bool = Query(False, description="Generate PGJSON graph for each pair"),
     graphs_only_above_threshold: bool = Query(True, description="Generate graphs only for pairs above threshold"),
     keyword_method: str = Query("jaccard", description="Keyword similarity method: jaccard or sbert"),
+    force_refresh: bool = Query(False, description="Ignore all similarity caches and recompute from scratch"),
 ):
     kw, desc, head, normalized = normalize_weights(kw, desc, head)
     keyword_method = _keyword_method(keyword_method)
 
+    folder = _normalize_folder_path(folder) if folder else None
     error, similarities, from_cache = compute_similarities(
-        folder, kw, desc, head, threshold=th, keyword_method=keyword_method
+        folder, kw, desc, head, threshold=th, use_api=folder is None,
+        keyword_method=keyword_method,
+        force_refresh=force_refresh,
     )
     if error:
         raise HTTPException(status_code=400, detail=error)
@@ -469,6 +480,7 @@ def api_build_report(
 
     report = build_croissant_report(folder, weights, similarities)  # file_data optional
     report["from_cache"] = from_cache
+    report["force_refresh"] = force_refresh
     report["graphs"] = graph_summary
     return report
 
@@ -486,6 +498,7 @@ class CompareLinksRequest(BaseModel):
     top_n: Optional[int] = Field(None, ge=1)
     selected_pairs: List[List[str]] = Field(default_factory=list)
     keyword_method: str = "jaccard"
+    force_refresh: bool = False
 
 
 @app.post("/api/compare-links")
@@ -501,6 +514,7 @@ def api_compare_links(req: CompareLinksRequest):
         threshold=req.th,
         use_api=folder is None,
         keyword_method=keyword_method,
+        force_refresh=req.force_refresh,
     )
     if error:
         raise HTTPException(status_code=400, detail=error)
@@ -536,6 +550,7 @@ def api_compare_links(req: CompareLinksRequest):
         "@type": "DataLinkingBaseComparisonReport",
         "source": folder or "API_Datagems",
         "from_cache": from_cache,
+        "force_refresh": req.force_refresh,
         "selection": {
             "mode": "selected_links" if selected_keys else "all_above_threshold",
             "minimum_combined_similarity": req.th,
@@ -562,6 +577,7 @@ def api_build_composites(
     relation_th: float = Query(0.5, ge=0, le=1),
     top_n: Optional[int] = Query(None, ge=1),
     keyword_method: str = Query("jaccard"),
+    force_refresh: bool = Query(False, description="Ignore all caches and recompute from scratch"),
 ):
     folder = _normalize_folder_path(folder) if folder else None
     kw, desc, head, normalized = normalize_weights(kw, desc, head)
@@ -575,6 +591,7 @@ def api_build_composites(
         use_api=folder is None,
         include_description_chunks=True,
         keyword_method=keyword_method,
+        force_refresh=force_refresh,
     )
     if error:
         raise HTTPException(status_code=400, detail=error)
@@ -600,12 +617,14 @@ def api_build_composites(
         profile_labels=profile_labels,
         profile_chunk_cache=caches["profile"],
         original_chunk_cache=caches["original"],
+        force_refresh=force_refresh,
     )
     return {
         "@context": "http://mlcommons.org/croissant/",
         "@type": "CompositeDataLinkingElementReport",
         "source": source,
         "from_cache": from_cache,
+        "force_refresh": force_refresh,
         "selection": {
             "mode": "all_pairs_with_green_parent_merges",
             "minimum_combined_similarity": th,
@@ -637,7 +656,7 @@ def api_build_composites(
 # ---------------------------------------------------------------------- #
 @app.get("/api/report/download")
 def api_download_report(
-    folder: str = Query(...),
+    folder: Optional[str] = Query(None),
     kw: float = Query(0.6, ge=0),
     desc: float = Query(0.3, ge=0),
     head: float = Query(0.1, ge=0),
@@ -646,13 +665,17 @@ def api_download_report(
     include_graphs: bool = Query(False, description="Generate PGJSON graph for each pair"),
     graphs_only_above_threshold: bool = Query(True, description="Generate graphs only for pairs above threshold"),
     keyword_method: str = Query("jaccard", description="Keyword similarity method: jaccard or sbert"),
+    force_refresh: bool = Query(False, description="Ignore all similarity caches and recompute from scratch"),
 ):
+    folder = _normalize_folder_path(folder) if folder else None
     kw, desc, head, normalized = normalize_weights(kw, desc, head)
     keyword_method = _keyword_method(keyword_method)
 
     error, similarities, _ = compute_similarities(
-        folder, kw, desc, head, threshold=th, include_description_chunks=include_chunks,
-        keyword_method=keyword_method
+        folder, kw, desc, head, threshold=th, use_api=folder is None,
+        include_description_chunks=include_chunks,
+        keyword_method=keyword_method,
+        force_refresh=force_refresh,
     )
     if error:
         raise HTTPException(status_code=400, detail=error)
@@ -848,6 +871,7 @@ class SelectProfilesRequest(BaseModel):
     head: Optional[float] = 0.1
     th: Optional[float] = Field(30.0, ge=0, le=100)
     keyword_method: Optional[str] = "jaccard"
+    force_refresh: bool = False
 
 
 @app.post("/api/similarities/select")
@@ -860,7 +884,8 @@ def api_select_similarities(req: SelectProfilesRequest):
     keyword_method = _keyword_method(req.keyword_method or "jaccard")
 
     error, all_similarities, from_cache = compute_similarities(
-        req.folder, kw, desc, head, threshold=th, keyword_method=keyword_method
+        req.folder, kw, desc, head, threshold=th, keyword_method=keyword_method,
+        force_refresh=req.force_refresh,
     )
     if error:
         raise HTTPException(status_code=400, detail=error)
@@ -875,6 +900,7 @@ def api_select_similarities(req: SelectProfilesRequest):
         "results": filtered,
         "selected_profiles": req.profiles,
         "from_cache": from_cache,
+        "force_refresh": req.force_refresh,
         "threshold": th,
         "weights": {
             "keywords": kw,
@@ -901,6 +927,7 @@ def api_job_start_report(
         include_graphs: bool = Query(False, description="Generate PGJSON graph for each pair"),
         graphs_only_above_threshold: bool = Query(True, description="Generate graphs only for pairs above threshold"),
         keyword_method: str = Query("jaccard", description="Keyword similarity method: jaccard or sbert"),
+        force_refresh: bool = Query(False, description="Ignore all caches and recompute from scratch"),
 ):
     if folder and (folder.strip() == "" or folder.strip().lower() == "none"):
         folder = None
@@ -926,6 +953,7 @@ def api_job_start_report(
             "include_graphs": include_graphs,
             "graphs_only_above_threshold": graphs_only_above_threshold,
             "keyword_similarity_method": keyword_method,
+            "force_refresh": force_refresh,
         },
         "result": None,
     }
@@ -941,6 +969,7 @@ def api_job_start_report(
         include_graphs,
         graphs_only_above_threshold,
         keyword_method,
+        force_refresh,
     )
     return {"job_id": job_id, "status": "queued"}
 

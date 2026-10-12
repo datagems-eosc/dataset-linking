@@ -258,7 +258,8 @@ curl -X POST "http://127.0.0.1:8000/api/compare-links" \
     "th": 30,
     "relation_th": 0.0,
     "top_n": 50,
-    "selected_pairs": []
+    "selected_pairs": [],
+    "force_refresh": false
   }'
 ```
 
@@ -273,6 +274,13 @@ response includes `levels`, `comparisons`, `recursive_comparisons`,
 `composites`, and `final_composites`. Both endpoints reuse pairwise and
 composite chunk caches when the same profiles and parameters are analyzed
 again.
+
+Use `force_refresh=true` to ignore report, pairwise, embedding, and composite
+chunk caches for one request and recompute from scratch. The option is a query
+parameter for GET endpoints and a JSON field for `POST /api/compare-links`.
+The asynchronous report job accepts it as a query parameter as well. Fresh
+caches are written after the forced run so later normal requests can reuse the
+new results.
 
 ## 6. Refine Job
 
