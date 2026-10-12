@@ -3,14 +3,21 @@ import json
 import pickle
 import re
 import requests
+import time
 import sys
 import io
+import urllib3
 from pathlib import Path
 from itertools import combinations
 from typing import Optional, Tuple, List, Dict, Any
 from sentence_transformers import SentenceTransformer, util
 import torch
 from dl.utils import normalize_keywords
+
+# DataGEMS DEV currently requires TLS verification to be disabled because its
+# certificate is not trusted by the local runtime. Keep the existing DEV
+# behavior without printing one warning for every profile request.
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # --- GLOBALS ---
 _model_short: Optional[SentenceTransformer] = None
@@ -396,8 +403,27 @@ def fetch_details_from_list(
             if inner_dataset is not None:
                 from_cache += 1
             else:
-                res = requests.get(f"{DETAIL_URL}{ds_id}?format=croissant", headers=headers, timeout=25, verify=False)
-                res.raise_for_status()
+                last_error = None
+                for attempt in range(3):
+                    try:
+                        res = requests.get(
+                            f"{DETAIL_URL}{ds_id}?format=croissant",
+                            headers=headers,
+                            timeout=25,
+                            verify=False,
+                        )
+                        if res.status_code in {502, 503, 504} and attempt < 2:
+                            time.sleep(2 ** attempt)
+                            continue
+                        res.raise_for_status()
+                        break
+                    except requests.RequestException as exc:
+                        last_error = exc
+                        if attempt == 2:
+                            raise
+                        time.sleep(2 ** attempt)
+                else:
+                    raise last_error
                 inner_dataset = _dataset_payload(fix_encoding(res.json()))
                 if cache_folder and inner_dataset:
                     _save_cached_api_profile(cache_folder, ds_id, inner_dataset)
