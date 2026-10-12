@@ -190,6 +190,7 @@ Main endpoints:
 | `GET` | `/api/report/pair/download` | Download a single pair report |
 | `POST` | `/api/compare-links` | Compare DataLinkingBase links |
 | `GET` | `/api/composites` | Build composite DataLinking elements |
+| `GET` | `/api/composites/download` | Download a MoMa-compatible composite export |
 | `GET` | `/api/refine` | Run refinement for one pair and return graph data |
 | `GET` | `/api/refine/download` | Download one refinement report |
 | `POST` | `/api/similarities/select` | Compute similarities for selected profiles |

@@ -21,6 +21,7 @@ from dl.similarity import get_access_token, fetch_dataset_list, fetch_details_fr
 from dl.dmm_client import register_graph_in_dmm
 from dl.utils import normalize_weights
 from dl.link_comparison import compare_datalinkingbase_links, build_composite_datalinking_elements
+from dl.composite_export import build_moma_composite_export
 
 logger = logging.getLogger(__name__)
 
@@ -604,6 +605,7 @@ def api_build_composites(
         "threshold": th,
         "keyword_similarity_method": keyword_method,
     }
+
     source = folder or "API_Datagems"
     base_report = build_croissant_report(source, weights, similarities, {})
     profile_chunks, profile_labels = _load_profiles_for_composites(folder)
@@ -649,6 +651,35 @@ def api_build_composites(
         "comparisons": composite_data["comparisons"],
         "recursive_comparisons": composite_data.get("recursive_comparisons", []),
     }
+
+
+@app.get("/api/composites/download")
+def api_download_composites(
+    folder: Optional[str] = Query(None, description="Profile folder; omit for DataGEMS API mode"),
+    kw: float = Query(0.6, ge=0),
+    desc: float = Query(0.3, ge=0),
+    head: float = Query(0.1, ge=0),
+    th: float = Query(30.0, ge=0, le=100),
+    relation_th: float = Query(0.5, ge=0, le=1),
+    top_n: Optional[int] = Query(None, ge=1),
+    keyword_method: str = Query("jaccard"),
+    force_refresh: bool = Query(False, description="Ignore all caches and recompute from scratch"),
+):
+    report = api_build_composites(
+        folder=folder,
+        kw=kw,
+        desc=desc,
+        head=head,
+        th=th,
+        relation_th=relation_th,
+        top_n=top_n,
+        keyword_method=keyword_method,
+        force_refresh=force_refresh,
+    )
+    return _json_download(
+        build_moma_composite_export(report),
+        f"composites_moma_{_timestamp()}.json",
+    )
 
 
 # ---------------------------------------------------------------------- #

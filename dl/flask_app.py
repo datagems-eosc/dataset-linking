@@ -13,6 +13,7 @@ from flask import Flask, abort, render_template, request, send_file, make_respon
 from dl.similarity import compute_similarities, build_description_top_chunks_for_pair
 from dl.reports import build_croissant_report
 from dl.link_comparison import compare_datalinkingbase_links, build_composite_datalinking_elements
+from dl.composite_export import build_moma_composite_export
 from dl.refine import refine_similarity, build_refinement_profile
 from dl.utils import get_weights_and_threshold
 
@@ -531,6 +532,18 @@ def _cache_full_composite_report(report, token):
     temporary.replace(target)
 
 
+def _cache_moma_composite_report(report, token):
+    """Store the graph-shaped export for future MoMa ingestion."""
+    COMPOSITE_DOWNLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    target = COMPOSITE_DOWNLOAD_DIR / f"{token}_moma.json"
+    temporary = COMPOSITE_DOWNLOAD_DIR / f"{token}_moma.tmp"
+    temporary.write_text(
+        json.dumps(build_moma_composite_export(report), ensure_ascii=False, indent=4),
+        encoding="utf-8",
+    )
+    temporary.replace(target)
+
+
 # ---------------------------------------------------------------------------- #
 # Routes
 # ---------------------------------------------------------------------------- #
@@ -541,9 +554,9 @@ def download_cached_composite(token):
     if len(token) != 32 or any(character not in "0123456789abcdef" for character in token.lower()):
         abort(404)
     mode = request.args.get("mode", "compact").strip().lower()
-    if mode not in {"compact", "full"}:
+    if mode not in {"compact", "full", "moma"}:
         abort(404)
-    suffix = "_full" if mode == "full" else ""
+    suffix = "_full" if mode == "full" else "_moma" if mode == "moma" else ""
     path = COMPOSITE_DOWNLOAD_DIR / f"{token.lower()}{suffix}.json"
     if not path.is_file():
         abort(404)
@@ -981,6 +994,7 @@ def composite_links():
     if output_format != "json":
         download_token = _cache_compact_composite_report(output_data)
         _cache_full_composite_report(output_data, download_token)
+        _cache_moma_composite_report(output_data, download_token)
         return render_template(
             "composite_links.html",
             report=output_data,

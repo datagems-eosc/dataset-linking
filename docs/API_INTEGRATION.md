@@ -269,11 +269,22 @@ Build composite elements from all pair links:
 curl "http://127.0.0.1:8000/api/composites?folder=/exchange/profiles&kw=0.6&desc=0.3&head=0.1&th=30&relation_th=0.5"
 ```
 
+Download the graph-shaped MoMa-compatible export:
+
+```bash
+curl -OJ "http://127.0.0.1:8000/api/composites/download?folder=/exchange/profiles&kw=0.6&desc=0.3&head=0.1&th=30&relation_th=0.5"
+```
+
 Omit `folder` on `/api/composites` to use the configured DataGEMS API. The
 response includes `levels`, `comparisons`, `recursive_comparisons`,
 `composites`, and `final_composites`. Both endpoints reuse pairwise and
 composite chunk caches when the same profiles and parameters are analyzed
 again.
+
+The download endpoint adds `nodes` and `edges` in a PGJSON-compatible shape,
+typed dataset and composite elements, an `ai_summary`, and the complete
+original analysis under `analysis`. This keeps the export understandable to
+humans and AI systems while preserving data for a future MoMa importer.
 
 Use `force_refresh=true` to ignore report, pairwise, embedding, and composite
 chunk caches for one request and recompute from scratch. The option is a query

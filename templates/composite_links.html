@@ -342,6 +342,7 @@
         <a href="{{ url_for('index') }}{% if folder %}?folder={{ folder }}{% endif %}" class="save-btn">Back To Results</a>
         <a href="{{ download_url }}" class="save-btn">Download compact JSON</a>
         <a href="{{ full_download_url }}" class="save-btn">Download full JSON</a>
+        <a href="{{ download_url }}?mode=moma" class="save-btn">Download MoMa JSON</a>
     </div>
 
     {% if composites %}
