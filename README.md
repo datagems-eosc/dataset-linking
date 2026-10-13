@@ -312,6 +312,64 @@ The comparison page reports:
 dl/link_comparison.py
 ```
 
+## Composite Builds
+
+Composite construction is implemented in `dl/link_comparison.py` and is used by
+both `dl/flask_app.py` and `dl/fastapi_app.py`. The build has three distinct
+stages:
+
+1. Base links are filtered using the requested base similarity threshold.
+2. Green links are merged into profile groups. Smaller inputs use the
+   level-by-level recursive hierarchy and preserve the green-parent rule.
+3. Terminal groups receive aggregated chunk evidence and are returned as
+   `CompositeDataLinkingElement` objects.
+
+The composite metrics have separate meanings:
+
+- `composite_coherence` is the final recursive group score.
+- `chunk_similarity`/`chunk_similarity_avg` measure description evidence.
+- `keyword_similarity` measures keyword overlap across the internal profile
+  links.
+- `multi_profile_chunk_matches` contains the strongest one-chunk-per-profile
+  evidence groups shown in the UI.
+
+Chunk evidence is deliberately bounded. At most ten deduplicated chunks are
+considered per profile. For groups up to twenty profiles, candidate groups are
+searched exhaustively when possible and otherwise with a bounded beam search.
+For larger groups, one representative group is selected against a global
+semantic centroid; this avoids a combinatorial explosion while preserving a
+readable explanation for large composites. Near-duplicate evidence groups are
+not displayed repeatedly.
+
+For dense inputs with more than 1,000 base links, recursive clique enumeration
+is replaced by a scalable connected-component pass. Only base links above the
+effective base threshold participate, and components below the relation
+threshold are not returned as final green composites. This mode is expected for
+large all-pairs runs, such as 100 profiles producing 4,950 base links.
+
+The composite route prints progress information to the server log. A long pause
+after `Profile evidence ready` usually indicates that an old server process is
+still running; restart Flask/FastAPI after code changes before repeating the
+request. Use `force_refresh=true` only when intentionally invalidating the
+analysis and embedding caches.
+
+## Handoff Checklist
+
+Run the following from the repository root before changing composite logic:
+
+```bash
+uv run python -m unittest discover -s tests -v
+python -m py_compile dl/link_comparison.py dl/flask_app.py dl/fastapi_app.py
+git diff --check
+```
+
+The main regression coverage is in `tests/test_link_comparison.py`. It covers
+original chunk registries, cached profile-pair evidence, recursive merges,
+large chunk candidate sets, beam-search inputs, and terminal composite evidence
+propagation. The benchmark and demo scripts under `scripts/benchmarks/` and
+`scripts/demos/` are useful for checking performance and evidence quality
+without calling the production API.
+
 ## Caching
 
 Result and embedding caches are used to avoid repeated expensive computations.
