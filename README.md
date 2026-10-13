@@ -9,6 +9,172 @@ The project provides:
 - A similarity engine based on keywords, descriptions, and headlines with configurable weights.
 - Refinement logic that inspects file objects, tabular structures, text evidence, and shared resources.
 
+## Quick Start — Installation Guide (Windows 11 / macOS)
+
+This section is intended for users who are new to Python, Git, and the command line. Follow the steps for **your operating system**. You do **not** need Docker, an IDE, or a separate manual installation of Python packages.
+
+**Testing status:** The Windows 11 setup below was successfully tested on a fresh Windows 11 virtual machine (Git, `uv`, Python 3.12, dependency installation, Flask analysis, and FastAPI documentation). The macOS instructions are provided for convenience but **have not yet been tested on a Mac**.
+
+### Windows 11 — Step by step (tested)
+
+**1. Install Git**
+
+Download **Git for Windows** from <https://git-scm.com/downloads/win> and run the installer. The default options are generally sufficient; make sure Git can be used from the command line. Open **PowerShell** (Start menu → search for "PowerShell") and check:
+
+```powershell
+git --version
+```
+
+You should see a Git version number. If `git` is not recognized, close and reopen PowerShell after installation.
+
+**2. Install `uv`**
+
+In PowerShell, run:
+
+```powershell
+winget install --id astral-sh.uv -e
+```
+
+Follow any confirmation prompts. Close PowerShell, reopen it, and check:
+
+```powershell
+uv --version
+```
+
+**3. Install Python 3.12 using `uv`**
+
+```powershell
+uv python install 3.12
+uv run --no-project --python 3.12 python --version
+```
+
+The version command should print `Python 3.12.x`. A warning that Python's executable directory is not on `PATH` is not a problem for this setup: `uv` will use the Python version it installed.
+
+**4. Download the project**
+
+Choose where to keep the project. For example, to create a `Projects` folder in your user directory:
+
+```powershell
+cd $HOME
+mkdir Projects
+cd Projects
+git clone https://github.com/datagems-eosc/dataset-linking.git
+cd dataset-linking
+```
+
+All following commands must be run **inside the `dataset-linking` directory**, where `pyproject.toml` and `uv.lock` are located. If `Projects` already exists, the `mkdir` step can be skipped.
+
+**5. Install project dependencies**
+
+```powershell
+uv sync --python 3.12 --locked
+```
+
+This creates or updates the project's `.venv` virtual environment and installs the dependencies from the lock file. The first installation may take a while, particularly for machine-learning libraries. Do not close the terminal until the command finishes without errors.
+
+**6. Start the web application (Flask)**
+
+```powershell
+uv run flask --app dl.flask_app run
+```
+
+Keep this terminal open. Inside the same computer, open <http://127.0.0.1:5000> in a browser. For a first test, enter `demo_profiles` in the folder field and run an analysis. Initial model downloads or computations may take extra time.
+
+**7. Start the REST API (FastAPI; optional)**
+
+Open a **second** PowerShell window and navigate to your cloned project directory again (for the example above, use `cd "$HOME\Projects\dataset-linking"`). Then run:
+
+```powershell
+uv run uvicorn dl.fastapi_app:app --host 127.0.0.1 --port 8000
+```
+
+Keep the second terminal open and visit <http://127.0.0.1:8000/docs> for the interactive API documentation (Swagger UI). You can leave Flask running in the first terminal.
+
+To stop either server, return to its terminal and press **Ctrl+C**.
+
+### macOS — Step by step (not yet verified on a Mac)
+
+These commands are intended for a regular macOS Terminal. Some details can differ by macOS version and whether your Mac has an Apple Silicon or Intel processor.
+
+**1. Install Git**
+
+Open **Terminal** (Applications → Utilities → Terminal) and check:
+
+```bash
+git --version
+```
+
+If Git is unavailable, macOS may offer to install Apple's Command Line Tools. You can also request them with:
+
+```bash
+xcode-select --install
+```
+
+Follow the on-screen instructions and then check `git --version` again.
+
+**2. Install `uv`**
+
+Follow the official instructions at <https://docs.astral.sh/uv/getting-started/installation/>. One supported installation method is:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Close and reopen Terminal, then check:
+
+```bash
+uv --version
+```
+
+If `uv` cannot be found, follow the PATH instructions displayed by its installer or on the official installation page.
+
+**3. Install Python 3.12 and clone the project**
+
+```bash
+uv python install 3.12
+uv run --no-project --python 3.12 python --version
+mkdir -p ~/Projects
+cd ~/Projects
+git clone https://github.com/datagems-eosc/dataset-linking.git
+cd dataset-linking
+```
+
+**4. Install dependencies**
+
+```bash
+uv sync --python 3.12 --locked
+```
+
+**5. Run Flask**
+
+```bash
+uv run flask --app dl.flask_app run
+```
+
+Open <http://127.0.0.1:5000> and try the `demo_profiles` folder. Keep Terminal open while using the application.
+
+**6. Run FastAPI (optional)**
+
+Open a second Terminal window:
+
+```bash
+cd ~/Projects/dataset-linking
+uv run uvicorn dl.fastapi_app:app --host 127.0.0.1 --port 8000
+```
+
+Open <http://127.0.0.1:8000/docs>. Stop either server by pressing **Ctrl+C** in the corresponding Terminal window.
+
+### Common Issues
+
+- **`git` or `uv` is not recognized / command not found:** close and reopen your terminal; make sure the tool was installed successfully. For `uv` on macOS, check the installer PATH instructions.
+- **`python` is not recognized:** use `uv` commands as shown above; Python does not need to be on your global `PATH`.
+- **`uv sync` fails:** confirm you are inside `dataset-linking` and have an Internet connection. Copy the complete error message when requesting help; do not blindly install packages one by one.
+- **Browser cannot reach Flask or FastAPI:** confirm that the corresponding terminal is still running, and open the matching URL and port (`5000` for Flask, `8000` for FastAPI).
+- **First analysis is slow:** the application uses embedding models that may be downloaded or initialized on first use. Wait for the analysis to finish and check the server terminal for errors.
+- **Using DataGEMS platform endpoints:** some remote/API-based workflows may need access or configuration beyond the local `demo_profiles` example. The quick start only verifies local operation.
+
+---
+
 ## Project Layout
 
 ```text
@@ -93,7 +259,7 @@ When building composites, the terminal shows progress such as the number of base
 From the project root:
 
 ```bash
-python -m uvicorn dl.fastapi_app:app --host 0.0.0.0 --port 8000 --reload
+uv run uvicorn dl.fastapi_app:app --host 0.0.0.0 --port 8000 --reload
 ```
 
 Open Swagger UI at:
