@@ -18,6 +18,8 @@ RECURSIVE_KEYWORD_WEIGHT = 0.25
 REPRESENTATIVE_CHUNK_LIMIT = 3
 MAX_PROFILE_CHUNK_CANDIDATES = 10
 MAX_EXHAUSTIVE_CHUNK_COMBINATIONS = 10000
+MAX_BEAM_PROFILE_COUNT = 20
+MAX_RECURSIVE_BASE_LINKS = 1000
 CHUNK_BEAM_WIDTH = 200
 
 # Legacy latent-bridge configuration is retained for backward-compatible
@@ -171,7 +173,21 @@ def _multi_profile_chunk_evidence(
             combination_count *= len(selected_chunks[profile])
 
         candidates = []
-        if combination_count <= MAX_EXHAUSTIVE_CHUNK_COMBINATIONS:
+        if len(profiles) > MAX_BEAM_PROFILE_COUNT:
+            # For very large composites, a full beam search repeatedly scores
+            # every profile pair and becomes slower than the build itself.
+            # Choose one chunk per profile against the global semantic centroid
+            # and evaluate that single all-profile candidate.
+            centroid = sum(
+                embeddings_cache[profile].mean(dim=0, keepdim=True)
+                for profile in profiles
+            ) / len(profiles)
+            indexes = [
+                int(util.cos_sim(embeddings_cache[profile], centroid).argmax().item())
+                for profile in profiles
+            ]
+            candidates = [evaluate(indexes)]
+        elif combination_count <= MAX_EXHAUSTIVE_CHUNK_COMBINATIONS:
             candidates = [
                 evaluate(indexes)
                 for indexes in product(*(range(len(selected_chunks[profile])) for profile in profiles))
@@ -1471,12 +1487,10 @@ def _compare_level_items(
                 evidence_chunks[profile_key] = [entry.get("text", "") for entry in entries]
             if not evidence_labels.get(profile_key) and entries:
                 evidence_labels[profile_key] = entries[0].get("profile_name") or profile_key
-        multi_profile_matches = _multi_profile_chunk_evidence(
-            sorted(merged_profiles),
-            evidence_chunks,
-            evidence_labels,
-            cache=profile_chunk_cache,
-        ) if profile_chunks is not None and evidence_chunks else []
+        # Multi-profile groups are attached once to terminal composites below.
+        # Computing them for every intermediate merge is quadratic in the number
+        # of candidate links and dominates large (100+ profile) builds.
+        multi_profile_matches = []
         return {
             "@type": "RecursiveCompositeComparison",
             "@id": f"recursive-comparison:{uuid.uuid4()}",
@@ -1950,6 +1964,36 @@ def _build_hierarchy_levels(
 
     return levels, recursive_comparisons
 
+
+def _attach_terminal_chunk_evidence(
+        items: List[Dict[str, Any]],
+        profile_chunks: Optional[Dict[str, List[str]]],
+        profile_labels: Optional[Dict[str, str]],
+        profile_chunk_cache: Optional[Dict[str, Any]],
+) -> None:
+    if profile_chunks is None:
+        return
+    registry = profile_chunks
+    labels = profile_labels or {}
+    for item in items:
+        profiles = item.get("profiles", []) or []
+        profile_keys = sorted(
+            key for key in (_profile_key(profile) for profile in profiles) if key
+        )
+        if not profile_keys:
+            continue
+        chunks = {key: list(registry.get(key, []) or []) for key in profile_keys}
+        matches = _multi_profile_chunk_evidence(
+            profile_keys,
+            chunks,
+            {key: labels.get(key, key) for key in profile_keys},
+            cache=profile_chunk_cache,
+        )
+        merge_evidence = item.setdefault("mergeEvidence", {})
+        merge_evidence["multi_profile_chunk_matches"] = matches
+        if matches:
+            merge_evidence["chunk_evidence_strategy"] = "multi_profile_anchor_chunks"
+
 def _composite_from_level_item(item: Dict[str, Any]) -> Dict[str, Any]:
     recursive_coherence = item.get("recursive_coherence", item.get("similarity", 0.0))
     profiles = item.get("profiles", []) or []
@@ -2038,8 +2082,9 @@ def _component_composite(
         "internal_pair_count": profile_count * (profile_count - 1) // 2,
         "profile_count": profile_count,
         "comparison_count": len(component_comparisons),
-        "composite_coherence": evidence["relation_similarity_avg"],
+        "composite_coherence": evidence["relation_similarity_avg"] or evidence["base_link_similarity_avg"],
         "evidence": evidence,
+        "mergeEvidence": {},
         "construction": "connected_component",
     }
 
@@ -2085,6 +2130,48 @@ def _build_component_composites(
     return components
 
 
+def _build_profile_component_composites(
+        links: List[Dict[str, Any]],
+) -> List[Dict[str, Any]]:
+    """Build connected composites without enumerating recursive cliques."""
+    links_by_id = {link.get("@id"): link for link in links if link.get("@id")}
+    parent = {link_id: link_id for link_id in links_by_id}
+    profile_owner = {}
+
+    def find(link_id):
+        while parent[link_id] != link_id:
+            parent[link_id] = parent[parent[link_id]]
+            link_id = parent[link_id]
+        return link_id
+
+    def union(left, right):
+        left_root, right_root = find(left), find(right)
+        if left_root != right_root:
+            parent[right_root] = left_root
+
+    for link in links:
+        link_id = link.get("@id")
+        if not link_id:
+            continue
+        for profile in _profile_entries(link):
+            profile_key = _profile_key(profile)
+            if not profile_key:
+                continue
+            previous = profile_owner.get(profile_key)
+            if previous:
+                union(link_id, previous)
+            else:
+                profile_owner[profile_key] = link_id
+
+    groups = {}
+    for link_id in links_by_id:
+        groups.setdefault(find(link_id), set()).add(link_id)
+    return [
+        _component_composite(component_link_ids, links_by_id, [])
+        for component_link_ids in groups.values()
+    ]
+
+
 def _component_level_item(composite: Dict[str, Any]) -> Dict[str, Any]:
     return {
         "@type": "HierarchyLevelItem",
@@ -2096,6 +2183,7 @@ def _component_level_item(composite: Dict[str, Any]) -> Dict[str, Any]:
         "comparisonRefs": composite.get("comparisonRefs", []),
         "profiles": composite.get("profiles", []),
         "evidence": composite.get("evidence", {}),
+        "mergeEvidence": composite.get("mergeEvidence", {}),
     }
 
 
@@ -2144,6 +2232,39 @@ def build_composite_datalinking_elements(
     if force_refresh:
         profile_chunk_cache.clear()
         original_chunk_cache.clear()
+    if len(selected_links) > MAX_RECURSIVE_BASE_LINKS:
+        # A dense 100-profile graph has 4,950 base links and an exponential
+        # number of recursive cliques. Connected components preserve the useful
+        # grouping while keeping the build bounded.
+        components = _build_profile_component_composites(selected_links)
+        _attach_terminal_chunk_evidence(
+            components,
+            profile_chunks,
+            profile_labels,
+            profile_chunk_cache,
+        )
+        component_levels = _build_component_levels(selected_links, components)
+        return {
+            "comparisons": comparisons,
+            "recursive_comparisons": [],
+            "recursive_levels": component_levels,
+            "connected_component_composites": components,
+            "connected_component_levels": component_levels,
+            "construction": "scalable_connected_components",
+            "latent_semantic_bridge_config": {
+                "enabled": True,
+                "relation_threshold": max(float(relation_threshold), float(latent_relation_threshold)),
+                "profile_pair_threshold": float(latent_profile_pair_threshold),
+                "minimum_strong_profile_pairs": max(1, int(latent_min_strong_profile_pairs)),
+                "minimum_profile_coverage": float(latent_min_profile_coverage),
+                "chunk_weight": RECURSIVE_CHUNK_WEIGHT,
+                "keyword_weight": RECURSIVE_KEYWORD_WEIGHT,
+            },
+            "composites": components,
+            "final_composites": components,
+            "levels": component_levels,
+        }
+
     recursive_levels, recursive_comparisons = _build_hierarchy_levels(
         selected_links,
         comparisons,
@@ -2158,7 +2279,14 @@ def build_composite_datalinking_elements(
         latent_min_profile_coverage,
         original_chunk_cache,
     )
-    recursive_components = [_composite_from_level_item(item) for item in _final_composite_items(recursive_levels)]
+    terminal_items = _final_composite_items(recursive_levels)
+    _attach_terminal_chunk_evidence(
+        terminal_items,
+        profile_chunks,
+        profile_labels,
+        profile_chunk_cache,
+    )
+    recursive_components = [_composite_from_level_item(item) for item in terminal_items]
     component_composites = _build_component_composites(selected_links, comparisons)
     component_levels = _build_component_levels(selected_links, component_composites)
     # Only terminal items from the level-by-level hierarchy are composites.
