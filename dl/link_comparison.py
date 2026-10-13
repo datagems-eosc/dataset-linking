@@ -2009,6 +2009,21 @@ def _attach_terminal_chunk_evidence(
         merge_evidence["multi_profile_chunk_matches"] = matches
         if matches:
             merge_evidence["chunk_evidence_strategy"] = "multi_profile_anchor_chunks"
+            if not float(merge_evidence.get("chunk_similarity") or 0.0):
+                merge_evidence["chunk_similarity"] = float(matches[0].get("similarity") or 0.0)
+
+        pair_keyword_scores = [
+            float(metric.get("keyword_similarity") or 0.0)
+            for metric in merge_evidence.get("internal_pair_metrics", []) or []
+            if metric.get("keyword_similarity") is not None
+        ]
+        if pair_keyword_scores and not float(merge_evidence.get("keyword_similarity") or 0.0):
+            merge_evidence["keyword_similarity"] = _average(pair_keyword_scores)
+
+        evidence = item.setdefault("evidence", {})
+        evidence["recursive_chunk_similarity"] = merge_evidence.get("chunk_similarity", 0.0)
+        evidence["recursive_keyword_similarity"] = merge_evidence.get("keyword_similarity", 0.0)
+        evidence["chunk_similarity_avg"] = merge_evidence.get("chunk_similarity", 0.0)
 
 def _composite_from_level_item(item: Dict[str, Any]) -> Dict[str, Any]:
     recursive_coherence = item.get("recursive_coherence", item.get("similarity", 0.0))
