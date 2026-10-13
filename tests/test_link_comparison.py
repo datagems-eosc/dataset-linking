@@ -96,6 +96,29 @@ class OriginalChunkComparisonTests(unittest.TestCase):
         self.assertEqual(len(second), 3)
         self.assertTrue(all(len(item["profiles"]) == 3 for item in first))
 
+    def test_multi_profile_evidence_handles_large_beam_search(self):
+        model = _ChunkPoolModel()
+        profile_keys = [f"profile-{index}" for index in range(11)]
+        profile_chunks = {
+            key: [f"{key} chunk {index}" for index in range(10)]
+            for key in profile_keys
+        }
+        fake_similarity = types.SimpleNamespace(_ensure_models=lambda: None, _model_long=model)
+        fake_sentence_transformers = types.SimpleNamespace(
+            util=types.SimpleNamespace(
+                cos_sim=lambda left, right: torch.nn.functional.normalize(left) @ torch.nn.functional.normalize(right).T
+            )
+        )
+
+        with patch.object(dl, "similarity", fake_similarity, create=True), patch.dict(sys.modules, {
+            "dl.similarity": fake_similarity,
+            "sentence_transformers": fake_sentence_transformers,
+        }):
+            result = link_comparison._multi_profile_chunk_evidence(profile_keys, profile_chunks)
+
+        self.assertEqual(len(result), 3)
+        self.assertTrue(all(len(item["profiles"]) == len(profile_keys) for item in result))
+
     def test_registry_keeps_chunks_outside_link_top_three(self):
         link = {
             "@id": "AB",

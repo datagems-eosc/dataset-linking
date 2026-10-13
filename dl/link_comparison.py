@@ -141,13 +141,14 @@ def _multi_profile_chunk_evidence(
             return matrix if left == key[0] else matrix.T
 
         def evaluate(indexes):
+            active_profiles = profiles[:len(indexes)]
             selected = {
                 profile: indexes[position]
-                for position, profile in enumerate(profiles)
+                for position, profile in enumerate(active_profiles)
             }
             pair_scores = []
             pair_details = []
-            for left, right in combinations(profiles, 2):
+            for left, right in combinations(active_profiles, 2):
                 score = float(pair_matrix(left, right)[selected[left], selected[right]].item())
                 score = max(0.0, min(1.0, score))
                 pair_scores.append(score)
@@ -155,8 +156,8 @@ def _multi_profile_chunk_evidence(
                     "pair": [left, right],
                     "similarity": round(score, 4),
                 })
-            minimum = min(pair_scores)
-            average = sum(pair_scores) / len(pair_scores)
+            minimum = min(pair_scores) if pair_scores else 1.0
+            average = sum(pair_scores) / len(pair_scores) if pair_scores else 1.0
             return {
                 "similarity": round(0.5 * minimum + 0.5 * average, 4),
                 "minimum_pair_similarity": round(minimum, 4),
