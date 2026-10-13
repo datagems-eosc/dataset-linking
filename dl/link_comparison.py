@@ -2195,6 +2195,7 @@ def _component_level_item(composite: Dict[str, Any]) -> Dict[str, Any]:
         "id": composite.get("@id"),
         "label": f"Cluster of {composite.get('profile_count', 0)} profile(s)",
         "similarity": composite.get("composite_coherence", 0.0),
+        "status": composite.get("status", "red"),
         "linkRefs": composite.get("linkRefs", []),
         "comparisonRefs": composite.get("comparisonRefs", []),
         "profiles": composite.get("profiles", []),
@@ -2252,7 +2253,22 @@ def build_composite_datalinking_elements(
         # A dense 100-profile graph has 4,950 base links and an exponential
         # number of recursive cliques. Connected components preserve the useful
         # grouping while keeping the build bounded.
-        components = _build_profile_component_composites(selected_links)
+        effective_base_threshold = base_threshold if base_threshold is not None else relation_threshold
+        scalable_links = []
+        for link in selected_links:
+            try:
+                combined_similarity = float((link.get("metrics") or {}).get("combined_similarity", 0)) / 100.0
+            except (TypeError, ValueError):
+                combined_similarity = 0.0
+            if combined_similarity >= effective_base_threshold:
+                scalable_links.append(link)
+        components = _build_profile_component_composites(scalable_links)
+        for component in components:
+            component["status"] = (
+                "green"
+                if float(component.get("composite_coherence") or 0.0) >= relation_threshold
+                else "red"
+            )
         _attach_terminal_chunk_evidence(
             components,
             profile_chunks,
@@ -2260,6 +2276,7 @@ def build_composite_datalinking_elements(
             profile_chunk_cache,
         )
         component_levels = _build_component_levels(selected_links, components)
+        green_components = [component for component in components if component.get("status") == "green"]
         return {
             "comparisons": comparisons,
             "recursive_comparisons": [],
@@ -2276,8 +2293,8 @@ def build_composite_datalinking_elements(
                 "chunk_weight": RECURSIVE_CHUNK_WEIGHT,
                 "keyword_weight": RECURSIVE_KEYWORD_WEIGHT,
             },
-            "composites": components,
-            "final_composites": components,
+            "composites": green_components,
+            "final_composites": green_components,
             "levels": component_levels,
         }
 
