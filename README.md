@@ -342,10 +342,11 @@ readable explanation for large composites. Near-duplicate evidence groups are
 not displayed repeatedly.
 
 For dense inputs with more than 1,000 base links, recursive clique enumeration
-is replaced by a scalable connected-component pass. Only base links above the
-effective base threshold participate, and components below the relation
-threshold are not returned as final green composites. This mode is expected for
-large all-pairs runs, such as 100 profiles producing 4,950 base links.
+is replaced by a connected-component pass with bounded processing. Only base
+links above the effective base threshold participate, and components below the
+relation threshold are not returned as final green composites. Since an
+all-pairs run over 100 profiles produces 4,950 base links, this path is used
+for datasets of that size and larger dense graphs.
 
 The composite route prints progress information to the server log. A long pause
 after `Profile evidence ready` usually indicates that an old server process is
