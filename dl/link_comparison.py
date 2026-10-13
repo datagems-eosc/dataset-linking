@@ -1460,12 +1460,22 @@ def _compare_level_items(
             + RECURSIVE_KEYWORD_WEIGHT * keyword_similarity,
             4,
         )
+        # Fill missing profile chunks from the complete original registry so
+        # large composites can show one shared chunk group across all members.
+        evidence_chunks = dict(profile_chunks or {}) if profile_chunks is not None else {}
+        evidence_labels = dict(profile_labels or {})
+        for profile_key in merged_profiles if profile_chunks is not None else []:
+            entries = original_chunk_registry.get(profile_key, [])
+            if not evidence_chunks.get(profile_key):
+                evidence_chunks[profile_key] = [entry.get("text", "") for entry in entries]
+            if not evidence_labels.get(profile_key) and entries:
+                evidence_labels[profile_key] = entries[0].get("profile_name") or profile_key
         multi_profile_matches = _multi_profile_chunk_evidence(
             sorted(merged_profiles),
-            profile_chunks or {},
-            profile_labels,
+            evidence_chunks,
+            evidence_labels,
             cache=profile_chunk_cache,
-        ) if profile_chunks else []
+        ) if profile_chunks is not None and evidence_chunks else []
         return {
             "@type": "RecursiveCompositeComparison",
             "@id": f"recursive-comparison:{uuid.uuid4()}",
@@ -1502,6 +1512,7 @@ def _compare_level_items(
                  "reused_profile_pair_count": reused_pair_count,
                  "new_profile_pair_count": len(pair_metrics) - reused_pair_count,
                  "internal_pair_metrics": pair_metrics,
+                 "profile_pair_chunk_matches": pair_metrics,
                 "internal_pair_statuses": pair_statuses,
                 "internal_pair_scores": [round(score, 4) for score in combined_scores],
             },
@@ -1583,6 +1594,7 @@ def _compare_level_items(
         "excluded_self_chunk_pairs": chunk_comparison.get("excluded_self_pairs", []),
         "description_chunk_matches": chunk_comparison["matches"],
         "cross_profile_pair_scores": chunk_comparison.get("profile_pair_scores", []),
+        "profile_pair_chunk_matches": chunk_comparison.get("profile_pair_scores", []),
         "chunk_evidence_strategy": chunk_comparison.get(
             "evidence_strategy",
             "recursive_representative_chunks",
@@ -1702,8 +1714,9 @@ def _composite_level_item(
              "evaluated_profile_pair_count": recursive_evidence.get("evaluated_profile_pair_count", 0),
              "reused_profile_pair_count": recursive_evidence.get("reused_profile_pair_count", 0),
              "new_profile_pair_count": recursive_evidence.get("new_profile_pair_count", 0),
-             "internal_pair_metrics": recursive_evidence.get("internal_pair_metrics", []),
-             "shared_keywords": recursive_evidence.get("shared_keywords", []),
+            "internal_pair_metrics": recursive_evidence.get("internal_pair_metrics", []),
+            "profile_pair_chunk_matches": recursive_evidence.get("profile_pair_chunk_matches", []),
+            "shared_keywords": recursive_evidence.get("shared_keywords", []),
         },
         "evidence": evidence,
     }
@@ -1762,6 +1775,7 @@ def _merge_duplicate_composite_item(
              "reused_profile_pair_count": recursive_evidence.get("reused_profile_pair_count", 0),
              "new_profile_pair_count": recursive_evidence.get("new_profile_pair_count", 0),
              "internal_pair_metrics": recursive_evidence.get("internal_pair_metrics", []),
+             "profile_pair_chunk_matches": recursive_evidence.get("profile_pair_chunk_matches", []),
              "shared_keywords": recursive_evidence.get("shared_keywords", []),
         }
 

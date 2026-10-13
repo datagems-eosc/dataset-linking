@@ -500,6 +500,17 @@ CSV/Table Columns: {{ composite.evidence.csv_table_column_names|join(', ') }}</d
                                     <li>{{ "%.1f%%"|format(chunk_score if chunk_score > 1 else chunk_score * 100) }}: {{ match.chunk_evidence_1 or match.chunk1 or "(left chunk unavailable)" }} &lt;-&gt; {{ match.chunk_evidence_2 or match.chunk2 or "(right chunk unavailable)" }}</li>
                                     {% endfor %}
                                 </ul>
+                                {% if item.mergeEvidence.profile_pair_chunk_matches %}
+                                <strong>Common chunks by profile pair:</strong>
+                                <ul class="compact-list">
+                                    {% for match in item.mergeEvidence.profile_pair_chunk_matches[:20] %}
+                                    <li>{{ "%.1f%%"|format((match.similarity|default(0)|float) * 100) }}: {{ match.left_profile_name or match.left_profile_key }}: {{ match.left_text }} &lt;-&gt; {{ match.right_profile_name or match.right_profile_key }}: {{ match.right_text }}</li>
+                                    {% endfor %}
+                                </ul>
+                                {% if item.mergeEvidence.profile_pair_chunk_matches|length > 20 %}
+                                <span class="muted">Showing the 20 strongest profile-pair chunk matches.</span>
+                                {% endif %}
+                                {% endif %}
                             </div>
                             {% endif %}
                             {% if item.evidence.description_top_chunks %}

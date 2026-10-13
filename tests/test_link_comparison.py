@@ -210,23 +210,25 @@ class OriginalChunkComparisonTests(unittest.TestCase):
                 "evaluated_chunk_pair_count": 1,
             }
 
+        shared_group = [{"profiles": [{"profile": "A", "text": "shared"}, {"profile": "B", "text": "shared"}, {"profile": "C", "text": "shared"}], "similarity": 0.9}]
         with patch.object(link_comparison, "compare_datalinkingbase_links", return_value=[]), patch.object(
             link_comparison,
             "_profile_pair_original_chunk_match",
             side_effect=fake_match,
-        ):
+        ), patch.object(link_comparison, "_multi_profile_chunk_evidence", return_value=shared_group):
             result = link_comparison.build_composite_datalinking_elements([
                 link("AB", "A", "B"),
                 link("BC", "B", "C"),
                 link("AC", "A", "C"),
-            ])
+            ], profile_chunks={"a": [], "b": [], "c": []})
 
         self.assertEqual(result["construction"], "recursive_green_parent_hierarchy")
         self.assertEqual(len(result["composites"]), 1)
         merge_evidence = result["composites"][0]["mergeEvidence"]
-        self.assertEqual(merge_evidence["chunk_evidence_strategy"], "cached_base_pair_metrics")
+        self.assertEqual(merge_evidence["chunk_evidence_strategy"], "multi_profile_anchor_chunks")
         self.assertEqual(merge_evidence["evaluated_profile_pair_count"], 3)
         self.assertEqual(merge_evidence["chunk_similarity"], 0.8)
+        self.assertEqual(merge_evidence["multi_profile_chunk_matches"], shared_group)
 
     def test_only_green_parents_can_create_a_next_level(self):
         def link(link_id, left, right, score):
