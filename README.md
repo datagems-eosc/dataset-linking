@@ -66,7 +66,7 @@ The Flask UI supports:
 
 ## Demo Profiles
 
-The repository includes ten small, synthetic profiles in `demo_profiles/`, arranged in two thematic groups. From the Flask home page, click `Load demo profiles`, or enter `demo_profiles` in the folder field. The demo button uses a 45% threshold to make the two intended final composites easier to see without calling the DataGEMS API; the general application default remains unchanged.
+The repository includes ten small, synthetic profiles in `demo_profiles/`, arranged in two thematic groups. To run them locally, enter `demo_profiles` in the folder field. Demo data uses a 45% threshold to make the two intended final composites easier to see without calling the DataGEMS API; the general application default remains unchanged.
 
 To demonstrate the multi-profile chunk evidence directly, run:
 
