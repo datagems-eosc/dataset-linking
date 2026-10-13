@@ -20,6 +20,7 @@ MAX_PROFILE_CHUNK_CANDIDATES = 10
 MAX_EXHAUSTIVE_CHUNK_COMBINATIONS = 10000
 MAX_BEAM_PROFILE_COUNT = 20
 MAX_RECURSIVE_BASE_LINKS = 1000
+MAX_SHARED_GROUP_TEXT_OVERLAP = 0.75
 CHUNK_BEAM_WIDTH = 200
 
 # Legacy latent-bridge configuration is retained for backward-compatible
@@ -230,12 +231,27 @@ def _multi_profile_chunk_evidence(
 
         candidates.sort(key=lambda item: item["similarity"], reverse=True)
         unique = []
-        seen = set()
         for candidate in candidates:
-            key = tuple((item["profile_id"], item["text"]) for item in candidate["profiles"])
-            if key in seen:
+            candidate_texts = {
+                item["profile_id"]: _normalized_text(item["text"])
+                for item in candidate["profiles"]
+            }
+            too_similar = False
+            for previous in unique:
+                previous_texts = {
+                    item["profile_id"]: _normalized_text(item["text"])
+                    for item in previous["profiles"]
+                }
+                shared_profiles = set(candidate_texts) & set(previous_texts)
+                overlap = sum(
+                    candidate_texts[profile] == previous_texts[profile]
+                    for profile in shared_profiles
+                ) / len(shared_profiles) if shared_profiles else 0.0
+                if overlap >= MAX_SHARED_GROUP_TEXT_OVERLAP:
+                    too_similar = True
+                    break
+            if too_similar:
                 continue
-            seen.add(key)
             unique.append(candidate)
             if len(unique) >= limit:
                 break
