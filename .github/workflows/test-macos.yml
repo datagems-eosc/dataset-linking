@@ -1,0 +1,31 @@
+
+name: Test macOS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-macos:
+    runs-on: macos-15
+    timeout-minutes: 45
+
+    steps:
+      - name: Download repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Install Python 3.12
+        run: uv python install 3.12
+
+      - name: Install dependencies
+        run: uv sync --python 3.12 --locked
+
+      - name: Check Flask and FastAPI imports
+        run: |
+          uv run python -c "import dl.flask_app; print('Flask OK')"
+          uv run python -c "import dl.fastapi_app; print('FastAPI OK')"
+
+      - name: Run automated tests
+        run: uv run python -m unittest discover -s tests -v
