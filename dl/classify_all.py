@@ -1,3 +1,5 @@
+"""Command-line helper that classifies every JSON profile in a folder."""
+
 import os
 import json
 from dl.utils import classify_dataset

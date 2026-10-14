@@ -1,4 +1,9 @@
-# dl/flask_app.py
+"""Flask web interface for interactive Dataset Linking analysis.
+
+Routes in this module orchestrate the similarity engine and render templates;
+the scoring and composite algorithms live in the lower-level modules instead.
+"""
+
 import io
 import json
 import tempfile
@@ -26,9 +31,9 @@ from dl.refine import (
 from dl.similarity import get_access_token, fetch_dataset_list, fix_encoding, DETAIL_URL
 import requests
 
-# ---------------------------------------------------------------------------- #
-# App setup
-# ---------------------------------------------------------------------------- #
+# Application-level caches intentionally live in memory. They speed up the UI
+# during one process lifetime; persistent profile/pair caches are managed by
+# ``dl.similarity`` and the selected source folder.
 BASE_DIR = Path(__file__).resolve().parent.parent
 COMPOSITE_DOWNLOAD_DIR = Path(tempfile.gettempdir()) / "dataset-linking-composite-downloads"
 COMPOSITE_DOWNLOAD_TTL_SECONDS = 6 * 60 * 60
@@ -45,6 +50,7 @@ app = Flask(
 # Utility
 # ---------------------------------------------------------------------------- #
 def get_requested_folder():
+    """Return the user-selected source folder in a platform-safe form."""
     raw = request.args.get("folder", "")
     raw = unquote_plus(raw).strip()
     if not raw:
@@ -77,6 +83,7 @@ def _local_source_marker(folder_path):
 
 
 def _analysis_cache_key(folder_path, kw, desc, head, th, keyword_method):
+    """Build a key that changes when source files or scoring options change."""
     return (
         str(folder_path or "API_Datagems"),
         _local_source_marker(folder_path),

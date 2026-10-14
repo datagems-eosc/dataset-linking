@@ -1,4 +1,10 @@
-# dl/refine.py
+"""Detailed pair refinement and PGJSON graph construction.
+
+Refinement runs after pairwise similarity and inspects distributions, record
+sets, files, tables, columns, and text evidence. It produces the graph payload
+used by the Flask UI, FastAPI responses, and optional DMM registration.
+"""
+
 import json
 import re
 import uuid

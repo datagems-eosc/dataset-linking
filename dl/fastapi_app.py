@@ -1,4 +1,10 @@
-# dl/fastapi_app.py
+"""FastAPI endpoints for reports, comparisons, composites, jobs, and exports.
+
+The synchronous endpoints are convenient for local use. The report/refine job
+endpoints run the same core functions in background tasks and expose polling
+state through the in-memory ``JOBS`` registry.
+"""
+
 import io
 import json
 import logging
@@ -56,6 +62,8 @@ def _json_download(payload: dict, filename: str) -> StreamingResponse:
     return StreamingResponse(buf, media_type="application/json", headers=headers)
 
 JOBS: Dict[str, Dict[str, Any]] = {}
+# These caches are process-local. A service restart clears them; disk/profile
+# caches still allow the expensive pairwise work to be reused where supported.
 COMPOSITE_CHUNK_CACHES: Dict[str, Dict[str, Dict[Any, Any]]] = {}
 
 
@@ -84,7 +92,12 @@ def _profile_filename_lookup(folder: str) -> Dict[str, str]:
 
 
 def _load_profiles_for_composites(folder: Optional[str]) -> tuple[Dict[str, Any], Dict[str, str]]:
-    """Load descriptions and labels using the same source mode as similarity."""
+    """Load descriptions and labels using the same source mode as similarity.
+
+    Composite evidence needs the full descriptions even when the pairwise
+    report was loaded from cache, so this step deliberately has its own source
+    loading path.
+    """
     profiles: Dict[str, Any] = {}
     if folder:
         for file_path in Path(folder).glob("*.json"):
@@ -118,6 +131,7 @@ def _load_profiles_for_composites(folder: Optional[str]) -> tuple[Dict[str, Any]
 
 
 def _composite_cache_for(folder: Optional[str]) -> Dict[str, Dict[Any, Any]]:
+    """Return the process-local chunk caches for one source folder."""
     key = folder or "API_Datagems"
     return COMPOSITE_CHUNK_CACHES.setdefault(key, {"profile": {}, "original": {}})
 

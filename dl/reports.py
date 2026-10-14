@@ -1,4 +1,5 @@
-# dl/reports.py
+"""Builders for the Croissant-like similarity report consumed by the UI/API."""
+
 import uuid
 import os, json
 
@@ -7,6 +8,9 @@ def build_croissant_report(folder_path, weights, similarities, file_data=None):
     Build a Croissant-like semantic report containing:
       - all analyzed profiles as DLElements
       - similarity links between them
+
+    The profile element block is retained in the historical implementation,
+    while current consumers primarily use the ``links`` list.
     """
     if file_data is None:
         file_data = {}

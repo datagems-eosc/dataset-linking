@@ -1,3 +1,10 @@
+"""Legacy standalone refinement runner for a fixed local profile directory.
+
+Normal application flows call ``dl.refine`` directly. Keep this script for
+manual diagnostics, but update ``DATA_FOLDER`` before using it on another
+machine.
+"""
+
 import json
 import re
 import os

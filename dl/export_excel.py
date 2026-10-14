@@ -1,3 +1,5 @@
+"""Legacy Excel export helper for API-backed similarity results."""
+
 import json
 import pandas as pd
 import torch
@@ -10,6 +12,7 @@ from dl.refine import split_chunks
 
 
 def export_to_excel_from_api(output_name="Similarity_Report.xlsx"):
+    """Download ready profiles, calculate similarities, and write an XLSX file."""
     # 1. Clean cache and temporary folders.
     print("🧹 Cleaning cache and temporary files...")
     for cache_file in glob.glob("cache_local_*.json"):

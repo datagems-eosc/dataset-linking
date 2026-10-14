@@ -1,8 +1,6 @@
-# dl/main.py
-"""
-Main entry point.
---------------------------------
-Launch the Flask web interface (or optionally use the FastAPI backend separately).
+"""Launch the Flask interface when ``python -m dl.main`` is used.
+
+FastAPI is started separately with Uvicorn; see the README for both commands.
 """
 
 from dl.flask_app import app as flask_app

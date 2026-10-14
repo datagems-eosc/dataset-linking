@@ -1,3 +1,11 @@
+"""Comparison and composite-building logic.
+
+The module first represents each pair link as a hierarchy item, then merges
+only compatible green parent groups. The final output contains both the score
+used for the merge and the evidence that explains it. Limits near the top of
+the file are intentional safeguards for large all-pairs runs.
+"""
+
 import math
 import uuid
 from itertools import combinations, product
@@ -16,6 +24,8 @@ METRIC_KEYS = [
 RECURSIVE_CHUNK_WEIGHT = 0.75
 RECURSIVE_KEYWORD_WEIGHT = 0.25
 REPRESENTATIVE_CHUNK_LIMIT = 3
+# These limits keep evidence generation bounded. They affect explanation
+# generation, not the base pair scores used to decide whether a link is green.
 MAX_PROFILE_CHUNK_CANDIDATES = 10
 MAX_EXHAUSTIVE_CHUNK_COMBINATIONS = 10000
 MAX_BEAM_PROFILE_COUNT = 20
@@ -91,7 +101,11 @@ def _multi_profile_chunk_evidence(
         limit: int = 3,
         cache: Optional[Dict[str, Any]] = None,
 ) -> List[Dict[str, Any]]:
-    """Find one-chunk-per-profile evidence groups using cached pair scores."""
+    """Find explainable one-chunk-per-profile groups.
+
+    Small groups can be searched exhaustively. Larger groups use bounded
+    selection so evidence generation cannot dominate the composite build.
+    """
     cache = cache if cache is not None else {}
     selected_chunks = cache.setdefault("chunks", {})
     embeddings_cache = cache.setdefault("embeddings", {})
@@ -1396,6 +1410,12 @@ def _compare_level_items(
         profile_labels: Optional[Dict[str, str]] = None,
         profile_chunk_cache: Optional[Dict[str, Any]] = None,
 ) -> Optional[Dict[str, Any]]:
+    """Compare two adjacent hierarchy items and return their merge evidence.
+
+    The pair lookup path reuses metrics already computed for base profile pairs;
+    the fallback path is used when those pair metrics are unavailable and must
+    compare the original chunk registry directly.
+    """
     left_refs = _item_link_refs(left)
     right_refs = _item_link_refs(right)
     merged_refs = left_refs | right_refs
@@ -2164,7 +2184,12 @@ def _build_component_composites(
 def _build_profile_component_composites(
         links: List[Dict[str, Any]],
 ) -> List[Dict[str, Any]]:
-    """Build connected composites without enumerating recursive cliques."""
+    """Build connected composites without enumerating recursive cliques.
+
+    A union-find structure makes this pass effectively linear in the number of
+    links. It is used only for dense inputs where recursive clique enumeration
+    would create an impractical number of intermediate groups.
+    """
     links_by_id = {link.get("@id"): link for link in links if link.get("@id")}
     parent = {link_id: link_id for link_id in links_by_id}
     profile_owner = {}
@@ -2254,6 +2279,12 @@ def build_composite_datalinking_elements(
         original_chunk_cache: Optional[Dict[tuple, Any]] = None,
         force_refresh: bool = False,
 ) -> Dict[str, Any]:
+    """Build final composite elements from pairwise DataLinkingBase links.
+
+    ``force_refresh`` clears only the in-memory composite caches passed to this
+    function. Pairwise report caches are controlled by the caller in
+    ``similarity.py``.
+    """
     selected_links = links[:top_n] if top_n and top_n > 0 else links
     # Composite scoring reuses the metrics already stored on every base link.
     # Do not compare every pair of base links again here: with 15 base links

@@ -1,4 +1,5 @@
-# dl/utils.py
+"""Shared request parsing, weight normalization, keyword, and classification helpers."""
+
 from pathlib import Path
 
 CACHE_DIR = Path(__file__).parent / 'DLRepository'
@@ -14,6 +15,7 @@ def get_float_arg(name: str, default: float) -> float:
         return float(default)
 
 def get_weights_and_threshold():
+    """Read Flask query parameters and normalize the three score weights."""
     kw = get_float_arg("kw", 0.6)
     desc = get_float_arg("desc", 0.3)
     head = get_float_arg("head", 0.1)
@@ -28,6 +30,7 @@ def get_weights_and_threshold():
     return kw, desc, head, th, normalized
 
 def normalize_weights(kw: float, desc: float, head: float):
+    """Normalize API-provided weights without depending on Flask's request object."""
     total = kw + desc + head
     normalized = False
     if total > 0 and abs(total - 1.0) > 1e-6:

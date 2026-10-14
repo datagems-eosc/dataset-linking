@@ -1,3 +1,10 @@
+"""Profile loading, field scoring, embeddings, and persistent cache handling.
+
+This module is the lower-level engine used by both web applications. It owns
+DataGEMS access, local-profile discovery, SentenceTransformer model loading,
+pairwise scoring, and the cache fingerprints that make repeated runs cheap.
+"""
+
 import hashlib
 import json
 import pickle
@@ -42,7 +49,11 @@ DETAIL_URL = f"{BASE_URL}/dmm/api/v1/dataset/get/"
 # --- UTILS & MODELS ---
 
 def _ensure_models():
-    """Load SentenceTransformer models only if necessary (Correct global usage)"""
+    """Load the two embedding models lazily and keep them process-local.
+
+    Loading both models at import time makes the Flask/FastAPI startup slow and
+    makes lightweight commands depend on a working model installation.
+    """
     global _model_short, _model_long
     if _model_short is None or _model_long is None:
         print("Wait... Loading AI models...")
@@ -59,7 +70,7 @@ def get_iteration_fingerprint(
         include_description_chunks: bool = False,
         keyword_method: str = "jaccard"
 ) -> str:
-    """Creates a unique hash based on IDs and weights."""
+    """Create the cache key for one complete pairwise analysis configuration."""
     dataset_ids.sort()
     ids_string = ",".join(dataset_ids)
     weights_string = f"{weights[0]:.2f}-{weights[1]:.2f}-{weights[2]:.2f}"

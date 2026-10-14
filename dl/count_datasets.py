@@ -1,3 +1,5 @@
+"""DataGEMS diagnostic utility for counting dataset statuses and details."""
+
 import argparse
 import io
 import os

@@ -1,3 +1,10 @@
+"""Small command-line downloader for Croissant profiles from DataGEMS DEV.
+
+The Flask/FastAPI applications use the more complete helpers in
+``dl.similarity``. This file remains useful for manually populating the local
+``profiles_api`` directory.
+"""
+
 import requests
 import json
 import sys
@@ -33,7 +40,12 @@ def fix_encoding(data: Any) -> Any:
 
 
 def get_token() -> str:
-    """Ottiene il token OAuth2 bypassando SSL"""
+    """Request a DEV OAuth2 token for the manual downloader.
+
+    This helper targets the development DataGEMS environment. Production code
+    should use the configured authentication flow in ``dl.similarity`` rather
+    than adding credentials to this script.
+    """
     url = f"{BASE_URL}/oauth/realms/dev/protocol/openid-connect/token"
     payload = {
         'grant_type': 'password',
