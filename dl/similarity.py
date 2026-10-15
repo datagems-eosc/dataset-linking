@@ -7,6 +7,7 @@ pairwise scoring, and the cache fingerprints that make repeated runs cheap.
 
 import hashlib
 import json
+import os
 import pickle
 import re
 import requests
@@ -44,6 +45,23 @@ BASE_URL = "https://datagems-dev.scayle.es"
 AUTH_URL = f"{BASE_URL}/oauth/realms/dev/protocol/openid-connect/token"
 SEARCH_URL = f"{BASE_URL}/dmm/api/v1/dataset/search"
 DETAIL_URL = f"{BASE_URL}/dmm/api/v1/dataset/get/"
+
+
+def get_api_cache_folder() -> Path:
+    """Return the shared API-profile cache directory for the current runtime.
+
+    Kubernetes mounts the persistent cache at ``/s3/cache``. A local checkout
+    normally cannot see that mount, so it uses ``data/cache`` unless the caller
+    explicitly sets ``DATA_LINKING_CACHE_DIR`` to a shared or copied cache.
+    """
+    configured = os.getenv("DATA_LINKING_CACHE_DIR")
+    if configured:
+        return Path(configured).expanduser()
+
+    kubernetes_cache = Path("/s3/cache")
+    if kubernetes_cache.exists():
+        return kubernetes_cache
+    return Path("data/cache")
 
 
 # --- UTILS & MODELS ---
@@ -527,7 +545,7 @@ def compute_similarities(
 ) -> Tuple[Optional[str], List[Dict[str, Any]], Optional[bool]]:
     global LAST_PAIRWISE_STATS
     weights = (kw_weight, desc_weight, head_weight)
-    folder = Path(folder_path) if folder_path else Path("/s3/cache")
+    folder = Path(folder_path) if folder_path else get_api_cache_folder()
     source_type = "api" if use_api else "local"
     keyword_method = _normalize_keyword_method(keyword_method)
 

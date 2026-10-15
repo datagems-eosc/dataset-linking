@@ -547,7 +547,22 @@ API mode uses the persistent cache location:
 /s3/cache
 ```
 
-Local mode stores cache data close to the selected local folder.
+Kubernetes deployments should mount the persistent volume at that path. Local
+processes use `data/cache` when `/s3/cache` is not available. To use a copied
+cache or a different shared volume, set:
+
+```powershell
+$env:DATA_LINKING_CACHE_DIR = "C:\path\to\dataset-linking-cache"
+```
+
+or in a container:
+
+```text
+DATA_LINKING_CACHE_DIR=/s3/cache
+```
+
+Local-folder analysis still stores pairwise cache data close to the selected
+profile folder.
 
 Cache fingerprints include source signatures, weights, local file content fingerprints, and scoring-mode versions where relevant.
 

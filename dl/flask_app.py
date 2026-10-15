@@ -15,7 +15,7 @@ from urllib.parse import unquote_plus
 
 from flask import Flask, abort, render_template, request, send_file, make_response, url_for
 
-from dl.similarity import compute_similarities, build_description_top_chunks_for_pair
+from dl.similarity import compute_similarities, build_description_top_chunks_for_pair, get_api_cache_folder
 from dl.reports import build_croissant_report
 from dl.link_comparison import compare_datalinkingbase_links, build_composite_datalinking_elements
 from dl.composite_export import build_moma_composite_export
@@ -124,7 +124,7 @@ def _load_profile(profile_id, folder_path, use_api, profile_cache):
     if use_api:
         from dl import similarity
 
-        cache_folder = Path("/s3/cache")
+        cache_folder = get_api_cache_folder()
         profile = similarity._load_cached_api_profile(cache_folder, profile_id)
         if profile is not None:
             print(f"[PROFILE] Cache hit: {profile_id}")
