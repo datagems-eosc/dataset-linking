@@ -23,7 +23,7 @@ from dl.refine import refine_similarity, build_refinement_profile
 from dl.reports import build_croissant_report
 from dl import similarity as similarity_module
 from dl.similarity import compute_similarities, build_description_top_chunks_for_pair
-from dl.similarity import get_access_token, fetch_dataset_list, fetch_details_from_list, get_api_cache_folder
+from dl.similarity import get_access_token, fetch_dataset_list, fetch_details_from_list
 from dl.dmm_client import register_graph_in_dmm
 from dl.utils import normalize_weights
 from dl.link_comparison import compare_datalinkingbase_links, build_composite_datalinking_elements
@@ -113,7 +113,7 @@ def _load_profiles_for_composites(folder: Optional[str]) -> tuple[Dict[str, Any]
     else:
         token = get_access_token()
         datasets = fetch_dataset_list(token)
-        api_profiles = fetch_details_from_list(token, datasets, get_api_cache_folder())
+        api_profiles = fetch_details_from_list(token, datasets, Path("/s3/cache"))
         for profile_id, data in api_profiles.items():
             profiles[str(profile_id).strip().lower()] = data
 
