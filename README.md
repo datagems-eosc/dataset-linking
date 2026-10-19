@@ -541,11 +541,16 @@ without calling the production API.
 
 Result and embedding caches are used to avoid repeated expensive computations.
 
-API mode uses the persistent cache location:
+API mode selects its cache location in this order:
 
-```text
-/s3/cache
-```
+1. `DATA_LINKING_CACHE_DIR`, when configured.
+2. `/s3/cache`, when the Kubernetes mount is available on a non-Windows runtime.
+3. `data/cache` in the project directory for local execution (always the
+   automatic default on Windows).
+
+For example, a PyCharm run can use the automatic local fallback or set
+`DATA_LINKING_CACHE_DIR` explicitly in its run configuration. Kubernetes keeps
+using `/s3/cache` without additional configuration as long as the mount exists.
 
 Local mode stores cache data close to the selected local folder.
 

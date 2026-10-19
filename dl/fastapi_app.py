@@ -113,7 +113,9 @@ def _load_profiles_for_composites(folder: Optional[str]) -> tuple[Dict[str, Any]
     else:
         token = get_access_token()
         datasets = fetch_dataset_list(token)
-        api_profiles = fetch_details_from_list(token, datasets, Path("/s3/cache"))
+        api_profiles = fetch_details_from_list(
+            token, datasets, similarity_module.get_api_cache_folder()
+        )
         for profile_id, data in api_profiles.items():
             profiles[str(profile_id).strip().lower()] = data
 

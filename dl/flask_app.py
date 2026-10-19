@@ -124,7 +124,7 @@ def _load_profile(profile_id, folder_path, use_api, profile_cache):
     if use_api:
         from dl import similarity
 
-        cache_folder = Path("/s3/cache")
+        cache_folder = similarity.get_api_cache_folder()
         profile = similarity._load_cached_api_profile(cache_folder, profile_id)
         if profile is not None:
             print(f"[PROFILE] Cache hit: {profile_id}")
@@ -1042,15 +1042,22 @@ def save_single():
     kw, desc, head, th, _ = get_weights_and_threshold()
     keyword_method = get_keyword_method()
 
-    error, similarities, _ = compute_similarities(
-        folder_path if folder_path else None,
-        kw_weight=kw,
-        desc_weight=desc,
-        head_weight=head,
-        threshold=th,
-        use_api=use_api,
-        keyword_method=keyword_method
-    )
+    cache_key = _analysis_cache_key(folder_path, kw, desc, head, th, keyword_method)
+    cached = _cached_analysis(cache_key)
+    if cached:
+        error = None
+        similarities = cached["similarities"]
+    else:
+        error, similarities, _ = compute_similarities(
+            folder_path if folder_path else None,
+            kw_weight=kw,
+            desc_weight=desc,
+            head_weight=head,
+            threshold=th,
+            use_api=use_api,
+            include_description_chunks=True,
+            keyword_method=keyword_method,
+        )
 
     if error:
         return f"❌ Cannot save results: {error}", 400
@@ -1114,7 +1121,11 @@ def save_single():
     buffer.seek(0)
 
     filename = f"match_{dataprofile1}_{dataprofile2}.json"
-    return send_file(buffer, mimetype="application/json", as_attachment=True, download_name=filename)
+    response = make_response(send_file(
+        buffer, mimetype="application/json", as_attachment=True, download_name=filename
+    ))
+    response.set_cookie("downloadComplete", "1", max_age=10)
+    return response
 
 
 @app.route("/refine")

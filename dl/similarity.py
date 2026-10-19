@@ -7,6 +7,7 @@ pairwise scoring, and the cache fingerprints that make repeated runs cheap.
 
 import hashlib
 import json
+import os
 import pickle
 import re
 import requests
@@ -44,9 +45,21 @@ BASE_URL = "https://datagems-dev.scayle.es"
 AUTH_URL = f"{BASE_URL}/oauth/realms/dev/protocol/openid-connect/token"
 SEARCH_URL = f"{BASE_URL}/dmm/api/v1/dataset/search"
 DETAIL_URL = f"{BASE_URL}/dmm/api/v1/dataset/get/"
+DEPLOY_CACHE_FOLDER = Path("/s3/cache")
+LOCAL_CACHE_FOLDER = Path(__file__).resolve().parent.parent / "data" / "cache"
 
 
 # --- UTILS & MODELS ---
+
+def get_api_cache_folder() -> Path:
+    """Return the configured API cache for the local or deployed runtime."""
+    configured_folder = os.getenv("DATA_LINKING_CACHE_DIR")
+    if configured_folder:
+        return Path(configured_folder).expanduser()
+    if sys.platform != "win32" and DEPLOY_CACHE_FOLDER.exists():
+        return DEPLOY_CACHE_FOLDER
+    return LOCAL_CACHE_FOLDER
+
 
 def _ensure_models():
     """Load the two embedding models lazily and keep them process-local.
@@ -527,7 +540,7 @@ def compute_similarities(
 ) -> Tuple[Optional[str], List[Dict[str, Any]], Optional[bool]]:
     global LAST_PAIRWISE_STATS
     weights = (kw_weight, desc_weight, head_weight)
-    folder = Path(folder_path) if folder_path else Path("/s3/cache")
+    folder = Path(folder_path) if folder_path else get_api_cache_folder()
     source_type = "api" if use_api else "local"
     keyword_method = _normalize_keyword_method(keyword_method)
 
