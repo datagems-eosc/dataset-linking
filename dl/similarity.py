@@ -20,6 +20,7 @@ from itertools import combinations
 from typing import Optional, Tuple, List, Dict, Any
 from sentence_transformers import SentenceTransformer, util
 import torch
+from dl.datagems_auth import get_access_token
 from dl.utils import normalize_keywords
 
 # DataGEMS DEV currently requires TLS verification to be disabled because its
@@ -42,7 +43,6 @@ if sys.stdout.encoding != 'utf-8':
 
 # --- CONFIGURATION ---
 BASE_URL = "https://datagems-dev.scayle.es"
-AUTH_URL = f"{BASE_URL}/oauth/realms/dev/protocol/openid-connect/token"
 SEARCH_URL = f"{BASE_URL}/dmm/api/v1/dataset/search"
 DETAIL_URL = f"{BASE_URL}/dmm/api/v1/dataset/get/"
 DEPLOY_CACHE_FOLDER = Path("/s3/cache")
@@ -380,16 +380,6 @@ def fix_encoding(data: Any) -> Any:
 
 
 # --- API FUNCTIONS ---
-
-def get_access_token() -> str:
-    payload = {
-        'grant_type': 'password', 'client_id': 'swagger-client',
-        'username': 'dg-user-admin', 'password': 'dg-user-admin', 'scope': 'datagems'
-    }
-    response = requests.post(AUTH_URL, data=payload, timeout=10, verify=False)
-    response.raise_for_status()
-    return response.json().get('access_token')
-
 
 def fetch_dataset_list(token: str) -> List[Dict[str, Any]]:
     """Fast call to get only the IDs and names (Discovery)"""

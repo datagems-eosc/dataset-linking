@@ -14,6 +14,11 @@ import re
 import urllib3
 from typing import Any
 
+try:
+    from dl.datagems_auth import get_access_token
+except ModuleNotFoundError:
+    from datagems_auth import get_access_token
+
 # --- CONFIGURAZIONE SICUREZZA ---
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -39,28 +44,6 @@ def fix_encoding(data: Any) -> Any:
     return data
 
 
-def get_token() -> str:
-    """Request a DEV OAuth2 token for the manual downloader.
-
-    This helper targets the development DataGEMS environment. Production code
-    should use the configured authentication flow in ``dl.similarity`` rather
-    than adding credentials to this script.
-    """
-    url = f"{BASE_URL}/oauth/realms/dev/protocol/openid-connect/token"
-    payload = {
-        'grant_type': 'password',
-        'client_id': 'swagger-client',
-        'username': 'dg-user-admin',
-        'password': 'dg-user-admin',
-        'scope': 'datagems'
-    }
-    response = requests.post(url, data=payload, timeout=15, verify=False)
-    if response.status_code != 200:
-        print(f"❌ ERRORE AUTENTICAZIONE ({response.status_code})")
-        sys.exit(1)
-    return response.json().get('access_token')
-
-
 def get_dataset_detail(token: str, dataset_id: str) -> dict:
     """Scarica il profilo Croissant di un singolo dataset"""
     url = f"{BASE_URL}/dmm/api/v1/dataset/get/{dataset_id}?format=croissant"
@@ -84,7 +67,7 @@ if __name__ == "__main__":
     if not os.path.exists(OUTPUT_FOLDER):
         os.makedirs(OUTPUT_FOLDER)
 
-    access_token = get_token()
+    access_token = get_access_token()
     print("🔑 Token ottenuto con successo.")
 
     search_url = f"{BASE_URL}/dmm/api/v1/dataset/search"

@@ -2,19 +2,17 @@
 
 import argparse
 import io
-import os
 import sys
 from collections import Counter
 from typing import Any, Dict, List, Optional
 
-# Avoid shadowing Python's stdlib token module with dl/token.py when this script
-# is executed directly from the dl directory.
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-if SCRIPT_DIR in sys.path:
-    sys.path.remove(SCRIPT_DIR)
-
 import requests
 import urllib3
+
+try:
+    from dl.datagems_auth import get_access_token
+except ModuleNotFoundError:
+    from datagems_auth import get_access_token
 
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -24,7 +22,6 @@ if sys.stdout.encoding != "utf-8":
 
 
 BASE_URL = "https://datagems-dev.scayle.es"
-AUTH_URL = f"{BASE_URL}/oauth/realms/dev/protocol/openid-connect/token"
 SEARCH_URL = f"{BASE_URL}/dmm/api/v1/dataset/search"
 DETAIL_URL = f"{BASE_URL}/dmm/api/v1/dataset/get/"
 
@@ -40,19 +37,6 @@ def fix_encoding(data: Any) -> Any:
     if isinstance(data, dict):
         return {key: fix_encoding(value) for key, value in data.items()}
     return data
-
-
-def get_access_token() -> str:
-    payload = {
-        "grant_type": "password",
-        "client_id": "swagger-client",
-        "username": "dg-user-admin",
-        "password": "dg-user-admin",
-        "scope": "datagems",
-    }
-    response = requests.post(AUTH_URL, data=payload, timeout=15, verify=False)
-    response.raise_for_status()
-    return response.json().get("access_token")
 
 
 def search_datasets(token: str, status: Optional[str] = None, count: int = 200) -> List[Dict[str, Any]]:

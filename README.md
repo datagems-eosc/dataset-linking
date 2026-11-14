@@ -556,6 +556,14 @@ Local mode stores cache data close to the selected local folder.
 
 Cache fingerprints include source signatures, weights, local file content fingerprints, and scoring-mode versions where relevant.
 
+## Service Authentication
+
+DataGEMS API and DMM calls use the OAuth client-credentials flow. Kubernetes
+provides `OIDC_CLIENT_ID` and `OIDC_CLIENT_SECRET` through the component's Vault
+integration. For local API-mode development, set the same variables only in the
+process environment; never commit their values. `OIDC_TOKEN_URL` and
+`OIDC_SCOPE` are optional and default to the DEV realm and `datagems` scope.
+
 ## Utility Scripts
 
 Useful scripts are grouped under `scripts/`:
@@ -577,7 +585,7 @@ dl/
 ├── reports.py            DataLinkingBase report builder
 ├── link_comparison.py    DataLinkingBaseComparison logic
 ├── utils.py              Shared helpers
-├── token.py              Platform profile downloader
+├── profile_downloader.py Platform profile downloader
 ├── count_datasets.py     Platform status/count diagnostic script
 └── export_excel.py       Excel export helper
 

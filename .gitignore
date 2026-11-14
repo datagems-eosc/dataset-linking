@@ -1,5 +1,8 @@
 __pycache__/
 *.py[cod]
+.env
+.env.*
+!.env.example
 
 # Runtime caches and generated analysis files
 **/cache_*.json

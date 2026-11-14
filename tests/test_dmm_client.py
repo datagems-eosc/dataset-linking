@@ -74,8 +74,10 @@ class DMMClientTests(unittest.TestCase):
         response.text = "invalid graph"
         response.raise_for_status.side_effect = requests.HTTPError(response=response)
 
-        with self.assertRaises(DMMRegistrationError):
+        with self.assertRaises(DMMRegistrationError) as raised:
             register_graph_in_dmm(GRAPH, token="test-token")
+
+        self.assertEqual(raised.exception.status_code, 422)
 
     @patch("dl.dmm_client.requests.post", side_effect=requests.Timeout())
     def test_timeout_is_reported(self, post):
@@ -99,6 +101,31 @@ class DMMClientTests(unittest.TestCase):
         refine.assert_called_once()
         get_token.assert_called_once()
         register.assert_called_once_with(GRAPH, token="test-token")
+
+    @patch("dl.fastapi_app.register_graph_in_dmm")
+    @patch("dl.fastapi_app.get_access_token", side_effect=["expired-token", "fresh-token"])
+    @patch("dl.fastapi_app.refine_similarity", return_value={"graph": GRAPH})
+    def test_registration_retries_once_with_fresh_token_after_401(self, refine, get_token, register):
+        register.side_effect = [
+            DMMRegistrationError("DMM registration failed with HTTP 401", status_code=401),
+            {"code": 200},
+        ]
+
+        summary = fastapi_app._attach_graphs_to_similarities(
+            None,
+            [{"passes_threshold": True, "id1": "one", "id2": "two"}],
+            0.6,
+            0.3,
+            0.1,
+            30.0,
+        )
+
+        self.assertEqual(summary, {"generated": 1, "failed": 0, "skipped": 0})
+        self.assertEqual(register.call_count, 2)
+        register.assert_any_call(GRAPH, token="expired-token")
+        register.assert_any_call(GRAPH, token="fresh-token")
+        self.assertEqual(get_token.call_count, 2)
+        get_token.assert_called_with(force_refresh=True)
 
     @patch("dl.fastapi_app._attach_graphs_to_similarities")
     @patch("dl.fastapi_app.compute_similarities", return_value=("analysis failed", [], False))

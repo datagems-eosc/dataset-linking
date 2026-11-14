@@ -9,20 +9,24 @@ from typing import Any, Dict, Optional
 
 import requests
 
-from dl.similarity import BASE_URL, get_access_token
+from dl.datagems_auth import get_access_token
 
 
 logger = logging.getLogger(__name__)
 
 DMM_DATASET_LINKING_REGISTER_URL = os.getenv(
     "DMM_DATASET_LINKING_REGISTER_URL",
-    f"{BASE_URL}/dmm/api/v1/dataset-linking/register",
+    "https://datagems-dev.scayle.es/dmm/api/v1/dataset-linking/register",
 )
 DMM_REQUEST_TIMEOUT_SECONDS = float(os.getenv("DMM_REQUEST_TIMEOUT_SECONDS", "30"))
 
 
 class DMMRegistrationError(RuntimeError):
     """Raised when DMM cannot register a Dataset Linking graph."""
+
+    def __init__(self, message: str, status_code: Optional[int] = None):
+        super().__init__(message)
+        self.status_code = status_code
 
 
 def prepare_graph_for_dmm(graph: Dict[str, Any]) -> Dict[str, Any]:
@@ -80,7 +84,8 @@ def register_graph_in_dmm(
         )
         raise DMMRegistrationError(
             f"DMM registration failed"
-            f"{f' with HTTP {status_code}' if status_code else ''}: {response_text}"
+            f"{f' with HTTP {status_code}' if status_code else ''}: {response_text}",
+            status_code=status_code,
         ) from exc
 
     try:

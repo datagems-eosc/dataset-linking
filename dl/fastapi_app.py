@@ -23,8 +23,9 @@ from dl.refine import refine_similarity, build_refinement_profile
 from dl.reports import build_croissant_report
 from dl import similarity as similarity_module
 from dl.similarity import compute_similarities, build_description_top_chunks_for_pair
-from dl.similarity import get_access_token, fetch_dataset_list, fetch_details_from_list
-from dl.dmm_client import register_graph_in_dmm
+from dl.datagems_auth import get_access_token
+from dl.similarity import fetch_dataset_list, fetch_details_from_list
+from dl.dmm_client import DMMRegistrationError, register_graph_in_dmm
 from dl.utils import normalize_weights
 from dl.link_comparison import compare_datalinkingbase_links, build_composite_datalinking_elements
 from dl.composite_export import build_moma_composite_export
@@ -182,7 +183,13 @@ def _attach_graphs_to_similarities(
             if item.get("graph"):
                 if dmm_token is None:
                     dmm_token = get_access_token()
-                register_graph_in_dmm(item["graph"], token=dmm_token)
+                try:
+                    register_graph_in_dmm(item["graph"], token=dmm_token)
+                except DMMRegistrationError as exc:
+                    if exc.status_code != 401:
+                        raise
+                    dmm_token = get_access_token(force_refresh=True)
+                    register_graph_in_dmm(item["graph"], token=dmm_token)
             generated += 1
         except Exception as exc:
             item["graph_error"] = str(exc)
