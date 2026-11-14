@@ -14,7 +14,7 @@ class DataGEMSAuthenticationTests(unittest.TestCase):
 
     def test_credentials_are_required(self):
         with patch.dict(os.environ, {}, clear=True):
-            with self.assertLogs("dl.datagems_auth", level="WARNING") as logs:
+            with self.assertLogs("uvicorn.error", level="WARNING") as logs:
                 with self.assertRaises(datagems_auth.DataGEMSAuthenticationError):
                     datagems_auth.get_access_token()
 
@@ -33,7 +33,7 @@ class DataGEMSAuthenticationTests(unittest.TestCase):
         }
         with patch.dict(os.environ, environment, clear=True), patch(
                 "dl.datagems_auth.time.monotonic", return_value=100.0
-        ), self.assertLogs("dl.datagems_auth", level="INFO") as logs:
+        ), self.assertLogs("uvicorn.error", level="INFO") as logs:
             first = datagems_auth.get_access_token()
             second = datagems_auth.get_access_token()
 

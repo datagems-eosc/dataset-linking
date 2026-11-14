@@ -30,7 +30,7 @@ from dl.utils import normalize_weights
 from dl.link_comparison import compare_datalinkingbase_links, build_composite_datalinking_elements
 from dl.composite_export import build_moma_composite_export
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("uvicorn.error")
 
 app = FastAPI(
     title="Profile Similarity API", 

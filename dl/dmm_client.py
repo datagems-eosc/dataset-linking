@@ -12,11 +12,15 @@ import requests
 from dl.datagems_auth import get_access_token
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("uvicorn.error")
 
+DMM_API_BASE_URL = os.getenv(
+    "DATAGEMS_API_BASE_URL",
+    "https://datagems-dev.scayle.es",
+).rstrip("/")
 DMM_DATASET_LINKING_REGISTER_URL = os.getenv(
     "DMM_DATASET_LINKING_REGISTER_URL",
-    "https://datagems-dev.scayle.es/dmm/api/v1/dataset-linking/register",
+    f"{DMM_API_BASE_URL}/dmm/api/v1/dataset-linking/register",
 )
 DMM_REQUEST_TIMEOUT_SECONDS = float(os.getenv("DMM_REQUEST_TIMEOUT_SECONDS", "30"))
 

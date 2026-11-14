@@ -2,6 +2,7 @@
 
 import argparse
 import io
+import os
 import sys
 from collections import Counter
 from typing import Any, Dict, List, Optional
@@ -21,7 +22,7 @@ if sys.stdout.encoding != "utf-8":
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
 
-BASE_URL = "https://datagems-dev.scayle.es"
+BASE_URL = os.getenv("DATAGEMS_API_BASE_URL", "https://datagems-dev.scayle.es").rstrip("/")
 SEARCH_URL = f"{BASE_URL}/dmm/api/v1/dataset/search"
 DETAIL_URL = f"{BASE_URL}/dmm/api/v1/dataset/get/"
 

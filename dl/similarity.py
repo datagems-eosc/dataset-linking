@@ -42,7 +42,7 @@ if sys.stdout.encoding != 'utf-8':
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 # --- CONFIGURATION ---
-BASE_URL = "https://datagems-dev.scayle.es"
+BASE_URL = os.getenv("DATAGEMS_API_BASE_URL", "https://datagems-dev.scayle.es").rstrip("/")
 SEARCH_URL = f"{BASE_URL}/dmm/api/v1/dataset/search"
 DETAIL_URL = f"{BASE_URL}/dmm/api/v1/dataset/get/"
 DEPLOY_CACHE_FOLDER = Path("/s3/cache")

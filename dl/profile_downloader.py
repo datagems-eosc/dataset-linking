@@ -26,7 +26,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 if sys.stdout.encoding != 'utf-8':
     sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
-BASE_URL = "https://datagems-dev.scayle.es"
+BASE_URL = os.getenv("DATAGEMS_API_BASE_URL", "https://datagems-dev.scayle.es").rstrip("/")
 OUTPUT_FOLDER = "profiles_api"
 
 

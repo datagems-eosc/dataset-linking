@@ -111,7 +111,7 @@ class DMMClientTests(unittest.TestCase):
             {"code": 200},
         ]
 
-        with self.assertLogs("dl.fastapi_app", level="INFO") as logs:
+        with self.assertLogs("uvicorn.error", level="INFO") as logs:
             summary = fastapi_app._attach_graphs_to_similarities(
                 None,
                 [{"passes_threshold": True, "id1": "one", "id2": "two"}],

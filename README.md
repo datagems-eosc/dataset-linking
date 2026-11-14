@@ -563,6 +563,8 @@ provides `OIDC_CLIENT_ID` and `OIDC_CLIENT_SECRET` through the component's Vault
 integration. For local API-mode development, set the same variables only in the
 process environment; never commit their values. `OIDC_TOKEN_URL` and
 `OIDC_SCOPE` are optional and default to the DEV realm and `datagems` scope.
+`DATAGEMS_API_BASE_URL` can point API calls at an internal Kubernetes service
+while OAuth continues to use the public identity-provider URL.
 
 ## Utility Scripts
 

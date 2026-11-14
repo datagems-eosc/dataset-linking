@@ -8,7 +8,7 @@ import time
 import requests
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("uvicorn.error")
 
 DEFAULT_TOKEN_URL = (
     "https://datagems-dev.scayle.es/oauth/realms/dev/"
