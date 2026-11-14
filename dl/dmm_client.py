@@ -52,12 +52,10 @@ def register_graph_in_dmm(
     }
 
     logger.info(
-        "Registering Dataset Linking graph in DMM",
-        extra={
-            "dmm_url": DMM_DATASET_LINKING_REGISTER_URL,
-            "node_count": len(payload.get("nodes", []) or []),
-            "edge_count": len(payload.get("edges", []) or []),
-        },
+        "Registering Dataset Linking graph in DMM: nodes=%s edges=%s url=%s",
+        len(payload.get("nodes", []) or []),
+        len(payload.get("edges", []) or []),
+        DMM_DATASET_LINKING_REGISTER_URL,
     )
     try:
         response = requests.post(
@@ -75,11 +73,9 @@ def register_graph_in_dmm(
         status_code = getattr(exc.response, "status_code", None)
         response_text = getattr(exc.response, "text", "")
         logger.error(
-            "DMM Dataset Linking registration failed",
-            extra={
-                "status_code": status_code,
-                "response_text": response_text,
-            },
+            "DMM Dataset Linking registration failed: status_code=%s response=%s",
+            status_code or "unavailable",
+            response_text,
             exc_info=True,
         )
         raise DMMRegistrationError(
@@ -94,7 +90,7 @@ def register_graph_in_dmm(
         response_payload = {"status_code": response.status_code, "content": response.text}
 
     logger.info(
-        "Dataset Linking graph registered successfully in DMM",
-        extra={"status_code": response.status_code},
+        "Dataset Linking graph registered successfully in DMM: status_code=%s",
+        response.status_code,
     )
     return response_payload

@@ -111,14 +111,15 @@ class DMMClientTests(unittest.TestCase):
             {"code": 200},
         ]
 
-        summary = fastapi_app._attach_graphs_to_similarities(
-            None,
-            [{"passes_threshold": True, "id1": "one", "id2": "two"}],
-            0.6,
-            0.3,
-            0.1,
-            30.0,
-        )
+        with self.assertLogs("dl.fastapi_app", level="INFO") as logs:
+            summary = fastapi_app._attach_graphs_to_similarities(
+                None,
+                [{"passes_threshold": True, "id1": "one", "id2": "two"}],
+                0.6,
+                0.3,
+                0.1,
+                30.0,
+            )
 
         self.assertEqual(summary, {"generated": 1, "failed": 0, "skipped": 0})
         self.assertEqual(register.call_count, 2)
@@ -126,6 +127,8 @@ class DMMClientTests(unittest.TestCase):
         register.assert_any_call(GRAPH, token="fresh-token")
         self.assertEqual(get_token.call_count, 2)
         get_token.assert_called_with(force_refresh=True)
+        self.assertIn("refreshing it and retrying once", "\n".join(logs.output))
+        self.assertIn("retry succeeded", "\n".join(logs.output))
 
     @patch("dl.fastapi_app._attach_graphs_to_similarities")
     @patch("dl.fastapi_app.compute_similarities", return_value=("analysis failed", [], False))

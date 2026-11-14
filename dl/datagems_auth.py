@@ -1,11 +1,14 @@
 """OAuth client-credentials authentication for DataGEMS services."""
 
+import logging
 import os
 import threading
 import time
 
 import requests
 
+
+logger = logging.getLogger(__name__)
 
 DEFAULT_TOKEN_URL = (
     "https://datagems-dev.scayle.es/oauth/realms/dev/"
@@ -42,6 +45,12 @@ def get_access_token(force_refresh: bool = False) -> str:
         client_id = os.getenv("OIDC_CLIENT_ID")
         client_secret = os.getenv("OIDC_CLIENT_SECRET")
         if not client_id or not client_secret:
+            logger.warning(
+                "DataGEMS OAuth credentials are not configured: "
+                "OIDC_CLIENT_ID=%s OIDC_CLIENT_SECRET=%s",
+                "set" if client_id else "missing",
+                "set" if client_secret else "missing",
+            )
             raise DataGEMSAuthenticationError(
                 "OIDC_CLIENT_ID and OIDC_CLIENT_SECRET must be provided by the runtime environment"
             )
@@ -55,9 +64,17 @@ def get_access_token(force_refresh: bool = False) -> str:
         if scope:
             payload["scope"] = scope
 
+        token_url = os.getenv("OIDC_TOKEN_URL", DEFAULT_TOKEN_URL)
+        logger.info(
+            "Requesting DataGEMS OAuth access token: client_id=%s scope=%s reason=%s url=%s",
+            client_id,
+            scope or "none",
+            "forced_refresh" if force_refresh else "missing_or_expired",
+            token_url,
+        )
         try:
             response = requests.post(
-                os.getenv("OIDC_TOKEN_URL", DEFAULT_TOKEN_URL),
+                token_url,
                 data=payload,
                 timeout=15,
                 verify=False,
@@ -65,6 +82,11 @@ def get_access_token(force_refresh: bool = False) -> str:
             response.raise_for_status()
             token_payload = response.json()
         except (requests.RequestException, ValueError) as exc:
+            status_code = getattr(getattr(exc, "response", None), "status_code", None)
+            logger.error(
+                "Unable to obtain the DataGEMS OAuth access token: status_code=%s",
+                status_code or "unavailable",
+            )
             raise DataGEMSAuthenticationError("Unable to obtain the DataGEMS access token") from exc
 
         token = token_payload.get("access_token")
@@ -78,4 +100,10 @@ def get_access_token(force_refresh: bool = False) -> str:
         usable_lifetime = max(expires_in - TOKEN_EXPIRY_MARGIN_SECONDS, 0.0)
         _access_token = token
         _access_token_expires_at = now + usable_lifetime
+        logger.info(
+            "DataGEMS OAuth access token obtained successfully: "
+            "expires_in_seconds=%s renew_after_seconds=%s",
+            expires_in,
+            usable_lifetime,
+        )
         return token

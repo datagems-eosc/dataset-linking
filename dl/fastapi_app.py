@@ -188,8 +188,12 @@ def _attach_graphs_to_similarities(
                 except DMMRegistrationError as exc:
                     if exc.status_code != 401:
                         raise
+                    logger.warning(
+                        "DMM rejected the access token; refreshing it and retrying once"
+                    )
                     dmm_token = get_access_token(force_refresh=True)
                     register_graph_in_dmm(item["graph"], token=dmm_token)
+                    logger.info("DMM registration retry succeeded with a refreshed token")
             generated += 1
         except Exception as exc:
             item["graph_error"] = str(exc)

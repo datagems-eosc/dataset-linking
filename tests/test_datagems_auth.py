@@ -14,8 +14,11 @@ class DataGEMSAuthenticationTests(unittest.TestCase):
 
     def test_credentials_are_required(self):
         with patch.dict(os.environ, {}, clear=True):
-            with self.assertRaises(datagems_auth.DataGEMSAuthenticationError):
-                datagems_auth.get_access_token()
+            with self.assertLogs("dl.datagems_auth", level="WARNING") as logs:
+                with self.assertRaises(datagems_auth.DataGEMSAuthenticationError):
+                    datagems_auth.get_access_token()
+
+        self.assertIn("credentials are not configured", logs.output[0])
 
     @patch("dl.datagems_auth.requests.post")
     def test_client_credentials_token_is_cached_until_expiry(self, post):
@@ -30,7 +33,7 @@ class DataGEMSAuthenticationTests(unittest.TestCase):
         }
         with patch.dict(os.environ, environment, clear=True), patch(
                 "dl.datagems_auth.time.monotonic", return_value=100.0
-        ):
+        ), self.assertLogs("dl.datagems_auth", level="INFO") as logs:
             first = datagems_auth.get_access_token()
             second = datagems_auth.get_access_token()
 
@@ -43,6 +46,10 @@ class DataGEMSAuthenticationTests(unittest.TestCase):
             "client_secret": "test-secret",
             "scope": "datagems",
         })
+        log_output = "\n".join(logs.output)
+        self.assertIn("access token obtained successfully", log_output)
+        self.assertNotIn("test-secret", log_output)
+        self.assertNotIn("token-one", log_output)
 
     @patch("dl.datagems_auth.requests.post")
     def test_force_refresh_obtains_a_new_token(self, post):
