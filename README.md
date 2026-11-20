@@ -561,8 +561,35 @@ Cache fingerprints include source signatures, weights, local file content finger
 DataGEMS API and DMM calls use the OAuth client-credentials flow. Kubernetes
 provides `OIDC_CLIENT_ID` and `OIDC_CLIENT_SECRET` through the component's Vault
 integration. For local API-mode development, set the same variables only in the
-process environment; never commit their values. `OIDC_TOKEN_URL` and
-`OIDC_SCOPE` are optional and default to the DEV realm and `datagems` scope.
+process environment or in a local `.env` file; never commit their values.
+The application loads `.env` from the project root automatically, while
+variables already present in the process environment take precedence.
+To configure a local checkout:
+
+1. Copy `.env.example` to `.env`.
+2. Replace `OIDC_CLIENT_SECRET` with the secret supplied through the approved
+   DataGEMS credential channel.
+3. Start Flask or FastAPI normally from the project root.
+
+For example, on macOS/Linux:
+
+```bash
+cp .env.example .env
+# edit .env, then:
+uv run flask --app dl.flask_app run
+```
+
+On Windows PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+# edit .env, then:
+uv run flask --app dl.flask_app run
+```
+
+Do not commit `.env`, paste the secret into source code, or send it by email
+or chat. `OIDC_TOKEN_URL` and `OIDC_SCOPE` are optional and default to the DEV
+realm and `datagems` scope.
 `DATAGEMS_API_BASE_URL` can point API calls at an internal Kubernetes service
 while OAuth continues to use the public identity-provider URL.
 

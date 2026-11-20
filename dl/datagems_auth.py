@@ -4,8 +4,10 @@ import logging
 import os
 import threading
 import time
+from pathlib import Path
 
 import requests
+from dotenv import load_dotenv
 
 
 logger = logging.getLogger("uvicorn.error")
@@ -15,6 +17,11 @@ DEFAULT_TOKEN_URL = (
     "protocol/openid-connect/token"
 )
 TOKEN_EXPIRY_MARGIN_SECONDS = 30
+
+# Load developer-only configuration when running from a checkout. Kubernetes
+# and other deployments continue to use their process environment; values
+# already present in the environment always take precedence.
+load_dotenv(Path(__file__).resolve().parent.parent / ".env", override=False)
 
 _access_token = None
 _access_token_expires_at = 0.0
