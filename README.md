@@ -566,16 +566,24 @@ The application loads `.env` from the project root automatically, while
 variables already present in the process environment take precedence.
 To configure a local checkout:
 
-1. Copy `.env.example` to `.env`.
-2. Replace `OIDC_CLIENT_SECRET` with the secret supplied through the approved
-   DataGEMS credential channel.
-3. Start Flask or FastAPI normally from the project root.
+1. Ask the project/platform team for the DEV client secret through the approved
+   secure channel (Vault or the organisation's password manager).
+2. Run the guided setup command below. It checks the credentials before saving
+   them locally:
 
+```bash
+uv run python scripts/setup_local_auth.py
+```
+
+The command asks for the client secret without displaying it, tests the OAuth
+login immediately, and writes a local `.env` file. After that, start Flask or
+FastAPI normally. The secret is never printed and `.env` is ignored by Git.
+
+The manual alternative is to copy `.env.example` to `.env` and edit it.
 For example, on macOS/Linux:
 
 ```bash
 cp .env.example .env
-# edit .env, then:
 uv run flask --app dl.flask_app run
 ```
 
@@ -583,7 +591,6 @@ On Windows PowerShell:
 
 ```powershell
 Copy-Item .env.example .env
-# edit .env, then:
 uv run flask --app dl.flask_app run
 ```
 
