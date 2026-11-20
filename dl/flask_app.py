@@ -1132,7 +1132,6 @@ def save_single():
 def refine_pair():
     import json as _json
     import sys
-    import os
     from dl.refine import (
         infer_content_type, extract_txt_documents, extract_csv_tables_with_samples,
         compare_txt_files, compare_csv_schemas_with_samples, build_graph_json
@@ -1226,11 +1225,14 @@ def refine_pair():
         # 6. Generation of KG
         graph = build_graph_json(report, dp1, dp2)
 
-        # Save on Desktop
-        desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
-        file_path = os.path.join(desktop, "grafo_visualizer.json")
-        with open(file_path, "w", encoding="utf-8") as f:
-            _json.dump(graph, f, indent=4, ensure_ascii=False)
+        # Save on the current user's Desktop on Windows and macOS.
+        desktop = Path.home() / "Desktop"
+        desktop.mkdir(parents=True, exist_ok=True)
+        file_path = desktop / "grafo_visualizer.json"
+        file_path.write_text(
+            _json.dumps(graph, indent=4, ensure_ascii=False),
+            encoding="utf-8",
+        )
 
         status_msg = f"✅ Grafo generato sul Desktop: {file_path}"
 
