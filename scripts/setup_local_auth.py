@@ -8,6 +8,11 @@ from pathlib import Path
 
 from dotenv import set_key
 
+# When this file is executed by path (``python scripts/setup_local_auth.py``),
+# Python starts with ``scripts`` on sys.path rather than the project root.
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT_ROOT))
+
 from dl.datagems_auth import (
     DataGEMSAuthenticationError,
     get_access_token,
@@ -15,7 +20,6 @@ from dl.datagems_auth import (
 )
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
 ENV_FILE = PROJECT_ROOT / ".env"
 
 
